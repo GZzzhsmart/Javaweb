@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- 配置表和对象的关联 -->
+
+	<class name="com.ht.vo.EmployeeVo" table="employee">
+		<id name="empid" type="int">
+			<generator class="native"></generator>
+		</id>
+		<property name="empname" type="string" length="20"></property>
+		<!-- 
+			数据类型：
+				1.用hibernate内部定义的数据类型;
+				2.用java的数据类型
+		 -->
+		<property name="sex" type="string" length="4"></property>
+		<property name="birthday" type="java.util.Date"></property>
+		<property name="school" type="java.lang.String"></property>
+		<property name="major" type="string"></property>
+		<property name="degree" type="string"></property>
+		<property name="mobile" type="string"></property>
+		
+		<one-to-one name="account" class="com.ht.vo.AccountVo" constrained="false" cascade="all"></one-to-one>
+		<many-to-one name="dep" column="depid" class="com.ht.vo.DepVo" lazy="false"></many-to-one>
+	</class>
+</hibernate-mapping>

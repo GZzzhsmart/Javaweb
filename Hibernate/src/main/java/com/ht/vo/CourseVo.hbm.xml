@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- 配置表和对象的关联 -->
+
+	<class name="com.ht.vo.CourseVo" table="course">
+		<id name="courseid" column="courseid">
+			<generator class="native"></generator>
+		</id>
+		<property name="coursename" column="coursename" type="string" length="20"></property>
+		<!-- 多对多配置 -->
+		<set name="studSet" table="SelectCourse">
+			<key column="courseid"></key>
+			<many-to-many class="com.ht.vo.StudentVo" column="studid"></many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>

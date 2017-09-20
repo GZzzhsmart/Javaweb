@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- 配置表和对象的关联 -->
+	<class name="com.ht.vo.StudentVo" table="stud">
+		<!-- 配置主键 name指定对象的属性 column表的列名 -->
+		<id name="studid" column="studid">
+			<generator class="assigned"></generator>
+		</id>
+		<!-- 配置主键以外的其他字段 -->
+		<property name="studname" type="string" length="20"></property>
+		<property name="sex" column="sex" type="string" length="4"></property>
+		<!-- unique=true表示该字段必须是唯一值 -->
+		<property name="cardid" type="string" length="18" unique="true"></property>
+		<property name="classid" type="int"></property>
+		<property name="age" type="int"></property>
+		<!-- 多对多配置 -->
+		<set name="courseSet" table="SelectCourse" fetch="join" inverse="false">
+			<key column="studid"></key>
+			<many-to-many class="com.ht.vo.CourseVo" column="courseid"></many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>

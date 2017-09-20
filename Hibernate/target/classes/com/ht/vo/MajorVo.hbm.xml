@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- 配置表和对象的关联 -->
+
+	<class name="com.ht.vo.MajorVo" table="major">
+		<!-- 该表的主键是引用员工表的主键 -->
+		<id name="majorid" type="int">
+			<generator class="native"></generator>
+		</id>
+		<property name="majorname" type="string" length="30"></property>
+		<set name="classes" lazy="true" inverse="false">
+			<key column="majorid"></key>
+			<one-to-many class="com.ht.vo.ClassesVo"/>
+		</set>
+	</class>
+</hibernate-mapping>

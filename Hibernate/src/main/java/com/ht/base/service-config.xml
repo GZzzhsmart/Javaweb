@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-config>
+	<service name="studentService" class="com.ht.base.StudentService"></service>
+	<service name="employeeService" class="com.ht.base.EmployeeService"></service>
+</service-config>

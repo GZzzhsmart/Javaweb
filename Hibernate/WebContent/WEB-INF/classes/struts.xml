@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 可以动态访问函数 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true" />
+    <!-- 常量：配置乱码处理 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!-- 设置struts默认主题 -->
+	<!-- 
+   	<constant name="struts.ui.theme" value="simple" ></constant>
+   	 -->
+ 	<constant name="struts.custom.i18n.resources" value="globalMessages"></constant>
+ 	<!--默认struts2的访问action类的后缀是.action -->
+	<constant name="struts.action.extension" value="action"></constant>
+	<!--  struts.xml修改后系统自动重新加载，开发阶段会比较方便，但是生产环境最好是false -->
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	<!-- 打印出更详细的错误信息 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<include file="struts-default.xml"/>
+	<package name="default" extends="struts-default" namespace="/">
+		<!-- 配置action类 -->
+		<action name="studentAction" class="com.ht.action.StudentAction">
+			<result name="input">/studentAdd.jsp</result>
+			<result name="success">/studentList.jsp</result>
+		</action>
+		<action name="studAction" class="com.ht.action.studAction">
+			<result name="success" type="redirectAction">studAction!list.action</result>
+			<result name="input">studlist.jsp</result>
+			<result name="update">studupdate.jsp</result>
+		</action>
+		<action name="stuAction" class="Test.StudentAction">
+			<result name="success" type="redirectAction">stuAction!list.action</result>
+			<result name="input">/Test/studlist.jsp</result>
+			<result name="update">/Test/studupdate.jsp</result>
+		</action>
+		<action name="empAction" class="com.ht.action.EmployeeAction">
+			<result name="success" type="redirectAction">empAction!list.action</result>
+			<result name="input">/emplist.jsp</result>
+			<result name="login">/emplist1.jsp</result>
+			<result name="update">/emp.jsp</result>
+		</action>
+		<action name="depAction" class="com.ht.action.DepAction">
+			<result name="input">dep.jsp</result>
+			<result name="success">deplist.jsp</result>
+			<result name="list" type="redirectAction">depAction!list.action</result>
+		</action>
+		<action name="classAction" class="com.ht.action.ClassAction">
+			<result name="input">class.jsp</result>
+			<result name="success">classList.jsp</result>
+			<result name="list" type="redirectAction">classAction!list.action</result>
+		</action>
+		<action name="employeeAction" class="Test.empAction">
+			<result name="input">/Test/emplist.jsp</result>
+			<result name="update">/Test/emp.jsp</result>
+			<result name="success" type="redirectAction">employeeAction!list.action</result>
+		</action>
+	</package>
+</struts>

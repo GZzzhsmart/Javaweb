@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <!-- 可以动态访问函数 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true" />
+    <!-- 常量：配置乱码处理 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!-- 设置struts默认主题 -->
+	<!--  
+   	<constant name="struts.ui.theme" value="simple" ></constant>
+   	-->
+ 	<!--默认struts2的访问action类的后缀是.action -->
+	<constant name="struts.action.extension" value="action"></constant>
+	<!--  struts.xml修改后系统自动重新加载，开发阶段会比较方便，但是生产环境最好是false -->
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	<!-- 打印出更详细的错误信息 -->
+	<constant name="struts.devMode" value="true"></constant>
+	
+	<include file="struts-default.xml"/>
+    
+    <package name="default" extends="struts-default">
+		<!-- 配置action类 -->
+		<action name="loginAction" class="com.ht.action.LoginAction">
+			<result name="input">/login.jsp</result>
+			<result name="success">/login.jsp</result>
+			<result name="login">/login.jsp</result>
+		</action>
+		<action name="studAction1" class="com.ht.action.StudentAction">
+			<result name="input">/studAdd.jsp</result>
+			<result name="success">/studAdd.jsp</result>
+		</action>
+		<action name="studAction2" class="com.ht.action.StudentAction1">
+			<result name="input">/studAdd1.jsp</result>
+			<result name="success">/studAdd1.jsp</result>
+		</action>
+		<action name="login" class="com.ht.action.Login">
+			<result name="loginsuccess">/T1/success.jsp</result>
+			<result name="loginfailure">/T1/failure.jsp</result>
+		</action>
+		<action name="methodAction" class="com.ht.action.MethodAction">
+			<!-- 配置重定向的result -->
+			<result name="input" type="redirectAction">studAction.action</result>
+		</action>
+		<action name="methodAction1" class="com.ht.action.MethodAction" method="add">
+			<!-- 配置重定向的result -->
+			<result name="input" type="redirectAction">studAction.action</result>
+		</action>
+		<action name="methodAction2" class="com.ht.action.MethodAction" method="update">
+			<result name="success" type="redirectAction">studAction.action</result>
+		</action>
+		<action name="methodAction3" class="com.ht.action.MethodAction" method="list">
+			<result name="list">/login.jsp</result>
+		</action>
+		<action name="testAction" class="com.ht.action.TestAction">
+			<!-- 处理成功映射的页面 -->
+			<result name="input">/success.jsp</result>
+			<result name="success">/success.jsp</result>
+		</action>
+		
+		<action name="servAction" class="com.ht.action.ServletAPIAction">
+			<result name="input">/servletAPI.jsp</result>
+		</action>
+		<action name="reqAction" class="com.ht.action.RequestAwareAction">
+			<result name="input">/servletAPI.jsp</result>
+		</action>
+		<action name="contxtAction" class="com.ht.action.ServletContextAction">
+			<result name="input">/servletAPI.jsp</result>
+		</action>
+		<action name="contxt2Action" class="com.ht.action.ContextDemoAction">
+			<result name="input">/servletAPI.jsp</result>
+		</action>
+		<action name="empAction" class="com.ht.action.EmpAction">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="input">empAdd.jsp</result>
+			<result name="success">empAdd.jsp</result>
+			<result name="invalid.token">error.jsp</result>
+		</action>
+		
+		<action name="studAction" class="com.ht.action.studAction">
+			<result name="login">/studentlist.jsp</result>
+			<result name="input">/studentadd.jsp</result>
+			<result name="success">/studentupdate.jsp</result>
+		</action>
+		
+		<action name="nationAction" class="com.ht.action.NationAction">
+			<result name="input">/nationList.jsp</result>
+			<result name="success">/nationList.jsp</result>
+		</action>
+	</package>
+	
+	<package name="zzh" extends="struts-default" namespace="/">
+		<interceptors>
+			<!-- 配置自定义的拦截器 -->
+			<interceptor name="firstInterceptor" class="com.ht.interceptor.FristInterceptor"></interceptor>
+			<!-- 配置拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="timer"></interceptor-ref>
+				<interceptor-ref name="firstInterceptor"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 包中调用的拦截器对整个包中所有的action起作用 -->
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+		<action name="firstAction" class="com.ht.action.firstAction">
+			<!-- 转向 -->
+			<result type="chain" name="success">secondAction</result>
+		</action>
+		<action name="secondAction" class="com.ht.action.SecondAction">
+			<result name="success">/aliasSuccess.jsp</result>
+			<param name="aliases">#{'firstname':'secondname'}</param>
+		</action>
+		<action name="prepareAction" class="com.ht.action.PreparedAction">
+			<result name="success">/alias.jsp</result>
+		</action>
+	</package>
+	<package name="login" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="privInterceptor" class="com.ht.interceptor.PrivInterceptor"></interceptor>
+			<interceptor name="forumInterceptor" class="com.ht.interceptor.ForumInterceptor"></interceptor>
+			<interceptor name="methodInterceptor" class="com.ht.interceptor.MethodInterceptor"></interceptor>
+			<interceptor-stack name="myStack1">
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<!-- interceptor-ref name="privInterceptor"></interceptor-ref-->
+				<!-- interceptor-ref name="forumInterceptor"></interceptor-ref-->
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myStack1"></default-interceptor-ref>
+		<!-- 配置全局result，整个包中的所有action都可以访问 -->
+		<global-results>
+			<result name="error">/privError.jsp</result>
+		</global-results>
+		<!-- 全局异常处理，必须要有全局的result -->
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.NullPointerException"></exception-mapping>
+		</global-exception-mappings>
+		<action name="userAction" class="com.ht.action.UserAction">
+			<result name="input">/user.jsp</result>
+			<result name="success">/userSuccess.jsp</result>
+		</action>
+		<action name="contentAction" class="com.ht.action.ContentAction">
+			<result name="input">forum.jsp</result>
+			<result name="success">forum.jsp</result>
+		</action>
+		<action name="login2Action" class="com.ht.action.Login2Action">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="methodInterceptor">
+				<!-- 需要拦截的函数 -->
+				<param name="includeMethods">method1,method2,method3,method4,method5</param>
+				<!-- 不拦截的函数,如果这个函数在拦截里面配置，不拦截里面也配置，以拦截为准 -->
+				<param name="excludeMethods">method1,login</param>
+			</interceptor-ref>
+			<result name="input">login2.jsp</result>
+			<result name="success">userSuccess.jsp</result>
+		</action>
+		<action name="myExcepAction" class="com.ht.action.MyExceptionAction">
+			<result name="input">empAdd2.jsp</result>
+			<result name="success">empAdd2.jsp</result>
+		</action>
+		<action name="fileUpload" class="com.ht.action.UploadAction">
+			<result name="input">/upload.jsp</result>
+			<result name="success">/upload.jsp</result>
+			<interceptor-ref name="fileUpload">
+				<!-- 允许上传的文件类型  -->
+				<param name="allowedTypes">image/bmp,image/png,image/gif,image/jpeg</param>
+				<!--上传文件的最大容量 单位字节  -->
+				<param name="maximumSize">20000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+		
+		<action name="downloadAction" class="com.ht.action.DownloadAction">
+			<result name="input">/down.jsp</result>
+			<result name="success" type="stream">
+				<param name="contentType">${contentType}</param>
+				<param name="inputName">inputStream</param>
+				<param name="bufferSize">4096</param>
+				<param name="contentDisposition">attachment;filename=${filename}</param>
+			</result>
+		</action>
+	</package>
+</struts>

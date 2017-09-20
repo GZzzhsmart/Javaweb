@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0//EN" "http://www.opensymphony.com/xwork/xwork-validator-1.0.dtd">
+<validators>
+    <field name="emp.empNo">
+    	<field-validator type="requiredstring">
+            <message>请输入员工编号</message>
+        </field-validator>
+        <field-validator type="stringlength">
+        	<param name="minLength">6</param>
+        	<param name="maxLength">20</param>
+        	<message>员工编号必须在${minLength}-${maxLength}位之间</message>
+        </field-validator>
+    </field>
+    <field name="emp.empName">
+    	<field-validator type="requiredstring">
+            <message>请输入员工姓名</message>
+        </field-validator>
+    </field>   
+    <field name="emp.age">
+    	<field-validator type="int">
+    		<param name="min">1</param>
+    		<param name="max">100</param>
+    		<message>年龄必须在${min}-${max}岁之间</message>
+    	</field-validator>
+    </field>
+    <field name="emp.jobDate">
+    	<field-validator type="date">
+    		<param name="min">1990-01-01</param>
+    		<param name="max">2020-12-31</param>
+    		<message>入职日期必须在${min}到${max}之间</message>
+    	</field-validator>
+    </field>
+    <field name="emp.cardNo">
+    	<field-validator type="requiredstring">
+        	<message>请输入身份证号</message>
+    	</field-validator>
+    	<field-validator type="stringlength">
+        	<param name="minLength">18</param>
+        	<param name="maxLength">18</param>
+        	<message>身份证号必须为18位</message>
+        </field-validator>
+    </field>
+    <field name="emp.email">
+    	<field-validator type="requiredstring">
+        	<message>请输入邮箱地址</message>
+    	</field-validator>
+    	<field-validator type="email">
+    		<message>必须输入合法的邮箱地址(如：gkimlaps@126.com)</message>
+    	</field-validator>
+    </field>
+</validators>

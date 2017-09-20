@@ -1,0 +1,12 @@
+1、productType.name productType.des
+	des空的？
+	
+2、form表单的name要与datagrid中获取选中行的row对象的属性一致，所以导致action中不好获取数据
+	row  id
+		name
+	row  productType.id
+		productType.name
+		
+		{"id":1,"name":"电脑"}
+		
+		{"productType.id":1,"productType.name":"电脑"}    form  name = productType.id

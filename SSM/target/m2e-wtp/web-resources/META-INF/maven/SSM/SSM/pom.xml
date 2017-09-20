@@ -1,0 +1,149 @@
+<project
+   xmlns="http://maven.apache.org/POM/4.0.0" 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+   
+    <groupId>SSM</groupId>
+    <artifactId>SSM</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+  <repositories>
+		<repository>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2/</url>
+			<name>maven2</name>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>central-maven</id>
+			<url>http://central.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+    <dependencies>
+    <!-- MySql -->
+    
+  <dependency>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
+  </dependency>
+  <!-- 连接池 -->
+  <dependency>
+  <groupId>com.alibaba</groupId>
+  <artifactId>druid</artifactId>
+  </dependency>
+  <!-- Spring -->
+  <!-- spring核心包 -->
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-core</artifactId>
+  </dependency>
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-context</artifactId>
+  </dependency>
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-beans</artifactId>
+  </dependency>
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-web</artifactId>
+  </dependency>
+  <!-- Spring对JDBC的封装 -->
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-jdbc</artifactId>
+  </dependency>
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-aspects</artifactId>
+  </dependency>
+  <!-- 关系型数据库整合时需配置 如hibernate jpa等 -->
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-orm</artifactId>
+  </dependency>
+  <!-- Spring MVC核心 -->
+  <dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-webmvc</artifactId>
+  </dependency>
+    <!-- Jackson Json处理工具包(非必须) -->
+  <dependency>
+  <groupId>com.fasterxml.jackson.core</groupId>
+  <artifactId>jackson-databind</artifactId>
+  </dependency>
+  <!-- 单元测试 -->
+  <dependency>
+  <groupId>junit</groupId>
+  <artifactId>junit</artifactId>
+  <scope>test</scope>
+  </dependency>
+  <!-- 日志处理(非必须) -->
+  <dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  </dependency>
+  <!-- Mybatis -->
+  <dependency>
+  <groupId>org.mybatis</groupId>
+  <artifactId>mybatis</artifactId>
+  </dependency>
+  <!-- mybatis的整合包 -->
+  <dependency>
+  <groupId>org.mybatis</groupId>
+  <artifactId>mybatis-spring</artifactId>
+  </dependency>
+  <!-- mybatis分页插件(非必须) -->
+  <dependency>
+  <groupId>com.github.pagehelper</groupId>
+ <artifactId>pagehelper</artifactId>
+ </dependency>
+  <dependency>
+  <groupId>com.github.miemiedev</groupId>
+  <artifactId>mybatis-paginator</artifactId>
+  </dependency>
+     <!-- JSP相关 -->
+ <dependency>
+ <groupId>jstl</groupId>
+ <artifactId>jstl</artifactId>
+ </dependency>
+ <dependency>
+ <groupId>javax.servlet</groupId>
+ <artifactId>servlet-api</artifactId>
+ <scope>provided</scope>
+ </dependency>
+ <dependency>
+ <groupId>javax.servlet</groupId>
+ <artifactId>jsp-api</artifactId>
+ <scope>provided</scope>
+ </dependency>
+   </dependencies>
+     <!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 -->
+   <build>
+ <resources>
+            <resource>
+               <directory>src/main/java</directory>
+              <includes>
+                   <include>**/*.properties</include>
+                   <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+   </build>
+ </project>

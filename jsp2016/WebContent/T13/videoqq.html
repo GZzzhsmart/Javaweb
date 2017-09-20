@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta name="generator" content="editplus" />
+  <meta name="author" content="" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <script src="http://qzonestyle.gtimg.cn/open/qcloud/video/h5/h5connect.js" charset="utf-8" ></script>
+ </head>
+
+ <body>
+  
+
+  <div id="videotest" style="height:400px;width:800px;background-color:#118899;">
+ </body>
+ 
+   <script language="javascript">
+		var player = new qcVideo.Player(
+		"videotest",
+		{
+			"auto_play": "1",
+			"width": 640,
+			"height": 480,
+			"disable_full_screen": 0,
+			"disable_drag":1,
+			"stretch_full":1,
+			"stop_time": 60,
+			"remember": 1,
+			"WMode": "window",
+			"stretch_patch": false,
+			"hide_h5_setting": true,
+			"third_video":{
+				'duration': 6000,
+				'urls' : {
+				20 : "http://shixue-10008076.video.myqcloud.com/JSZG/kemu2/yuanqiujuzhongxueZ/1-2%E5%AD%A6%E6%83%85%E5%88%86%E6%9E%90.mp4.f20.mp4"
+				}
+			}
+		},
+		{
+			'fullScreen': function(isFullScreen){
+				//console.debug('out listener isFullScreen == ',isFullScreen);
+			},
+			'playStatus': function(status){
+				//console.debug('out listener status == ',status);
+			},
+			'dragPlay': function(second){
+				//console.debug('out listener dragPlay == ',second);
+			}
+		}
+		);
+  </script>
+</html>

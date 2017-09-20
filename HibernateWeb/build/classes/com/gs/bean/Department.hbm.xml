@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.gs.bean">
+	<class name="Department" table="t_department"> 
+		<id name="id" column="id"> 
+            <generator class="native"/> 
+        </id>
+        <property name="name" column="name"></property>
+        <property name="des" column="des"></property>
+
+		<!-- inverse控制反转，inverse = false， 默认把控制权交给一方，由一方来维护与多方的关系，inverse = true，把控制权交给多方，此时一方就不会去管多方的外键字段，而需要由多方自己来管理 -->
+		<!--  lazyt="true|false",默认为false，表示不延迟加载，true表示延迟加载，只有去获取多方数据的时候才会发送SQL到数据库服务器 -->
+		<set name="employees" inverse="true" cascade="all" lazy="true">
+			<key column="dep_id"></key><!-- 多方的外键字段 -->
+			<one-to-many class="com.gs.bean.Employee" />
+		</set>
+		
+
+	</class>
+	
+</hibernate-mapping>

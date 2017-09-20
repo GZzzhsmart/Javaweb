@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.gs.bean">
+	<class name="UserDetail" table="t_user_detail"> 
+		<id name="id" column="id"> 
+            <generator class="foreign"> 
+            	<param name="property">user</param>
+            </generator>
+        </id>
+        <property name="address" column="address"></property>
+        <property name="phone" column="phone"></property>
+        
+        <one-to-one name="user" class="com.gs.bean.User"></one-to-one>
+        
+	</class>
+</hibernate-mapping>

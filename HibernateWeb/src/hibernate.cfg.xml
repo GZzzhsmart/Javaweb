@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<!-- 驱动程序 -->
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property> 
+		<!-- 数据连接url -->
+        <property name="connection.url">jdbc:mysql://127.0.0.1:3306/mysqlstudy?useSSL=true&amp;useUnicode=true&amp;characterEncoding=utf-8</property> 
+        <!-- 用户名 -->
+        <property name="connection.username">root</property> 
+        <!-- 密码 -->
+        <property name="connection.password">123456</property>
+        <!-- 数据库方言 -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <!-- 是否显示SQL脚本（控制台显示） -->
+        <property name="show_sql">true</property>
+        <!-- 配置如何管理session连接上下文，thread -->
+        <property name="current_session_context_class">thread</property>
+        <mapping resource="com/gs/bean/Product.hbm.xml"/>
+        <mapping resource="com/gs/bean/User.hbm.xml" />
+        <mapping resource="com/gs/bean/UserDetail.hbm.xml" />
+        <mapping resource="com/gs/bean/Department.hbm.xml" />
+        <mapping resource="com/gs/bean/Employee.hbm.xml" />
+        <mapping resource="com/gs/bean/Student.hbm.xml" />
+        <mapping resource="com/gs/bean/Course.hbm.xml" />
+        <mapping resource="com/gs/bean/Score.hbm.xml" />
+        <mapping resource="com/gs/bean/Student1.hbm.xml" />
+        <mapping resource="com/gs/bean/Course1.hbm.xml" />
+        <mapping resource="com/gs/bean/Score1.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>

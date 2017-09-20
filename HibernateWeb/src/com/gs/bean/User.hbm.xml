@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.gs.bean">
+	<class name="User" table="t_user"> 
+		<id name="id" column="id"> 
+            <generator class="native"/> 
+        </id>
+        <property name="name" column="name"></property>
+        <property name="pwd" column="pwd"></property>
+
+        <one-to-one name="userDetail" class="com.gs.bean.UserDetail"  cascade="all"></one-to-one>
+         
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,694 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0038)http://lijiejava.iteye.com/blog/776587 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Hibernate中inverse="true"的理解 -  - ITeye技术网站</title>
+    <meta name="description" content="举例如下 Customer类：   public class Customer {   	private int id;   	private String name;  private Set orders = new HashSet();  •••  }   即Customer类具有一个set集合属性orders，其中Order是一个普通的类：   public class Order {    ...">
+    <meta name="keywords" content="Hibernate, Java, C, C++, C# Hibernate中inverse=&quot;true&quot;的理解">
+    <link rel="shortcut icon" href="http://lijiejava.iteye.com/images/favicon.ico" type="image/x-icon">
+    <link rel="search" type="application/opensearchdescription+xml" href="http://lijiejava.iteye.com/open_search.xml" title="ITeye">
+    <link href="http://lijiejava.iteye.com/rss" rel="alternate" title="" type="application/rss+xml">
+    <link href="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/blog.css" media="screen" rel="stylesheet" type="text/css">
+<link href="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/blue.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/hm.js"></script><script type="text/javascript" async="" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/ga.js"></script><script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/application.js" type="text/javascript"></script>    
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/shCoreCommon.js" type="text/javascript"></script>
+<script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/hotkey.js" type="text/javascript"></script>
+  <script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/code_favorites.js" type="text/javascript"></script>
+<script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/weiboshare.js" type="text/javascript"></script>
+  <script>
+		var _hmt = _hmt || [];
+		(function() {
+		 var hm = document.createElement("script");
+		 hm.src = "//hm.baidu.com/hm.js?e19a8b00cf63f716d774540875007664";
+		 var s = document.getElementsByTagName("script")[0]; 
+		 s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+    
+  <style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><style type="text/css">.dp-j .annotation { color: #646464; }.dp-j .number { color: #C00000; }</style><script src="http://lads.csdn.net/get_ads.php?ip=null&amp;zones=184%7C171%7C185%7C186&amp;iframe=false%7Cfalse%7Cfalse%7Cfalse&amp;prefix=revive-0-&amp;loc=http%3A%2F%2Flijiejava.iteye.com%2Fblog%2F776587&amp;function%20each(iterator,%20context)%20{%20%20%20%20var%20index%20=%200;%20%20%20%20try%20{%20%20%20%20%20%20this._each(function(value)%20{%20%20%20%20%20%20%20%20iterator.call(context,%20value,%20index++);%20%20%20%20%20%20});%20%20%20%20}%20catch%20(e)%20{%20%20%20%20%20%20if%20(e%20!=%20$break)%20throw%20e;%20%20%20%20}%20%20%20%20return%20this;%20%20}&amp;function%20eachSlice(number,%20iterator,%20context)%20{%20%20%20%20var%20index%20=%20-number,%20slices%20=%20[],%20array%20=%20this.toArray();%20%20%20%20if%20(number%20%3C%201)%20return%20array;%20%20%20%20while%20((index%20+=%20number)%20%3C%20array.length)%20%20%20%20%20%20slices.push(array.slice(index,%20index+number));%20%20%20%20return%20slices.collect(iterator,%20context);%20%20}&amp;function%20all(iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20result%20=%20true;%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20result%20=%20result%20&amp;&amp;%20!!iterator.call(context,%20value,%20index);%20%20%20%20%20%20if%20(!result)%20throw%20$break;%20%20%20%20});%20%20%20%20return%20result;%20%20}&amp;function%20any(iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20result%20=%20false;%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20if%20(result%20=%20!!iterator.call(context,%20value,%20index))%20%20%20%20%20%20%20%20throw%20$break;%20%20%20%20});%20%20%20%20return%20result;%20%20}&amp;function%20collect(iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20results%20=%20[];%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20results.push(iterator.call(context,%20value,%20index));%20%20%20%20});%20%20%20%20return%20results;%20%20}&amp;function%20detect(iterator,%20context)%20{%20%20%20%20var%20result;%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20if%20(iterator.call(context,%20value,%20index))%20{%20%20%20%20%20%20%20%20result%20=%20value;%20%20%20%20%20%20%20%20throw%20$break;%20%20%20%20%20%20}%20%20%20%20});%20%20%20%20return%20result;%20%20}&amp;function%20findAll(iterator,%20context)%20{%20%20%20%20var%20results%20=%20[];%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20if%20(iterator.call(context,%20value,%20index))%20%20%20%20%20%20%20%20results.push(value);%20%20%20%20});%20%20%20%20return%20results;%20%20}&amp;function%20findAll(iterator,%20context)%20{%20%20%20%20var%20results%20=%20[];%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20if%20(iterator.call(context,%20value,%20index))%20%20%20%20%20%20%20%20results.push(value);%20%20%20%20});%20%20%20%20return%20results;%20%20}&amp;function%20grep(filter,%20iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20results%20=%20[];%20%20%20%20if%20(Object.isString(filter))%20%20%20%20%20%20filter%20=%20new%20RegExp(RegExp.escape(filter));%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20if%20(filter.match(value))%20%20%20%20%20%20%20%20results.push(iterator.call(context,%20value,%20index));%20%20%20%20});%20%20%20%20return%20results;%20%20}&amp;function%20include(object)%20{%20%20%20%20if%20(Object.isFunction(this.indexOf))%20%20%20%20%20%20if%20(this.indexOf(object)%20!=%20-1)%20return%20true;%20%20%20%20var%20found%20=%20false;%20%20%20%20this.each(function(value)%20{%20%20%20%20%20%20if%20(value%20==%20object)%20{%20%20%20%20%20%20%20%20found%20=%20true;%20%20%20%20%20%20%20%20throw%20$break;%20%20%20%20%20%20}%20%20%20%20});%20%20%20%20return%20found;%20%20}&amp;function%20include(object)%20{%20%20%20%20if%20(Object.isFunction(this.indexOf))%20%20%20%20%20%20if%20(this.indexOf(object)%20!=%20-1)%20return%20true;%20%20%20%20var%20found%20=%20false;%20%20%20%20this.each(function(value)%20{%20%20%20%20%20%20if%20(value%20==%20object)%20{%20%20%20%20%20%20%20%20found%20=%20true;%20%20%20%20%20%20%20%20throw%20$break;%20%20%20%20%20%20}%20%20%20%20});%20%20%20%20return%20found;%20%20}&amp;function%20inGroupsOf(number,%20fillWith)%20{%20%20%20%20fillWith%20=%20Object.isUndefined(fillWith)%20?%20null%20:%20fillWith;%20%20%20%20return%20this.eachSlice(number,%20function(slice)%20{%20%20%20%20%20%20while(slice.length%20%3C%20number)%20slice.push(fillWith);%20%20%20%20%20%20return%20slice;%20%20%20%20});%20%20}&amp;function%20inject(memo,%20iterator,%20context)%20{%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20memo%20=%20iterator.call(context,%20memo,%20value,%20index);%20%20%20%20});%20%20%20%20return%20memo;%20%20}&amp;function%20invoke(method)%20{%20%20%20%20var%20args%20=%20$A(arguments).slice(1);%20%20%20%20return%20this.map(function(value)%20{%20%20%20%20%20%20return%20value[method].apply(value,%20args);%20%20%20%20});%20%20}&amp;function%20max(iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20result;%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20value%20=%20iterator.call(context,%20value,%20index);%20%20%20%20%20%20if%20(result%20==%20null%20||%20value%20%3E=%20result)%20%20%20%20%20%20%20%20result%20=%20value;%20%20%20%20});%20%20%20%20return%20result;%20%20}&amp;function%20min(iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20result;%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20value%20=%20iterator.call(context,%20value,%20index);%20%20%20%20%20%20if%20(result%20==%20null%20||%20value%20%3C%20result)%20%20%20%20%20%20%20%20result%20=%20value;%20%20%20%20});%20%20%20%20return%20result;%20%20}&amp;function%20partition(iterator,%20context)%20{%20%20%20%20iterator%20=%20iterator%20||%20Prototype.K;%20%20%20%20var%20trues%20=%20[],%20falses%20=%20[];%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20(iterator.call(context,%20value,%20index)%20?%20%20%20%20%20%20%20%20trues%20:%20falses).push(value);%20%20%20%20});%20%20%20%20return%20[trues,%20falses];%20%20}&amp;function%20pluck(property)%20{%20%20%20%20var%20results%20=%20[];%20%20%20%20this.each(function(value)%20{%20%20%20%20%20%20results.push(value[property]);%20%20%20%20});%20%20%20%20return%20results;%20%20}&amp;function%20reject(iterator,%20context)%20{%20%20%20%20var%20results%20=%20[];%20%20%20%20this.each(function(value,%20index)%20{%20%20%20%20%20%20if%20(!iterator.call(context,%20value,%20index))%20%20%20%20%20%20%20%20results.push(value);%20%20%20%20});%20%20%20%20return%20results;%20%20}&amp;function%20sortBy(iterator,%20context)%20{%20%20%20%20return%20this.map(function(value,%20index)%20{%20%20%20%20%20%20return%20{%20%20%20%20%20%20%20%20value:%20value,%20%20%20%20%20%20%20%20criteria:%20iterator.call(context,%20value,%20index)%20%20%20%20%20%20};%20%20%20%20}).sort(function(left,%20right)%20{%20%20%20%20%20%20var%20a%20=%20left.criteria,%20b%20=%20right.criteria;%20%20%20%20%20%20return%20a%20%3C%20b%20?%20-1%20:%20a%20%3E%20b%20?%201%20:%200;%20%20%20%20}).pluck(%27value%27);%20%20}&amp;function%20clone()%20{%20%20%20%20return%20slice.call(this,%200);%20%20}&amp;function%20zip()%20{%20%20%20%20var%20iterator%20=%20Prototype.K,%20args%20=%20$A(arguments);%20%20%20%20if%20(Object.isFunction(args.last()))%20%20%20%20%20%20iterator%20=%20args.pop();%20%20%20%20var%20collections%20=%20[this].concat(args).map($A);%20%20%20%20return%20this.map(function(value,%20index)%20{%20%20%20%20%20%20return%20iterator(collections.pluck(index));%20%20%20%20});%20%20}&amp;function%20size()%20{%20%20%20%20return%20this.length;%20%20}&amp;function%20inspect()%20{%20%20%20%20return%20%27[%27%20+%20this.map(Object.inspect).join(%27,%20%27)%20+%20%27]%27;%20%20}&amp;function%20reverse()%20{%20[native%20code]%20}&amp;function%20forEach()%20{%20[native%20code]%20}&amp;function%20clear()%20{%20%20%20%20this.length%20=%200;%20%20%20%20return%20this;%20%20}&amp;function%20first()%20{%20%20%20%20return%20this[0];%20%20}&amp;function%20last()%20{%20%20%20%20return%20this[this.length%20-%201];%20%20}&amp;function%20compact()%20{%20%20%20%20return%20this.select(function(value)%20{%20%20%20%20%20%20return%20value%20!=%20null;%20%20%20%20});%20%20}&amp;function%20flatten()%20{%20%20%20%20return%20this.inject([],%20function(array,%20value)%20{%20%20%20%20%20%20if%20(Object.isArray(value))%20%20%20%20%20%20%20%20return%20array.concat(value.flatten());%20%20%20%20%20%20array.push(value);%20%20%20%20%20%20return%20array;%20%20%20%20});%20%20}&amp;function%20without()%20{%20%20%20%20var%20values%20=%20slice.call(arguments,%200);%20%20%20%20return%20this.select(function(value)%20{%20%20%20%20%20%20return%20!values.include(value);%20%20%20%20});%20%20}&amp;function%20uniq(sorted)%20{%20%20%20%20return%20this.inject([],%20function(array,%20value,%20index)%20{%20%20%20%20%20%20if%20(0%20==%20index%20||%20(sorted%20?%20array.last()%20!=%20value%20:%20!array.include(value)))%20%20%20%20%20%20%20%20array.push(value);%20%20%20%20%20%20return%20array;%20%20%20%20});%20%20}&amp;function%20intersect(array)%20{%20%20%20%20return%20this.uniq().findAll(function(item)%20{%20%20%20%20%20%20return%20array.detect(function(value)%20{return%20item%20===%20value});%20%20%20%20});%20%20}&amp;function%20clone()%20{%20%20%20%20return%20slice.call(this,%200);%20%20}&amp;function%20toJSON()%20{%20%20%20%20var%20results%20=%20[];%20%20%20%20this.each(function(object)%20{%20%20%20%20%20%20var%20value%20=%20Object.toJSON(object);%20%20%20%20%20%20if%20(!Object.isUndefined(value))%20results.push(value);%20%20%20%20});%20%20%20%20return%20%27[%27%20+%20results.join(%27,%20%27)%20+%20%27]%27;%20%20}&amp;referer=https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3DyrXTXwEo-6gfDPDWtHJFHyp5ULasqSko0dkqZXDD6iKxYq6pUKrtbdR6eW0SRfCO%26wd%3D%26eqid%3D97ca600f0000bb4400000006583f814c" type="text/javascript"></script></head>
+  <body>
+    <div id="header">
+	      <div id="blog_site_nav">
+  <a href="http://www.iteye.com/" class="homepage">首页</a>
+  <a href="http://www.iteye.com/news">资讯</a>
+  <a href="http://www.iteye.com/magazines">精华</a>
+  <a href="http://www.iteye.com/forums">论坛</a>
+  <a href="http://www.iteye.com/ask">问答</a>
+  <a href="http://www.iteye.com/blogs">博客</a>
+  <a href="http://www.iteye.com/blogs/subjects">专栏</a>
+  <a href="http://www.iteye.com/groups">群组</a>
+  <a href="http://lijiejava.iteye.com/blog/776587#" onclick="return false;" id="msna"><u>更多</u> <small>▼</small></a>
+  <div class="quick_menu" style="display:none;">
+    <a target="_blank" href="http://job.iteye.com/iteye">知识库</a>
+    <a href="http://www.iteye.com/search">搜索</a>
+  </div>
+</div>
+
+	      <div id="user_nav">
+      <a href="http://lijiejava.iteye.com/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="http://lijiejava.iteye.com/login">登录</a>
+    <a href="http://lijiejava.iteye.com/signup" class="nobg">注册</a>
+  </div>
+
+	    
+    </div>
+
+    <div id="page">
+        <div id="branding" class="clearfix" style="overflow: hidden;background: none;padding:0 0 2px;">
+        	<ins data-revive-zoneid="184" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57" id="revive-0-0"></ins>
+        </div>
+      <div id="branding" class="clearfix">
+        <div id="blog_name">
+          <h1><a href="http://lijiejava.iteye.com/"></a></h1>
+        </div>
+        <div id="fd"></div>
+        <div id="blog_navbar">
+          <ul>
+            <li class="blog_navbar_for"><a href="http://lijiejava.iteye.com/"><strong>博客</strong></a></li>
+            <li><a href="http://lijiejava.iteye.com/weibo">微博</a></li>
+            <li><a href="http://lijiejava.iteye.com/album">相册</a></li>
+            <li><a href="http://lijiejava.iteye.com/link">收藏</a></li>
+            <li><a href="http://lijiejava.iteye.com/blog/guest_book">留言</a></li>
+            <li><a href="http://lijiejava.iteye.com/blog/profile">关于我</a></li>
+          </ul>
+    
+          <div class="search">
+            <form action="http://lijiejava.iteye.com/blog/search" method="get">
+              <input class="search_text" id="query" name="query" style="margin-left: 10px;width: 110px;" type="text" value="">
+              <input class="submit_search" type="submit" value="">
+            </form>
+          </div> 
+          <div id="fd"></div>         
+        </div>
+      </div>
+      
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+
+<div class="h-entry" style="display:none">
+  <a href="http://lijiejava.iteye.com/" class="p-author" target="_blank">lijiejava</a>
+</div>
+
+
+<div class="blog_main">
+  <div class="blog_title">
+    <h3>
+      <a href="http://lijiejava.iteye.com/blog/776587">Hibernate中inverse="true"的理解</a>
+      <em class="actions">      </em>
+    </h3>
+    <ul class="blog_categories"><strong>博客分类：</strong> <li><a href="http://lijiejava.iteye.com/category/180098">Hibernate</a></li> </ul>
+        <div class="news_tag"><a href="http://www.iteye.com/blogs/tag/Hibernate">Hibernate</a><a href="http://www.iteye.com/blogs/tag/Java">Java</a><a href="http://www.iteye.com/blogs/tag/C">C</a><a href="http://www.iteye.com/blogs/tag/C++">C++</a><a href="http://www.iteye.com/blogs/tag/C%23">C#</a>&nbsp;</div>
+    	  
+    	
+    	
+  		
+      </div>
+
+  <div id="blog_content" class="blog_content">
+    <strong>举例如下</strong>
+<br>
+<br>Customer类：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=public%20class%20Customer%20%7B%20%0A%09private%20int%20id%3B%20%0A%09private%20String%20name%3B%0Aprivate%20Set%20orders%20%3D%20new%20HashSet()%3B%0A%E2%80%A2%E2%80%A2%E2%80%A2%0A%7D%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;Customer&nbsp;{&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;</span><span class="keyword">int</span><span>&nbsp;id;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;String&nbsp;name;&nbsp;&nbsp;</span></span></li><li><span><span class="keyword">private</span><span>&nbsp;Set&nbsp;orders&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;HashSet();&nbsp;&nbsp;</span></span></li><li><span>•••&nbsp;&nbsp;</span></li><li><span>}&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="0" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">public class Customer { 
+	private int id; 
+	private String name;
+private Set orders = new HashSet();
+•••
+}
+</pre>
+<br>即Customer类具有一个set集合属性orders，其中Order是一个普通的类：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=public%20class%20Order%20%7B%20%0A%09private%20int%20id%3B%20%0A%09private%20String%20orderName%3B%0A%E2%80%A2%E2%80%A2%E2%80%A2%0A%7D%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;Order&nbsp;{&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;</span><span class="keyword">int</span><span>&nbsp;id;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;String&nbsp;orderName;&nbsp;&nbsp;</span></span></li><li><span>•••&nbsp;&nbsp;</span></li><li><span>}&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="1" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">public class Order { 
+	private int id; 
+	private String orderName;
+•••
+}
+</pre>
+<br>数据库中表的结构：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=t_customer%3A%20%20%E4%B8%A4%E4%B8%AA%E5%AD%97%E6%AE%B5%EF%BC%9Aid%20%20name%0At_order%3A%20%20%20%20%20%E4%B8%89%E4%B8%AA%E5%AD%97%E6%AE%B5%EF%BC%9Aid%20%20orderName%20%20customerid%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>t_customer:&nbsp;&nbsp;两个字段：id&nbsp;&nbsp;name&nbsp;&nbsp;</span></span></li><li><span>t_order:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;三个字段：id&nbsp;&nbsp;orderName&nbsp;&nbsp;customerid&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="2" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">t_customer:  两个字段：id  name
+t_order:     三个字段：id  orderName  customerid
+</pre>
+<br> 
+<br>Customer类的映射文件：Customer.hbm.xml&nbsp; (Order类的映射文件忽略)
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=%3Chibernate-mapping%3E%0A%09%3Cclass%20name%3D%22test.Customer%22%20table%3D%22t_customer%22%20lazy%3D%22false%22%3E%20%20%0A%09%09%3Cid%20name%3D%22id%22%3E%20%0A%09%09%20%20%20%3Cgenerator%20class%3D%22native%22%2F%3E%0A%09%09%3C%2Fid%3E%20%20%0A%09%09%3Cproperty%20name%3D%22name%22%2F%3E%20%20%0A%09%09%3Cset%20name%3D%22orders%22%20%20cascade%3D%22save-update%22%20%20lazy%3D%22false%22%3E%0A%09%09%20%20%20%3Ckey%20column%3D%22customerid%22%2F%3E%0A%09%09%20%20%20%3Cone-to-many%20class%3D%22test.Order%22%2F%3E%0A%09%09%3C%2Fset%3E%0A%20%20%20%20%3C%2Fclass%3E%20%0A%3C%2Fhibernate-mapping%3E%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>&lt;hibernate-mapping&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="keyword">class</span><span>&nbsp;name=</span><span class="string">"test.Customer"</span><span>&nbsp;table=</span><span class="string">"t_customer"</span><span>&nbsp;lazy=</span><span class="string">"false"</span><span>&gt;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;id&nbsp;name=<span class="string">"id"</span><span>&gt;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;generator&nbsp;<span class="keyword">class</span><span>=</span><span class="string">"native"</span><span>/&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/id&gt;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;property&nbsp;name=<span class="string">"name"</span><span>/&gt;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;set&nbsp;name=<span class="string">"orders"</span><span>&nbsp;&nbsp;cascade=</span><span class="string">"save-update"</span><span>&nbsp;&nbsp;lazy=</span><span class="string">"false"</span><span>&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;key&nbsp;column=<span class="string">"customerid"</span><span>/&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;one-to-many&nbsp;<span class="keyword">class</span><span>=</span><span class="string">"test.Order"</span><span>/&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/set&gt;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="keyword">class</span><span>&gt;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&lt;/hibernate-mapping&gt;&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="3" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">&lt;hibernate-mapping&gt;
+	&lt;class name="test.Customer" table="t_customer" lazy="false"&gt;  
+		&lt;id name="id"&gt; 
+		   &lt;generator class="native"/&gt;
+		&lt;/id&gt;  
+		&lt;property name="name"/&gt;  
+		&lt;set name="orders"  cascade="save-update"  lazy="false"&gt;
+		   &lt;key column="customerid"/&gt;
+		   &lt;one-to-many class="test.Order"/&gt;
+		&lt;/set&gt;
+    &lt;/class&gt; 
+&lt;/hibernate-mapping&gt;
+</pre>
+<br>执行如下代码：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=Set%20orders%20%3D%20new%20HashSet()%3B%20%0A%09%09%09%0AOrder%20o1%20%3D%20new%20Order()%3B%0Ao1.setOrderName(%22o1%22)%3B%20%0AOrder%20o2%20%3D%20new%20Order()%3B%0Ao2.setOrderName(%22o2%22)%3B%09%20%0Aorders.add(o1)%3B%0Aorders.add(o2)%3B%20%20%09%0A%09%09%09%0ACustomer%20c%20%3D%20new%20Customer()%3B%0Ac.setName(%22aaa%22)%3B%0Ac.setOrders(orders)%3B%20%20%0A%0Asession.save(c)%3B%20%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>Set&nbsp;orders&nbsp;=&nbsp;</span><span class="keyword">new</span><span>&nbsp;HashSet();&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>Order&nbsp;o1&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Order();&nbsp;&nbsp;</span></span></li><li><span>o1.setOrderName(<span class="string">"o1"</span><span>);&nbsp;&nbsp;&nbsp;</span></span></li><li><span>Order&nbsp;o2&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Order();&nbsp;&nbsp;</span></span></li><li><span>o2.setOrderName(<span class="string">"o2"</span><span>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>orders.add(o1);&nbsp;&nbsp;</span></li><li><span>orders.add(o2);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>Customer&nbsp;c&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Customer();&nbsp;&nbsp;</span></span></li><li><span>c.setName(<span class="string">"aaa"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>c.setOrders(orders);&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;</span></li><li><span>session.save(c);&nbsp;&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="4" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">Set orders = new HashSet(); 
+			
+Order o1 = new Order();
+o1.setOrderName("o1"); 
+Order o2 = new Order();
+o2.setOrderName("o2");	 
+orders.add(o1);
+orders.add(o2);  	
+			
+Customer c = new Customer();
+c.setName("aaa");
+c.setOrders(orders);  
+
+session.save(c); 
+</pre>
+<br>此时Hibernate发出的sql语句如下：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=Hibernate%3A%20insert%20into%20t_customer%20(name)%20values%20(%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName)%20values%20(%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName)%20values%20(%3F)%0AHibernate%3A%20update%20t_order%20set%20customerid%3D%3F%20where%20id%3D%3F%0AHibernate%3A%20update%20t_order%20set%20customerid%3D%3F%20where%20id%3D%3F%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_customer&nbsp;(name)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></li><li><span>Hibernate:&nbsp;update&nbsp;t_order&nbsp;set&nbsp;customerid=?&nbsp;where&nbsp;id=?&nbsp;&nbsp;</span></li><li><span>Hibernate:&nbsp;update&nbsp;t_order&nbsp;set&nbsp;customerid=?&nbsp;where&nbsp;id=?&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="5" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">Hibernate: insert into t_customer (name) values (?)
+Hibernate: insert into t_order (orderName) values (?)
+Hibernate: insert into t_order (orderName) values (?)
+Hibernate: update t_order set customerid=? where id=?
+Hibernate: update t_order set customerid=? where id=?
+</pre>
+<br>查看数据库：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=t_customer%20%3A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20t_order%3A%20%20%20%0A%0Aid%20%20%20%7C%20%20name%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%20%20%20%7C%20%20%20orderName%20%20%20%7C%20%20%20customerid%20%0A1%20%20%20%20%20%20%20aaa%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20o1%20%20%20%20%20%20%20%20%20%20%20%20%20%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%202%20%20%20%20%20%20%20%20%20%20%20o2%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>t_customer&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t_order:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;orderName&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;customerid&nbsp;&nbsp;&nbsp;</span></li><li><span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">2</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;</span></span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="6" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">t_customer :                    t_order:   
+
+id   |  name                   id   |   orderName   |   customerid 
+1       aaa                    1           o1              1
+                               2           o2              1 
+</pre>
+<br>保存Customer对象时，首先发出insert into t_customer (name) values (?)语句将c同步到数据库，由于在&lt;set&gt;映射中设置cascade="save-update"，所以会同时保存orders集合中的Order类型的o1,o2对象（如果没有这个设置，即cascade="save-update"），那么Hibenrate不会自动保存orders集合中的对象，那么在更新时将会抛出如下异常：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=Hibernate%3A%20insert%20into%20t_customer%20(name)%20values%20(%3F)%0AHibernate%3A%20update%20t_order%20set%20customerid%3D%3F%20where%20id%3D%3F%0Aorg.hibernate.TransientObjectException%3A%20test.Order%0A%E2%80%A2%E2%80%A2%E2%80%A2%E2%80%A2%E2%80%A2%E2%80%A2%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_customer&nbsp;(name)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></span></li><li><span>Hibernate:&nbsp;update&nbsp;t_order&nbsp;set&nbsp;customerid=?&nbsp;where&nbsp;id=?&nbsp;&nbsp;</span></li><li><span>org.hibernate.TransientObjectException:&nbsp;test.Order&nbsp;&nbsp;</span></li><li><span>••••••&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="7" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">Hibernate: insert into t_customer (name) values (?)
+Hibernate: update t_order set customerid=? where id=?
+org.hibernate.TransientObjectException: test.Order
+••••••
+</pre>
+<br>抛出这一异常的原因是：&lt;set&gt;映射默认"inverse=fasle"即由Customer对象作为主控方，那么它要负责关联的维护工作，在这里也就是负责更新t_order表中的customerid字段的值，但由于未设置cascade="save-update"，所以orders集合中的对象不会在保存customer时自动保存，因此会抛出异常(如果未设置，需要手动保存)。
+<br> 现在设置cascade="save-update"，同时设置inverse="true",即：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=%E2%80%A2%E2%80%A2%E2%80%A2%0A%3Cset%20name%3D%22orders%22%20cascade%3D%22save-update%22%20inverse%3D%22true%22%20lazy%3D%22false%22%3E%0A%09%3Ckey%20column%3D%22customerid%22%2F%3E%0A%09%3Cone-to-many%20class%3D%22test.Order%22%2F%3E%0A%3C%2Fset%3E%20%20%0A%E2%80%A2%E2%80%A2%E2%80%A2%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>•••&nbsp;&nbsp;</span></span></li><li><span>&lt;set&nbsp;name=<span class="string">"orders"</span><span>&nbsp;cascade=</span><span class="string">"save-update"</span><span>&nbsp;inverse=</span><span class="string">"true"</span><span>&nbsp;lazy=</span><span class="string">"false"</span><span>&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;key&nbsp;column=<span class="string">"customerid"</span><span>/&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;one-to-many&nbsp;<span class="keyword">class</span><span>=</span><span class="string">"test.Order"</span><span>/&gt;&nbsp;&nbsp;</span></span></li><li><span>&lt;/set&gt;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>•••&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="8" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">•••
+&lt;set name="orders" cascade="save-update" inverse="true" lazy="false"&gt;
+	&lt;key column="customerid"/&gt;
+	&lt;one-to-many class="test.Order"/&gt;
+&lt;/set&gt;  
+•••
+</pre>
+<br>同样执行上述代码，发出如下语句：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=Hibernate%3A%20insert%20into%20t_customer%20(name)%20values%20(%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName)%20values%20(%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName)%20values%20(%3F)%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_customer&nbsp;(name)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="9" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">Hibernate: insert into t_customer (name) values (?)
+Hibernate: insert into t_order (orderName) values (?)
+Hibernate: insert into t_order (orderName) values (?)
+</pre>
+<br> 相比上一次执行，少了两条update语句，查看数据库：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=t_customer%20%3A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20t_order%3A%20%20%20%0A%0Aid%20%20%20%7C%20%20name%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%20%20%20%7C%20%20%20orderName%20%20%20%7C%20%20%20customerid%20%0A1%20%20%20%20%20%20%20aaa%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20o1%20%20%20%20%20%20%20%20%20%20%20%20%20%20NULL%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%202%20%20%20%20%20%20%20%20%20%20%20o2%20%20%20%20%20%20%20%20%20%20%20%20%20%20NULL%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>t_customer&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t_order:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;orderName&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;customerid&nbsp;&nbsp;&nbsp;</span></li><li><span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">2</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL&nbsp;&nbsp;</span></span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="10" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">t_customer :                    t_order:   
+
+id   |  name                   id   |   orderName   |   customerid 
+1       aaa                    1           o1              NULL
+                               2           o2              NULL
+</pre>
+<br>发现t_order表中customerid的值为NULL,这是由于设置了inverse="true"，它意味着
+<br>Customer不再作为主控方，而将关联关系的维护工作交给关联对象Orders来完成。在保存Customer时，Customer不在关心Orders的customerid属性，必须由Order自己去维护，即设置order.setCustomer(customer);
+<br>
+<br>如果需要通过Order来维护关联关系，那么这个关联关系转换成双向关联。
+<br>修改Order类代码：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=public%20class%20Order%20%7B%20%0A%09private%20int%20id%3B%20%0A%09private%20String%20orderName%3B%20%20%0A%09private%20Customer%20customer%3B%0A%E2%80%A2%E2%80%A2%E2%80%A2%0A%7D%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span class="keyword">public</span><span>&nbsp;</span><span class="keyword">class</span><span>&nbsp;Order&nbsp;{&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;</span><span class="keyword">int</span><span>&nbsp;id;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;String&nbsp;orderName;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">private</span><span>&nbsp;Customer&nbsp;customer;&nbsp;&nbsp;</span></span></li><li><span>•••&nbsp;&nbsp;</span></li><li><span>}&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="11" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">public class Order { 
+	private int id; 
+	private String orderName;  
+	private Customer customer;
+•••
+}
+</pre>
+<br>Order.hbm.xml：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=%3Chibernate-mapping%3E%0A%09%3Cclass%20name%3D%22test.Order%22%20table%3D%22t_order%22%3E%20%20%0A%09%09%3Cid%20name%3D%22id%22%3E%20%0A%09%09%20%20%20%3Cgenerator%20class%3D%22native%22%2F%3E%0A%09%09%3C%2Fid%3E%20%20%0A%09%09%3Cproperty%20name%3D%22orderName%22%2F%3E%20%20%20%0A%09%09%3Cmany-to-one%20name%3D%22customer%22%20column%3D%22customerid%22%2F%3E%20%0A%20%20%20%20%3C%2Fclass%3E%20%0A%3C%2Fhibernate-mapping%3E%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>&lt;hibernate-mapping&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="keyword">class</span><span>&nbsp;name=</span><span class="string">"test.Order"</span><span>&nbsp;table=</span><span class="string">"t_order"</span><span>&gt;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;id&nbsp;name=<span class="string">"id"</span><span>&gt;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;generator&nbsp;<span class="keyword">class</span><span>=</span><span class="string">"native"</span><span>/&gt;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/id&gt;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;property&nbsp;name=<span class="string">"orderName"</span><span>/&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;many-to-one&nbsp;name=<span class="string">"customer"</span><span>&nbsp;column=</span><span class="string">"customerid"</span><span>/&gt;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="keyword">class</span><span>&gt;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&lt;/hibernate-mapping&gt;&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="12" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">&lt;hibernate-mapping&gt;
+	&lt;class name="test.Order" table="t_order"&gt;  
+		&lt;id name="id"&gt; 
+		   &lt;generator class="native"/&gt;
+		&lt;/id&gt;  
+		&lt;property name="orderName"/&gt;   
+		&lt;many-to-one name="customer" column="customerid"/&gt; 
+    &lt;/class&gt; 
+&lt;/hibernate-mapping&gt;
+</pre>
+<br>此时数据库中表的结构不会变化。
+<br>
+<br>再次执行上述代码，发出如下sql语句：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=Hibernate%3A%20insert%20into%20t_customer%20(name)%20values%20(%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName%2C%20customerid)%20values%20(%3F%2C%20%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName%2C%20customerid)%20values%20(%3F%2C%20%3F)%20" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_customer&nbsp;(name)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName,&nbsp;customerid)&nbsp;values&nbsp;(?,&nbsp;?)&nbsp;&nbsp;</span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName,&nbsp;customerid)&nbsp;values&nbsp;(?,&nbsp;?)&nbsp;&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="13" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">Hibernate: insert into t_customer (name) values (?)
+Hibernate: insert into t_order (orderName, customerid) values (?, ?)
+Hibernate: insert into t_order (orderName, customerid) values (?, ?) </pre>
+<br>发现在保存Order对象时为customerid字段赋值，因为Order对象中拥有Customer属性，对应customerid字段，查看数据库表：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=t_customer%20%3A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20t_order%3A%20%20%20%0A%0Aid%20%20%20%7C%20%20name%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%20%20%20%7C%20%20%20orderName%20%20%20%7C%20%20%20customerid%20%0A1%20%20%20%20%20%20%20aaa%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20o1%20%20%20%20%20%20%20%20%20%20%20%20%20%20NULL%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%202%20%20%20%20%20%20%20%20%20%20%20o2%20%20%20%20%20%20%20%20%20%20%20%20%20%20NULL%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>t_customer&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t_order:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;orderName&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;customerid&nbsp;&nbsp;&nbsp;</span></li><li><span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">2</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NULL&nbsp;&nbsp;</span></span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="14" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">t_customer :                    t_order:   
+
+id   |  name                   id   |   orderName   |   customerid 
+1       aaa                    1           o1              NULL
+                               2           o2              NULL
+</pre>
+<br>发现customerid的值仍为NULL,因为在上述代码中并未设置Order对象的Customer属性值，由于设置了inverse="true"，所以Order对象需要维护关联关系，所以必须进行设置，即
+<br>order.setCustomer(customer);
+<br>
+<br>修改上述代码为：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=%E2%80%A2%E2%80%A2%E2%80%A2%0ACustomer%20c%20%3D%20new%20Customer()%3B%0A%09%09%09%0ASet%20orders%20%3D%20new%20HashSet()%3B%20%0AOrder%20o1%20%3D%20new%20Order()%3B%0Ao1.setOrderName(%22o1%22)%3B%20%0Ao1.setCustomer(c)%3B%0AOrder%20o2%20%3D%20new%20Order()%3B%0Ao2.setOrderName(%22o2%22)%3B%0Ao2.setCustomer(c)%3B%0Aorders.add(o1)%3B%0Aorders.add(o2)%3B%20%20%09%0A%09%09%09%0Ac.setName(%22aaa%22)%3B%0Ac.setOrders(orders)%3B%20%0A%09%09%09%0Asession.save(c)%3B%20%0A%E2%80%A2%E2%80%A2%E2%80%A2%20%0A%20" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>•••&nbsp;&nbsp;</span></span></li><li><span>Customer&nbsp;c&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Customer();&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>Set&nbsp;orders&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;HashSet();&nbsp;&nbsp;&nbsp;</span></span></li><li><span>Order&nbsp;o1&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Order();&nbsp;&nbsp;</span></span></li><li><span>o1.setOrderName(<span class="string">"o1"</span><span>);&nbsp;&nbsp;&nbsp;</span></span></li><li><span>o1.setCustomer(c);&nbsp;&nbsp;</span></li><li><span>Order&nbsp;o2&nbsp;=&nbsp;<span class="keyword">new</span><span>&nbsp;Order();&nbsp;&nbsp;</span></span></li><li><span>o2.setOrderName(<span class="string">"o2"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>o2.setCustomer(c);&nbsp;&nbsp;</span></li><li><span>orders.add(o1);&nbsp;&nbsp;</span></li><li><span>orders.add(o2);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>c.setName(<span class="string">"aaa"</span><span>);&nbsp;&nbsp;</span></span></li><li><span>c.setOrders(orders);&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li><li><span>session.save(c);&nbsp;&nbsp;&nbsp;</span></li><li><span>•••&nbsp;&nbsp;&nbsp;</span></li><li><span>&nbsp;&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="15" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">•••
+Customer c = new Customer();
+			
+Set orders = new HashSet(); 
+Order o1 = new Order();
+o1.setOrderName("o1"); 
+o1.setCustomer(c);
+Order o2 = new Order();
+o2.setOrderName("o2");
+o2.setCustomer(c);
+orders.add(o1);
+orders.add(o2);  	
+			
+c.setName("aaa");
+c.setOrders(orders); 
+			
+session.save(c); 
+••• 
+ </pre>
+<br>执行上述代码，发出如下语句：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=Hibernate%3A%20insert%20into%20t_customer%20(name)%20values%20(%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName%2C%20customerid)%20values%20(%3F%2C%20%3F)%0AHibernate%3A%20insert%20into%20t_order%20(orderName%2C%20customerid)%20values%20(%3F%2C%20%3F)%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_customer&nbsp;(name)&nbsp;values&nbsp;(?)&nbsp;&nbsp;</span></span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName,&nbsp;customerid)&nbsp;values&nbsp;(?,&nbsp;?)&nbsp;&nbsp;</span></li><li><span>Hibernate:&nbsp;insert&nbsp;into&nbsp;t_order&nbsp;(orderName,&nbsp;customerid)&nbsp;values&nbsp;(?,&nbsp;?)&nbsp;&nbsp;</span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="16" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">Hibernate: insert into t_customer (name) values (?)
+Hibernate: insert into t_order (orderName, customerid) values (?, ?)
+Hibernate: insert into t_order (orderName, customerid) values (?, ?)
+</pre>
+<br>查看数据库：
+<br><div class="dp-highlighter" id=""><div class="bar"><div class="tools">Java代码 <embed wmode="transparent" src="/javascripts/syntaxhighlighter/clipboard_new.swf" width="14" height="15" flashvars="clipboard=t_customer%20%3A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20t_order%3A%20%20%20%0A%0Aid%20%20%20%7C%20%20name%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20id%20%20%20%7C%20%20%20orderName%20%20%20%7C%20%20%20customerid%20%0A1%20%20%20%20%20%20%20aaa%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%201%20%20%20%20%20%20%20%20%20%20%20o1%20%20%20%20%20%20%20%20%20%20%20%20%20%201%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%202%20%20%20%20%20%20%20%20%20%20%20o2%20%20%20%20%20%20%20%20%20%20%20%20%20%201%0A" quality="high" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer">&nbsp;<a href="javascript:void()" title="收藏这段代码" onclick="code_favorites_do_favorite(this);return false;"><img class="star" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_star.png" alt="收藏代码"><img class="spinner" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/spinner.gif" style="display:none"></a></div></div><ol start="1" class="dp-j"><li><span><span>t_customer&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t_order:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;</span></li><li><span>id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;orderName&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;customerid&nbsp;&nbsp;&nbsp;</span></li><li><span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aaa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="number">2</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;o2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="number">1</span><span>&nbsp;&nbsp;</span></span></li></ol></div><pre name="code" class="java" codeable_id="" codeable_type="BlogComment" source_url="http://lijiejava.iteye.com/blog/776587#" pre_index="17" title="Hibernate中inverse=&quot;true&quot;的理解" style="display: none;">t_customer :                    t_order:   
+
+id   |  name                   id   |   orderName   |   customerid 
+1       aaa                    1           o1              1
+                               2           o2              1
+</pre>
+<br>发现已经设置了customerid的值。
+<br>
+<br>在一对多关联中，在多的一方设置inverse="true",有助于性能的改善。通过上述分析可以发现少了update语句。
+<br>
+  </div>
+
+  
+
+  
+  <ins data-revive-zoneid="171" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57" id="revive-0-1"></ins>
+  
+
+  <div id="bottoms" class="clearfix">
+    
+    <div id="share_weibo">分享到：
+      <a data-type="sina" href="javascript:;" title="分享到新浪微博"><img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/sina.jpg"></a>
+      <a data-type="qq" href="javascript:;" title="分享到腾讯微博"><img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/tec.jpg"></a>
+    </div>
+  </div>
+
+  <div class="blog_nav">
+    <div class="pre_next">
+      <a href="http://lijiejava.iteye.com/blog/777865" class="next" title="Spring的LocalSessionFactoryBean">Spring的LocalSessionFactoryBean</a>
+      |
+      <a href="http://lijiejava.iteye.com/blog/770328" class="pre" title="Struts2集成Spring的讨论">Struts2集成Spring的讨论</a>
+    </div>
+  </div>
+  <div class="blog_bottom">
+    <ul>
+      <li>2010-10-02 08:57</li>
+      <li>浏览 25368</li>
+      <li><a href="http://lijiejava.iteye.com/blog/776587#comments">评论(7)</a></li>
+      
+      
+      <li>分类:<a href="http://www.iteye.com/blogs/category/architecture">企业架构</a></li>      
+      <li class="last"><a href="http://www.iteye.com/wiki/blog/776587" target="_blank" class="more">相关推荐</a></li>
+    </ul>    
+  </div>
+  
+		    
+		
+<div class="boutique-curr-box blog_comment">
+	  <div class="boutique-curr clearfix">
+	    <h5 class="h3titles">参考知识库</h5>
+	    
+	    <dl class="dlnewlist">
+	    
+          <dd><a target="_blank" href="http://lib.csdn.net/base/javaee"><img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/1456818035722_722.jpg" width="58" height="58" alt=""></a></dd>
+          <dt>
+              <a target="_blank" href="http://lib.csdn.net/base/javaee" classs="title">Java EE知识库</a>
+              <span>
+                 <em>11632</em>&nbsp;&nbsp;关注 <i>|</i> <em>797</em>&nbsp;&nbsp;收录                  
+              </span>
+          </dt>
+      
+	    </dl>
+	    
+	  </div>
+</div>
+ 		
+      
+  <div class="blog_comment">
+    <h5>评论</h5>
+    <a id="comments" name="comments"></a>
+    <div id="bc2372480">
+  <div class="comment_title">
+    7 楼
+    <a href="http://u010214546.iteye.com/" target="_blank" title="u010214546">u010214546</a>
+    2015-05-22&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content"><div class="quote_title">握着橄榄枝的人 写道</div><div class="quote_div">在一对多关联中，在多的一方设置inverse="true",有助于性能的改善。通过上述分析可以发现少了update语句。 这句话说错了吧，是在一对多的关联中，在1的一方设置inverse="true"，让多的一方来维护关系，我看你也是这么做的啊，你不是在1的一方设置这个inverse="true"，然后少了更新语句吗。</div><br>我也同意你的说法，我觉得是博主笔误了。</div>
+</div>
+
+<div id="bc2337927">
+  <div class="comment_title">
+    6 楼
+    <a href="http://1036763997-qq-com.iteye.com/" target="_blank" title="握着橄榄枝的人">握着橄榄枝的人</a>
+    2014-01-16&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content">在一对多关联中，在多的一方设置inverse="true",有助于性能的改善。通过上述分析可以发现少了update语句。 这句话说错了吧，是在一对多的关联中，在1的一方设置inverse="true"，让多的一方来维护关系，我看你也是这么做的啊，你不是在1的一方设置这个inverse="true"，然后少了更新语句吗。</div>
+</div>
+
+<div id="bc2322232">
+  <div class="comment_title">
+    5 楼
+    <a href="http://1262780903.iteye.com/" target="_blank" title="幕风落雨">幕风落雨</a>
+    2013-08-13&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content">很全面详细<img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_idea.gif"> </div>
+</div>
+
+<div id="bc2315727">
+  <div class="comment_title">
+    4 楼
+    <a href="http://yangyingcan2012.iteye.com/" target="_blank" title="yangyingcan2012">yangyingcan2012</a>
+    2013-06-19&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content"><img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_idea.gif"> 讲得比较好，学习了</div>
+</div>
+
+<div id="bc2270845">
+  <div class="comment_title">
+    3 楼
+    <a href="http://zhenyong.iteye.com/" target="_blank" title="feipigzi">feipigzi</a>
+    2012-07-19&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content"><div class="quote_title">w156445045 写道</div><div class="quote_div">目前SSH项目中都是这么做的，问下是不是实际的项目中都是这种多对多的关联关系呢？<br>我用myeclipse的逆向生成的代码也是这种多对多的，<br>&lt;set name="enterprisePowers" inverse="true" cascade="all"&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;key&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;column name="eno" precision="18" scale="0" not-null="true" /&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/key&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;one-to-many class="com.yaxing.pojo.EnterprisePower" /&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/set&gt;<br>cascade 这个是自己加的~</div><br>以上说的是一对多的关系</div>
+</div>
+
+<div id="bc2237975">
+  <div class="comment_title">
+    2 楼
+    <a href="http://w156445045.iteye.com/" target="_blank" title="w156445045">w156445045</a>
+    2011-12-30&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content">上面写错了，是双向关系，是不是都建立的这种双向的关系呢？
+<br>
+<br>不是说多对一才是最适合关系数据库的外键的吗？</div>
+</div>
+
+<div id="bc2237974">
+  <div class="comment_title">
+    1 楼
+    <a href="http://w156445045.iteye.com/" target="_blank" title="w156445045">w156445045</a>
+    2011-12-30&nbsp;&nbsp;
+    
+    
+  </div>
+  <div class="comment_content">目前SSH项目中都是这么做的，问下是不是实际的项目中都是这种多对多的关联关系呢？
+<br>我用myeclipse的逆向生成的代码也是这种多对多的，
+<br>&lt;set name="enterprisePowers" inverse="true" cascade="all"&gt;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;key&gt;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;column name="eno" precision="18" scale="0" not-null="true" /&gt;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/key&gt;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;one-to-many class="com.yaxing.pojo.EnterprisePower" /&gt;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/set&gt;
+<br>cascade 这个是自己加的~</div>
+</div>
+
+
+    
+    
+  </div>
+
+  <div class="blog_comment">
+    <h5>发表评论</h5>
+            <p style="text-align:center; margin-top:30px;margin-bottom:0px;"><a href="http://lijiejava.iteye.com/login" style="background-color:white;"> <img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/login_icon.png" style="vertical-align:middle; margin-right: 10px;"></a><a href="http://lijiejava.iteye.com/login">  您还没有登录,请您登录后再发表评论 </a></p>
+      </div>
+</div>
+
+
+<script type="text/javascript">
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+
+  $$('#main .blog_content pre[name=code]').each(function(pre, index){ // blog content
+    var post_id = 776587;
+    var location = window.location;
+    source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+    pre.writeAttribute('codeable_id', post_id);
+    pre.writeAttribute('codeable_type', "Blog");
+    pre.writeAttribute('source_url', source_url);
+    pre.writeAttribute('pre_index', index);
+    pre.writeAttribute('title', 'Hibernate中inverse="true"的理解');
+  });
+
+  fix_image_size($$('div.blog_content img'), 700);
+
+  function processComment() {
+    $$('#main .blog_comment > div').each(function(comment){// comment
+      var post_id = comment.id.substr(2);
+      $$("#"+comment.id+" pre[name=code]").each(function(pre, index){
+        var location = window.location;
+        source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+        source_url += "#" + comment.id;
+        pre.writeAttribute('codeable_id', post_id);
+        pre.writeAttribute('codeable_type', "BlogComment");
+        pre.writeAttribute('source_url', source_url);
+        pre.writeAttribute('pre_index', index);
+        pre.writeAttribute('title', 'Hibernate中inverse="true"的理解');
+      });
+    });
+  }
+
+  function quote_comment(id) {
+    new Ajax.Request('/editor/quote', {
+      parameters: {'id':id, 'type':'BlogComment'},
+      onSuccess:function(response){editor.bbcode_editor.textarea.insertAfterSelection(response.responseText);
+        Element.scrollTo(editor.bbcode_editor.textarea.element);}
+    });
+  }
+
+  code_favorites_init();
+  processComment();
+  new WeiboShare({share_buttons: $('share_weibo'), img_scope: $('blog_content')});
+</script>
+
+
+
+
+        </div>
+
+        <div id="local">
+          <div class="local_top"></div>
+          <div id="blog_owner">
+  <div id="blog_owner_logo"><a href="http://lijiejava.iteye.com/"><img alt="lijiejava的博客" class="logo" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/d751c839-4ba7-3707-8322-a29da7182417.jpg" title="lijiejava的博客: " width=""></a></div>
+  <div id="blog_owner_name">lijiejava</div>
+</div>
+
+          <div id="blog_actions">
+            <ul>
+              <li>浏览: 127969 次</li>
+              <li>性别: <img alt="Icon_minigender_1" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/icon_minigender_1.gif" title="男"></li>
+              <li>来自: 南通</li>
+              <li><img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/offline.gif"></li>
+              
+            </ul>
+          </div>
+          <div id="user_visits" class="clearfix">
+            <h5>最近访客 <span style="font-weight:normal;font-size:12px;padding-left:30px;"><a href="http://lijiejava.iteye.com/blog/user_visits">更多访客&gt;&gt;</a></span></h5>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://hsprs.iteye.com/" target="_blank"><img alt="Hsprs的博客" class="logo" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/user-logo-thumb.gif" title="Hsprs的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://hsprs.iteye.com/" target="_blank" title="Hsprs">Hsprs</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://649854821.iteye.com/" target="_blank"><img alt="王晨曦的博客" class="logo" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/user-logo-thumb.gif" title="王晨曦的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://649854821.iteye.com/" target="_blank" title="王晨曦">王晨曦</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://1592578957.iteye.com/" target="_blank"><img alt="小D射手的博客" class="logo" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/user-logo-thumb.gif" title="小D射手的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://1592578957.iteye.com/" target="_blank" title="小D射手">小D射手</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://dahdirag.iteye.com/" target="_blank"><img alt="dahdirag的博客" class="logo" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/user-logo-thumb.gif" title="dahdirag的博客: " width="48px"></a></div>
+                <div class="left"><a href="http://dahdirag.iteye.com/" target="_blank" title="dahdirag">dahdirag</a></div>
+              </div>
+            
+          </div>
+
+          
+
+                      <div id="blog_menu">
+              <h5>文章分类</h5>
+              <ul>
+                <li><a href="http://lijiejava.iteye.com/">全部博客 (50)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180097">Struts (3)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180098">Hibernate (7)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180099">Spring (8)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180100">jsp/servlet (2)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180101">java基础 (2)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180103">javaEE (3)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180104">开发管理工具 (2)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180106">SSH (4)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180107">Flex (2)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/180108">设计模式 (1)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/210810">组件 (3)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/212034">常用文件 (1)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/262118">数据库 (5)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/263663">MyException (0)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/284626">工作流 (3)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/316123">移动互联网 (5)</a></li>
+                
+                  <li><a href="http://lijiejava.iteye.com/category/346999">RabbitMQ (3)</a></li>
+                
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>社区版块</h5>
+              <ul>
+                <li><a href="http://lijiejava.iteye.com/blog/news">我的资讯</a> (0)</li>
+                <li>
+                  <a href="http://lijiejava.iteye.com/blog/post">我的论坛</a> (32)
+                </li>
+                <li><a href="http://lijiejava.iteye.com/blog/answered_problems">我的问答</a> (4)</li>
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>存档分类</h5>
+              <ul>
+                
+                  <li><a href="http://lijiejava.iteye.com/blog/monthblog/2016-07">2016-07</a> (5)</li>
+                
+                  <li><a href="http://lijiejava.iteye.com/blog/monthblog/2015-09">2015-09</a> (3)</li>
+                
+                  <li><a href="http://lijiejava.iteye.com/blog/monthblog/2015-03">2015-03</a> (1)</li>
+                
+                <li><a href="http://lijiejava.iteye.com/blog/monthblog_more">更多存档...</a></li>
+              </ul>
+            </div>
+            
+            
+
+            <div id="guest_books">
+              <h5>最新评论</h5>
+              <ul>
+                
+                <li>
+                  <a href="http://backtracker.iteye.com/" target="_blank" title="backtracker">backtracker</a>： 
+                  niubility<br>
+                  <a href="http://lijiejava.iteye.com/blog/2123511#bc2383630">MongoDB基础</a>
+                </li>
+                
+                <li>
+                  <a href="http://lijiejava.iteye.com/" target="_blank" title="lijiejava">lijiejava</a>： 
+                  
+
+&lt;?xml version="1.0&amp;qu ...<br>
+                  <a href="http://lijiejava.iteye.com/blog/2123511#bc2375062">MongoDB基础</a>
+                </li>
+                
+                <li>
+                  <a href="http://u010214546.iteye.com/" target="_blank" title="u010214546">u010214546</a>： 
+                  握着橄榄枝的人 写道在一对多关联中，在多的一方设置invers ...<br>
+                  <a href="http://lijiejava.iteye.com/blog/776587#bc2372480">Hibernate中inverse="true"的理解</a>
+                </li>
+                
+                <li>
+                  <a href="http://ycy1003757.iteye.com/" target="_blank" title="ycy1003757">ycy1003757</a>： 
+                  请教一下，在BlobStrategyBlob类中session ...<br>
+                  <a href="http://lijiejava.iteye.com/blog/1934927#bc2368838">jBPM(三)：Spring 集成 jBPM4.3 （jBPM4+Hibernate4）</a>
+                </li>
+                
+                <li>
+                  <a href="http://fuyanchao.iteye.com/" target="_blank" title="fuyanchao">fuyanchao</a>： 
+                  aqaqaeae1234 写道lb250028 写道chenj ...<br>
+                  <a href="http://lijiejava.iteye.com/blog/1934927#bc2367867">jBPM(三)：Spring 集成 jBPM4.3 （jBPM4+Hibernate4）</a>
+                </li>
+                
+              </ul>
+            </div>
+
+            <div class="local_bottom"></div>
+          
+        </div>
+        <div style="margin-top: 10px;float: left;clear: left;">
+					<ins data-revive-zoneid="185" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57" id="revive-0-2"></ins>
+				</div>
+      </div>    
+
+      <div id="footer" class="clearfix">
+        <div id="copyright">
+          <hr>
+          声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。若作者同意转载，必须以超链接形式标明文章原始出处和作者。<br>
+          © 2003-2016 ITeye.com.   All rights reserved.  [ 京ICP证110151号  京公网安备110105010620 ]
+        </div>
+        <ins data-revive-zoneid="186" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57" id="revive-0-3"></ins>
+      </div>
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script><img src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/saved_resource" width="0" height="0">
+
+<script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/tracking.js" type="text/javascript"></script>
+
+    
+    
+    <script language="javascript" type="text/javascript" src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/async_new.js"></script>
+<script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">var $csdn_iteye_jq = jQuery.noConflict();// 解决jq与prototype.js命名空间冲突的问题</script>
+<script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/tracking(1).js" type="text/javascript"></script>
+    
+	    
+	    <script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/web-storage-cache.min.js" type="text/javascript"></script>
+	    <script src="./Hibernate中inverse=_true_的理解 - - ITeye技术网站_files/replace.min.js" type="text/javascript"></script>
+    
+    
+  
+
+</body></html>

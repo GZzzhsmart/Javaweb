@@ -1,0 +1,189 @@
+1、持久化
+	持久化就是将数据同步保存到数据库或某些存储设备中
+	
+2、哪些技术可以实现对象关系映射
+	Hibernate(Struts + Spring + Hibernate-->SSH)， MyBatis(SpringMVC + Spring + MyBatis-->SSM)
+	
+	JPA规范 Java Persistence API(Java持久化API)
+	
+3、使用对象关系映射持久化层的优势？
+	1）减少原始JDBC的代码量
+	2）对数据库是透明的，更换不同的数据库，所要修改的内容很 少（大部分情况下只需要修改配置文件）
+	
+4、ORM（O/R Mappiing    Object-Relation Mapping）对象关系映射
+	1）对象映射
+		com.gs.bean.User            
+			private int id;
+			private String name;
+			private String pwd;
+			
+			private UserDetail detail;
+			
+		User.hbm.xml
+		<property name="id" column="uid">
+		<property name="name" column="uname">
+		<property name="pwd" column="upwd">
+		
+		<one-to-one></one-to-one>
+		
+		
+	2）关系映射
+		一对一关系：一个人有一个详情，一个详情只属于一个人
+			com.gs.bean.UserDetail
+				private int id;
+				private String detail;
+				
+				private User user;
+				
+			UserDetail.hbm.xml
+			<property name="id" column="id">
+			<property name="detail" column="detail">
+			
+			<one-to-one></one-to-one>
+			
+		一对多关系：一个用户属于一个部门，一个部门可以拥有多个用户
+			com.gs.bean.User
+				private int id;
+				private String name;
+				private String pwd;
+				
+				private Department department;
+				
+				<many-to-one></many-to-one>
+				
+			com.gs.bean.Department
+				private List<User> users;
+				
+				<one-to-many>
+		
+		多对多关系：一个用户有多门课程，同一个课程可以属于多个用户（三张表）
+			com.gs.bean.User
+				private List<Course> courses;
+				
+				<many-to-many>
+				
+			com.gs.bean.Course
+					private List<User> users;
+					
+					<many-to-many>
+				
+5、Session会话，Connection数据库连接，Hibernate Session连接
+	session会话是指WEB应用的session
+	connection是原始JDBC的数据库连接
+	Hibernate中的session也是指数据库连接，可以通过SessionFactory获取session连接
+	
+6、SQL, HQL
+	Structured Query Language
+	Hibernate Query Language(面向对象的查询语言)
+	from Product
+	
+7、级联操作	
+	cascade可取以下值：
+	none: 做任何操作都不影响附属对象
+	save-update:级联保存或修改
+	delete：级联删除
+	delete-orphan：级联删除并从缓存中清除附属对象
+	all：级联保存、修改、删除
+	
+9、一对一操作
+	
+	UserDetail所对应的数据的主键也是外键，外键引用自User所对应的表的主键字段
+	
+	User
+		UserDetail ud;
+		
+	<id name="id" column="id">
+		<generator class="native"></generator>
+	</id>
+	
+	<one-to-one name="ud" class="com.gs.bean.UserDetail" cascade="save-update">
+	
+	UserDetail
+		User user;
+		<id name="id" column="id">
+			<generator class="foreign">
+				<param name="property">user</param>
+			</generator>
+		</id>
+		
+		<one-to-one name="user" class="com.gs.bean.User">
+		
+	详情请参考User,UserDetail的配置
+
+10、一对多，多对一
+	Department
+	
+		Set<Employee> employees;
+		
+		<set name="employees" inverse="false" cascade="all">
+			<key column="多方的外键字段">
+			<one-to-many class="com.gs.bean.Employee"/>
+		</set>
+		
+	inverse="false"表示控制权交给一方，关联关系由一方来控制，所以在添加多方数据的时候，不需要给多方设置一方对象(外键默认从一方设置)
+	inverse="true"表示控制权交给多方，关联关系由多方来控制，所以在添加多方数据的时候，需要明确的指明一方的对象（只有指明了，外键字段才有值）
+	
+	
+	多对一
+	Employee
+		<many-to-one name="dept" class="com.gs.bean.Department" column="哪个字段与一方关联" fetch="join"></many-to-one>
+		
+	
+	延迟加载：
+		dep  :employees
+		
+		
+		如果没有使用延迟加载，则不管dep有没有调用 getEmployees方法 ，hibernate都会发送查询employee的sql语句
+		****如果使用了延迟加载，则只有dep调用了getEmployees方法后，hibernate才会发送查询employee的sql语句,session要在获取完所有数据后才能关闭
+	
+	请参考 Department和Employee
+	
+11、Hibernate的加载策略
+	Deparment
+	
+	Employees
+	立即加载  lazy="false"   一对多，查询一方数据时，想让多方数据也直接查询，发送多条SQL语句
+		当加载Department的时候，也会发送SQL加载Employee
+	
+	延迟加载 lazy="true"   一对多，查询一方数据时，延迟多方的数据，发送多条SQL语句
+		当加载Department的时候，不会发送SQL加载Employee，只有在getEmployees方法被调用了，才会发送SQL语句加载employee
+		
+	预先抓取：  发送一条SQL语句
+		fetch="select"不会做join操作
+		fetch="join"会做连接操作         适用于多对一查询多方数据时顺便一方数据查询出来
+		
+12、多对多
+	Student
+		Set<Course>
+	
+	Course
+		Set<Student>
+		
+	<set name="对方" table="关联表" fetch="join">
+		<key column="关联表中的哪个字段与自己关联" />
+		<many-to-many column="关联表中的哪个字段与对方关联" class="对方类"/>
+	</set>
+	
+13、Hibernate查询
+	HQL
+		:from User u; 查询整个对象的所有属性
+		：select u.name,u.age from User u;查询指定的属性
+			如果单独查询某些指定的属性，则这些属性作为一个数组的形式返回，而不会自动封装到JavaBean中
+			
+	条件查询
+	
+	
+	统计（聚合）函数
+	select avg(u.weight) from User u
+	select sum(u.weight) from User u
+	select max(u.weight)  from User u
+	select min(u.weigth) from User u
+	select count(u) from User u
+	select upper(u.name) from User u // 返回大写
+	select lower(u.name) from User u // 返回小写
+	select distinct u.name from User u
+	
+	
+		
+		
+		

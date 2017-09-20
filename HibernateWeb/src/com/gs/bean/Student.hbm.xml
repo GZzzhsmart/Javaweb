@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.gs.bean">
+	<class name="Student" table="t_stu"> 
+		<id name="id" column="id"> 
+            <generator class="native"/> 
+        </id>
+        <property name="name" column="name"></property>
+        <property name="gender" column="gender"></property>
+        <property name="age" column="age"></property>
+
+		<set name="courses" table="t_score" fetch="join">
+			<!-- 配多方的id -->
+			<key column="stu_id"></key>
+			<!-- 配多方的id -->
+			<many-to-many class="com.gs.bean.Course" column="course_id"></many-to-many>
+		</set>
+
+	</class>
+</hibernate-mapping>

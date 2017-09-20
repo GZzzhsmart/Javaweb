@@ -1,0 +1,28 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+.logo {
+	width:150px;
+	height:58px;
+}
+
+#wel {
+	float:right;
+	line-height:58px;
+	margin-right:20px;
+}
+
+.menu {
+	
+}
+
+.menu ul {
+	
+}
+
+.menu ul li {
+	list-style:none;
+	margin:5px auto 5px auto;
+}

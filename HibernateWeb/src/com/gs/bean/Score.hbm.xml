@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.gs.bean">
+	<class name="Score" table="t_score"> 
+		<id name="id" column="id"> 
+            <generator class="native"/> 
+        </id>
+        <property name="stuId" column="stu_id"></property>
+        <property name="courseId" column="course_id"></property>
+        <property name="score" column="score"></property>
+       
+	</class>
+</hibernate-mapping>

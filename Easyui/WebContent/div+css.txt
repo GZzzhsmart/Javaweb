@@ -1,0 +1,57 @@
+1、table，以表格的形式来展示数据，不是用来做布局的
+
+2、div做布局
+	
+
+3、块元素与行内元素
+	行内元素：多个元素不会占满一整行，而是放在同一行
+		a, span, img
+	块元素：一个元素占满一行
+		p, div, form, table, section, canvas,ul,li 
+		
+4、CSS   Cascade Style Sheet层叠样式表
+	控制html元素的外观：背景色，前景色，边框，高度，宽度，背景图片，阴影，圆角
+	
+	内部样式
+		选择器：
+		元素名
+		类class     .class_name
+		id          #元素的id
+	内联样式 <div style="width:1300px;height:80px;border:1px solid silver;background-color:blue;color:white;font-size:16px;">
+	外部样式
+	
+	样式叠加
+		#a{
+		
+		}
+		.a {
+		
+		}
+		.b {
+		
+		}
+		
+		<div id="a" class="a b" style="">
+		
+		id定义的样式可以起作用，a里的样式可以起作用，并且 style内的样式也可以起作用
+		
+		样式优先级：style优先级最高>内部样式>外部样式
+ 	
+5、float
+
+6、盒子模型
+	padding:内边距   上右下左
+		padding-top
+		padding-right
+		padding-bottom
+		padding-left
+	margin:外边距   上右下左
+		margin-top
+		margin-right
+		margin-bottom
+		margin-left
+		
+7、HTML的扩展元素的属性
+	<a data-attrName="attr_value"></a>
+	
+

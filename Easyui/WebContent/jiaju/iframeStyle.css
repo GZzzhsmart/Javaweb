@@ -1,0 +1,56 @@
+*{margin: 0;padding: 0;}
+ul,li{list-style: none;}
+a{text-decoration: none;}
+img{border: none;}
+body{font-family: "微软雅黑";}
+/*底部样式*/
+.foot{
+	width: 100%;
+	height: 160px;
+	background: #333;
+	overflow: hidden;
+	font-family: "微软雅黑";
+}
+.foot>div{
+	width: 1200px;
+	height: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+	position: relative;
+}
+.foot div p{
+	width: auto;
+	overflow: hidden;
+	font-size: 12px;
+	color: #999;
+	margin-top: 15px;
+}
+.foot div p:nth-child(1){color: #ccc;margin-top: 40px;}
+.foot>div>p a{color: #ccc;}
+.foot>div>p span{margin: 0 10px;}
+.foot>div div{
+	position: absolute;
+	top:20px;
+	width: 100px;
+	height: auto;
+	overflow: hidden;
+}
+.foot>div p+div{right: 115px;}
+.foot>div div+div{right:0px;}
+.foot>div div img{width: 100px;height: 100px;}
+.foot>div>div p{width: 100px;overflow: hidden;color: #999;text-align: center;margin-top: 5px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

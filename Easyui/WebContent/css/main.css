@@ -1,0 +1,52 @@
+a:link,a:active,a:visited {
+	color:white;
+	text-decoration:none;
+}
+
+a:hover {
+	color:red;
+	font-size:20px;
+	font-weight:bold;
+}
+
+ul li {
+	float: left;
+	margin-right: 50px;
+	list-style: none;
+}
+
+.menu {
+	width: 1300px;
+	height: 80px;
+	border: 1px solid silver;
+	background-color: blue;
+	color: white;
+	font-size: 16px;
+}
+
+#logo {
+	float: left;
+}
+
+#ads {
+	height:150px;
+}
+
+.product {
+	height:200px;
+	width:25%;
+	color:red;
+	font-size:16px;
+	font-weight:bold;
+	float:left;
+}
+
+#footer {
+	text-align:center;
+	font-size:12px;
+}
+
+#nav {
+	float:left;
+	margin-left:300px;
+}

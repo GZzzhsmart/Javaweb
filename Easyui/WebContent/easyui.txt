@@ -1,0 +1,135 @@
+1、extjs, easyui
+	jQuery的用户界面插件集合
+
+	easyui是一种基于jQuery的用户界面插件集合。
+
+	easyui为创建现代化，互动，JavaScript应用程序，提供必要的功能。
+
+	使用easyui你不需要写很多代码，你只需要通过编写一些简单HTML标记，就可以定义用户界面。
+
+	easyui是个完美支持HTML5网页的完整框架。
+
+	easyui节省您网页开发的时间和规模。
+
+	easyui很简单但功能强大的。
+	
+2、如何使用？
+	1）下载easyui文件
+		themes目录 主题文件   icon.css 图标
+		plugins目录 组件目录
+		jquery.easyui.min.js   此文件中包含有eaysui的所有组件，没必要去导入plugins目录下的
+		locale目录 语言包文件    easyui-lang-en.js    easyui-lang-zh_CN.js
+	2）在页面中导入easyui的文件
+		到网页的头部导入CSS
+		a、themes/default/easyui.css
+		b、themes/icon.css
+		c、自己的css
+		到网页的尾部导入JS
+		a、jquery.min.js
+		b、jquery.easyui.min.js
+		c、导入自己的js文件
+	
+3、常用组件
+	1）easyui-layout	
+		布局组件:上北下南左西右东
+	2）easyui-accordion
+		手风琴组件，左部菜单 
+	3）easyui-tree
+		树列表
+	4）easyui-tabs
+		选项卡组件，参考main.js文件中对选项卡的操作
+	5）easyui-panel
+		面板组件，里面可以放任何的easyui组件
+	6）easyui-dialog
+		对话框组件
+		默认为关闭状态：data-options="closed:true"
+		$("#diag_id").dialog("open|close");
+		里面可以放任何的easyui组件
+	7）easyui-window
+		窗口组件
+		默认为关闭状态：data-options="closed:true"
+		$("#win_id").window("open|close");
+		里面可以放任何的easyui组件
+	8）easyui-messager
+		js:
+		$.messager.alert("title", "msg", "alert type");    alter type: error, info, question, warning
+		$.messager.confirm("title", "msg", function(r) {
+			if (r) {
+				// 点击了确认按钮
+			}
+		});
+	9）easyui-linkbutton
+		链接式按钮，把一个a标签定义成一个按钮   可接收 onclick
+	10）easyui-menubutton
+		菜单式按钮，点击后弹出一个easyui菜单
+	11）easyui-menu
+		菜单组件，用于右键菜单，菜单式按钮弹出来的菜单
+		每一个菜单项可直接使用div来定义
+		
+	
+	
+	
+	
+	
+	20）easyui-datagrid
+		数据表格
+		<table class="easyui-datagrid"
+			data-options="
+				singleSelect:true, // 是否为单选
+				collapsible:true, // 是否支持收缩
+				url:"服务端url地址，此地址必须返回json数据格式",
+				method:"get"
+			">
+			<th data-options="field:'id',width:80"></th> // 此field用于指明从json的rows对象中的哪个属性获取值
+		</table>
+		
+		json数据格式如下：
+		total:总共多少行
+		rows:每一行的数据，由多行数据组成一个rows
+		{"rows":[
+			{"birthday":"2017-06-20T16:22:49","email":"abc@qq.com","gender":"m","id":1001,"nickname":"abc"},
+			{"birthday":"2017-06-20T16:22:49","email":"abcd@qq.com","gender":"f","id":1002,"nickname":"abcd"}
+			],
+		"total":2}
+		
+		表格中的列的id与返回的json格式的属性名一致
+		
+		数据就可以自动显示到表格中
+		
+		表格的分页：
+		datagrid会自动带有两个查询参数传递到后台
+		page:当前在第几页
+		rows：一页显示多少项   （与返回给Datagrid的结果的rows有冲突）
+		
+		分页的步骤：
+		1)data-options:
+			pagination:true, // 支持分页
+			pageSize:30, // 页面的默认大小
+			rownumbers:true, // 显示行号
+			border:false // 取消表格边框
+		2）自定义组件的内容，
+			文化部分页组件显示的文本，可选每页显示多少个，请参数main.js   setPagination()函数
+			在有datagrid的页面中，调用setPagination方法
+		3）struts做后台 
+			private int page; // 用于获取从页面传递过来的page参数
+			private int rows; // 由于与返回到easyuidatagrid的结果有冲突，则此属性取消，并采用原始的HttpServletRequest去获取参数
+			
+			private int total; // getter方法   返回总记录数到datagrid
+			private List<Object> rows; // getter 返回指定页数的结果到datagrid
+		4)servlet做后台 
+			HttpServletRequest去获取所有的参数
+			
+			FastJSON组装JSON格式返回到datagrid
+		
+补充：
+	1）VO  value object 值对象，用于控制器与JSP页面的对象传递
+	2）DTO  data transfer object  数据传输对象，用于控制器，服务层之间的对象传输
+	3）POJO plain ordinary java object   普通java对象，用于数据持久层的对象传输
+	
+	Struts2返回json
+	借助struts-json-plugin直接返回json格式
+	1）导入struts-json包
+	2）Action中的写法与原先的写法几乎是一致
+	3）Action的配置：
+		a、package需要继承自由struts-json包提供的json-default package
+		b、result name必须与action中return部分的字符串一致，并且type必须为json

@@ -1,0 +1,19 @@
+1、tomcat与eclipse
+	1)Run on server报错
+		apache tomcat安装版本，端口占用
+		
+		老版本的工作空间与新版本的工作空间一致
+			工作空间下的.metadata目录：存储了eclipse所使用的插件及基本配置   D:\workspace\.metadata\.plugins\org.eclipse.wst.server.core
+			
+		apache-tomcat-x64.zip  二进制版本，直接解压 
+		
+		
+	2）eclipse也重新解压一个
+	
+2、安装mysql
+	
+	
+	navicat for mysql 
+	navicat
+	
+	

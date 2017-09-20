@@ -1,0 +1,147 @@
+#doom{
+	width:100%;
+	height: 400px;
+}
+#js_banner>div{
+				width: 100%;
+				height: 100%;
+				margin: 0 auto;
+				position: relative;
+				overflow: hidden;
+}
+
+#js_banner .couponScroll{
+	width: 260px;
+	height: 254px;
+	background: #41CCB4;
+	position: absolute;
+	top:0;
+	right:100px;
+	overflow: hidden;
+}
+#js_banner .couponScroll ul{width: 210px;overflow: hidden;margin: 0 auto;position: relative;overflow: hidden;}
+#js_banner .couponScroll ul li{width: 100%;height: 100%;}
+#js_banner .couponScroll ul li b{display: block;width: 100%;text-align: center;font-size: 30px;color: #fff;}
+#js_banner .couponScroll ul li p{width: 100%;text-align: center;color: #666;font-size: 14px;color: #2F8C7E;}
+#js_banner .couponScroll ul li .price:before{content: "￥";}
+#js_banner .couponScroll ul li b:first-child{margin:25px 0 5px 0;}
+#js_banner .couponScroll ul li .price{margin-top: 30px;margin-bottom: 30px;}
+#js_banner .couponScroll ul li a{
+	display: block;
+	width: 208px;
+	height: 38px;
+	border: 1px solid #fff;
+	border-radius: 5px;
+	text-align: center;
+	line-height: 38px;
+	font-size: 20px;
+	color: #fff;
+}
+#js_banner .couponScroll ul span{
+	display: block;
+	width: 13px;
+	height: 25px;
+	position: absolute;
+	top:125px;
+	cursor: pointer;
+}
+#js_banner .couponScroll ul span.left{background: url(../images/left.png);left: 0;}
+#js_banner .couponScroll ul span.right{background: url(../images/right.png);right: 0;}
+#js_banner .lp{width: 260px;height: 130px;background: #fff;position: absolute;bottom: 0;right: 100px;}
+#js_banner .lp>div{
+	width: 97px;
+	height: 99px;
+	float: left;
+	margin-top: 15px;
+	margin-left: 20px;
+	margin-right: 10px;
+}
+#js_banner .lp>div b{display: block;font-size: 16px;color: #555;}
+#js_banner .lp>div p{width: 100%;overflow: hidden;font-size: 12px;color: #999;margin: 5px 0 10px 0;}
+#js_banner .lp>img{width: 132px;height: 99px;display: block;margin-top: 15px;}
+#js_banner .lp>div a{
+	display: block;
+	width: 80px;
+	height: 24px;
+	background: #41CCB4;
+	text-align: center;
+	line-height: 24px;
+	font-size: 14px;
+	color: #fff;
+}
+
+
+
+
+#scroll{
+				position: relative;
+				width: 100%;
+				height: 400px;
+				overflow: hidden;
+			}
+#scroll li{
+				width: 100%;
+				height: 400px;
+				position: relative;
+				
+}
+#scroll li div{width: 1200px;height: 400px;overflow: hidden;position: relative;}
+#scroll li img{width: 1200px;height: 400px;position: absolute;top:0;transition: all 1s; }
+#scroll li img:nth-child(1){left:-10px}
+#scroll li img:nth-child(2){right:-10px;width: 450px;}
+#scroll_control{
+				width:1200px;
+				position: absolute;
+				display: table;
+				bottom: 20px;
+				text-align: center;
+}
+#scroll_control li{
+				width: 15px;
+				height: 15px;
+				border-radius: 15px;
+				background: #fff;
+				display: inline-block;
+				margin: 0 5px;
+				cursor: pointer;
+}
+			
+#scroll_control .sel{background: #41CCB4;}
+#scroll .img2{width: 450px;}
+#scroll li:first-child{background: lightcyan;}
+#scroll li:first-child+li{background: lightcoral;}
+#scroll li:first-child+li+li{background: lightgreen;}
+
+
+.fx_grid_c1{width:990px;}
+
+.fx_banner{background:#f0f0f0;width:1903px;overflow:hidden;position:relative}
+.fx_banner_inner{position:relative;height:400px}
+
+.fx_banner_img{width:20000px}
+.fx_banner_img li{float:left;height:400px;width:1903px;position:relative}
+.fx_banner_link{position:absolute;top:0;left:0;width:100%;height:400px;cursor:pointer}
+
+.fx_banner .child{position:absolute;width:1903px;height:400px}
+.fx_banner_common{position:relative}
+.fx_banner_common a{position:absolute;top:200px;width:41px;height:119px;cursor:pointer;display:block;overflow:hidden;opacity:.5;filter:alpha(opacity=50);}
+.fx_banner_pre{left:0;background:url(img/ban_pre_24.png);}
+.fx_banner_next{right:0;background:url(img/ban_next_24.png);}
+.fx_banner_pre:hover,.fx_banner_next:hover{opacity:1;filter:alpha(opacity=100)}
+.fx_banner .control{width:200px;position:absolute;top:370px;left:50%;margin-left:-100px;text-align:center}
+.fx_banner .control li{display:inline-block;*display:inline;*zoom:1;margin:0 5px;width:18px;height:18px;border-radius:50%;cursor:pointer;background:#fff}
+.fx_banner .control li a{display:none}
+.fx_banner .control li.current{background:#41CCB4}
+.hide{display: none;}
+
+
+
+
+
+
+
+
+
+
+
+

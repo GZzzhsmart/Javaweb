@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- 包含所有的hbm配置 -->
+	<import resource="classpath:import-hbm.xml"/>
+	<!-- 
+		PropertyPlaceholderConfigurer
+		可将bean定义文件中的一些配置信息(频繁改动的信息)移出到一个或多个.properties文件中定义
+	 -->
+	<bean id="beanConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 读取一个配置文件
+		<property name="location" value="system.properties"/>
+		 -->
+		 <!-- 读取多个配置文件 -->
+		<property name="locations">
+			<list>
+				<value>classpath:system.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 
+		DriverManagerDataSource配置数据源
+	 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="${db.driver}">
+		</property>
+		<property name="url" value="${db.url}"></property>
+		<property name="username" value="${db.username}"></property>
+		<property name="password" value="${db.password}"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 引用dataSource创建数据库的连接 -->
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<!-- hibernate中的配置 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${db.dialect}</prop>
+				<prop key="hibernate.show_sql">${db.show_sql}</prop>
+				<prop key="hibernate.format_sql">${db.format_sql}</prop>
+				<!-- 
+				hibernate.hbm2ddl.auto=update表示如果hbm.xml映射文件中的表在数据库中不存在就自动创建
+				hibernate.hbm2ddl.auto=create每次启动程序时都会自动生成hbm.xml映射文件中的表，如果存在，先删除再创建
+				 -->
+				<prop key="hibernate.hbm2ddl.auto">${db.hbm2ddl}</prop>
+			</props>
+		</property>
+		<!-- hibernate中的映射配置
+		<property name="mappingResources">
+			<list>
+				
+			</list>
+		</property>
+		 -->
+		<!-- hbm文件的配置是应用hbmappings -->
+		<property name="mappingLocations" ref="hbmappings"/> 
+	</bean>
+	<bean id="baseDAO" class="com.ht.base.BaseDaoImpl">
+		<!-- 注入数据库连接对象 -->
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>
+	</bean>
+	<bean id="listener" class="com.ht.test.CustomListener"/>
+	<bean id="helloSpeaker" class="com.ht.aop.HelloService"/>
+	<bean id="some" class="com.ht.aop.Some"/>
+	<bean id="otherIntroduction" class="com.ht.aop.OtherIntroduction"/> 
+	<bean id="lockIntroduction" class="com.ht.aop.LockIntroduction"/>          
+	
+	<!-- 方法运行之前织入 -->
+	<bean id="logBeforeAdvice" class="com.ht.aop.LogBeforeAdvice"></bean>
+	<!-- 方法运行之后织入 -->
+	<bean id="logAfterAdvice" class="com.ht.aop.LogAfterAdvice"></bean>
+	<!-- 方法执行前后都织入 -->
+	<bean id="logArroundAdvice" class="com.ht.aop.LogArroundAdvice"></bean>
+	<!-- 方法发生异常时织入 -->
+	<bean id="logThrowAdvice" class="com.ht.aop.LogThrowsAdvice"></bean>
+	<!-- 匹配方法名称进行织入 -->
+	 <bean id="helloAdvice" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+	 	<!-- 通过*号匹配方法名称
+	 	<property name="mappedName">
+	 		<value>hello*</value>
+	 	</property>
+	 	 -->
+	 	 <!-- 指定方法列表 -->
+	 	<property name="mappedNames">
+	 		<list>
+	 			<value>helloSay</value>
+	 			<value>test</value>
+	 		</list>
+	 	</property>
+	 	<property name="advice">
+	 		<ref bean="logBeforeAdvice"/>
+	 	</property>
+	 </bean>
+	 <bean id="helloAdvice1" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+	 	<property name="pattern">
+	 		<value>.*hello.*</value>
+	 	</property>
+	 	<property name="advice">
+	 		<ref bean="logAfterAdvice"/>
+	 	</property>
+	 </bean>
+	 <bean id="otherAdvisor" 
+          class="org.springframework.aop.support.DefaultIntroductionAdvisor"> 
+          <constructor-arg index="0">
+              <ref bean="otherIntroduction"/>
+          </constructor-arg>  
+          <constructor-arg index="1">
+              <value>com.ht.aop.IOther</value>
+          </constructor-arg>  
+    </bean>   
+	 <bean id="otherAdvisor1" 
+          class="org.springframework.aop.support.DefaultIntroductionAdvisor"> 
+          <constructor-arg index="0">
+              <ref bean="lockIntroduction"/>
+          </constructor-arg>  
+          <constructor-arg index="1">
+              <value>com.ht.aop.ILockable</value>
+          </constructor-arg>  
+    </bean>   
+	 
+	 <bean id="helloProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+	 	<!-- 接口 -->
+	 	<property name="proxyInterfaces">
+	 		<!-- 
+	 		<value>com.ht.aop.IHello</value>
+	 		 -->
+	 		 <value>com.ht.aop.ISome</value>
+	 	</property>
+	 	<!-- 接口的实现类 -->
+	 	<property name="target">
+	 		<!-- <ref bean="helloSpeaker"/> -->
+	 		<ref bean="some"/>
+	 	</property>
+	 	<!-- advice -->
+	 	<property name="interceptorNames">
+	 		<list>
+	 			<!-- 
+	 			<value>logBeforeAdvice</value>
+	 			<value>logAfterAdvice</value>
+	 			<value>logArroundAdvice</value>
+	 			<value>logThrowAdvice</value>
+	 			<value>helloAdvice</value>
+	 			<value>helloAdvice1</value>
+	 			<value>otherAdvisor</value>
+	 			 -->
+	 			<value>otherAdvisor1</value>
+	 		</list>
+	 	</property>
+	 </bean>
+	 
+</beans>

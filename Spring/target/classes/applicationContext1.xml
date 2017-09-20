@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- 
+		配置javabean
+		id必须唯一
+		class="类所在的地址"
+	 -->
+	 <bean id="date" class="java.util.Date"></bean>
+	 <bean id="listener" class="com.ht.test.CustomListener">
+	 
+	 </bean>
+	 <!-- 通过类型注入 autowire="byType" -->
+	<bean id="testBean" class="com.ht.vo.TestBean">
+	<!-- 
+		通过构造函数注入参数的值
+		第一个参数index=0
+		第二个参数index=1
+		.....
+		以此类推
+		<constructor-arg index="0">
+			<value>你好！</value>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<value>李四</value>
+		</constructor-arg>
+	 -->
+		<property name="helloWorld">
+			<value>欢迎你！</value>
+		</property>
+		<property name="name">
+			<value>小丽</value>
+		</property>
+		<property name="date">
+			<ref bean="date"/>
+		</property>
+		<!-- 数组的注入 -->
+		<property name="nation">
+			<list>
+				<value>汉族</value>
+				<value>壮族</value>
+				<value>藏族</value>
+				<value>苗族</value>
+				<value>侗族</value>
+				<value>傣族</value>
+			</list>
+		</property>
+		<!-- List集合的注入 -->
+		<property name="list">
+			<list>
+			<value>aaaaaa</value>
+			<value>bbbbbb</value>
+			<value>cccccc</value>
+			<ref local="date"/>
+			</list>
+		</property>
+		<!-- 键值对的注入 -->
+		<property name="map">
+			<map>
+				<entry key="1001">
+					<value>张三</value>
+				</entry>
+				<entry key="1002">
+					<value>李四</value>
+				</entry>
+				<entry key="1003">
+					<value>王五</value>
+				</entry>
+				<entry key="1004">
+					<ref bean="date"/>
+				</entry>
+				<entry key="1005">
+					<ref bean="listener"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+</beans>

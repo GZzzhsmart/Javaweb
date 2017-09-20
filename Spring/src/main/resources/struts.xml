@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 可以动态访问函数 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true" />
+    <!-- 常量：配置乱码处理 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!-- 设置struts默认主题 -->
+	<!-- 
+   	<constant name="struts.ui.theme" value="simple" ></constant>
+   	 -->
+ 	<constant name="struts.custom.i18n.resources" value="globalMessages"></constant>
+ 	<!--默认struts2的访问action类的后缀是.action -->
+	<constant name="struts.action.extension" value="action"></constant>
+	<!--  struts.xml修改后系统自动重新加载，开发阶段会比较方便，但是生产环境最好是false -->
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	<!-- 打印出更详细的错误信息 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<include file="struts-default.xml"/>
+	<package name="default" extends="struts-default" namespace="/">
+		<!-- 配置action类 -->
+		<action name="courseAction" class="com.ht.action.CourseAction">
+			<result name="input">/index.jsp</result>
+			<result name="success">/index.jsp</result>
+			<result name="login">/index.jsp</result>
+		</action>
+		
+	</package>
+
+</struts>

@@ -1,0 +1,20 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gs.dao.PermissionDAO">
+
+   <resultMap id="permissionMap" type="permission">
+   </resultMap>
+
+    <select id="getByPermissionRole" resultMap="permissionMap">
+        <![CDATA[
+        select p.* from t_permission p, t_role_permission rp
+        where p.id = rp.permission_id and p.name = #{permission} and rp.role_id in
+        ]]>
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{roleId})
+        </foreach>
+    </select>
+
+</mapper>

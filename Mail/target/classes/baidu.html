@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FdciozodQBWrfdNuB3xiEO6XThATgqOF"></script>
+	<title>海南地图</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");    // 创建Map实例
+	map.centerAndZoom(new BMap.Point(110.202609,20.058403), 11);  // 初始化地图,设置中心点坐标和地图级别
+
+	//添加比例尺和移动按钮
+	var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT});// 左下角，添加比例尺
+	var top_left_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}); //左下角，添加默认缩放平移控件
+	map.addControl(top_left_control);        
+	map.addControl(top_left_navigation);     
+	
+	map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+	map.setCurrentCity("海口");          // 设置地图显示的城市 此项是必须设置的
+
+	//根据起终点名称规划步行路线
+	var walking = new BMap.WalkingRoute(map, {renderOptions:{map: map, autoViewport: true}});
+	walking.search("海南大学", "安宝江南城");
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+	//搜索区域城市
+	var size = new BMap.Size(10, 20);
+	map.addControl(new BMap.CityListControl({
+    anchor: BMAP_ANCHOR_TOP_LEFT,
+    offset: size,
+  
+	}));
+
+	//在右下角添加缩略图
+	var overView = new BMap.OverviewMapControl();
+	var overViewOpen = new BMap.OverviewMapControl({isOpen:true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT});
+	map.addControl(overView);          //添加默认缩略地图控件
+	map.addControl(overViewOpen);      //右下角，打开
+</script>

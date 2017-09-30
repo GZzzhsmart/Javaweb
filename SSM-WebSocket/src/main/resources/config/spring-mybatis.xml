@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 自动扫描 -->
+    <context:component-scan base-package="com.gs.dao,com.gs.controller,com.gs.service,com.gs.serviceImpl" />
+
+    <!-- 引入配置文件 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:/config/jdbc.properties" />
+    </bean>
+
+    <!--druid数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.driverUrl}" />
+        <property name="username" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.password}" />
+        <!-- 参考http://blog.csdn.net/yunnysunny/article/details/8657095 -->
+        <!-- 初始化连接数 -->
+        <property name="initialSize" value="${druid.initialSize}" />
+        <!-- 最大连接数 -->
+        <property name="maxActive" value="${druid.maxActive}" />
+        <!-- 最小空闲数 -->
+        <property name="minIdle" value="${druid.minIdle}" />
+        <!-- 最大等待时间，单位为ms -->
+        <property name="maxWait" value="${druid.maxWait}" />
+
+        <!-- 检测数据库连接是否正常的Sql语句 -->
+        <property name="validationQuery" value="${druid.validationQuery}" />
+        <!-- 获取连接时检测连接是否可用 -->
+        <property name="testOnBorrow" value="${druid.testOnBorrow}" />
+        <!-- 连接返回时检测可用 -->
+        <property name="testOnReturn" value="${druid.testOnReturn}" />
+        <!-- 空闲时检测是否可用 -->
+        <property name="testWhileIdle" value="${druid.testWhileIdle}" />
+
+        <!-- 检测的间隔时间，单位为ms -->
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+        <!-- Destory线程中如果检测到当前连接的最后活跃时间和当前时间的差值大于
+            minEvictableIdleTimeMillis，则关闭当前连接 -->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+
+        <!-- 是否移除废弃连接 -->
+        <property name="removeAbandoned" value="${druid.removeAbandoned}" />
+        <!-- 移除废弃连接超时 -->
+        <property name="removeAbandonedTimeout" value="${druid.removeAbandonedTimeout}" />
+        <!-- 是否做日志记录 -->
+        <property name="logAbandoned" value="${druid.logAbandoned}" />
+        <!-- 过滤器 -->
+        <property name="filters" value="${druid.filters}" />
+
+    </bean>
+
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:mapping/*Mapper.xml"></property>
+        <!--读取配置文件-->
+        <property name="configLocation" value="classpath:/config/mybatis.xml"></property>
+    </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.gs.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!--
+   开启注解式的事务管理
+    @Transactional
+    -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

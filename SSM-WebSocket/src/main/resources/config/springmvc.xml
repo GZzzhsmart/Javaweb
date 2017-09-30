@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--
+    自动扫描组件（@Controller, @Service, @Repository, @Component）
+    配置自动去扫描带有@Controller注解的所有类
+    -->
+    <context:component-scan base-package="com.gs.controller" />
+    <!-- 开启注解 -->
+    <mvc:annotation-driven />
+    <!-- 使用默认的处理器 -->
+    <mvc:default-servlet-handler/>
+
+    <!-- 配置去哪里查找什么样的视图 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 配置静态资源，直接映射到对应的文件夹-->
+    <mvc:resources location="/images/" mapping="/images/**"/>
+    <mvc:resources location="/image/" mapping="/image/**"/>
+    <mvc:resources location="/css/" mapping="/css/##" />
+    <mvc:resources location="/js/" mapping="/js/##" />
+    <mvc:resources location="/fonts/" mapping="/fonts/##" />
+
+    <!-- 配置spring mvc的数据转换服务-->
+    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean"></bean>
+
+    <!-- 处理RequestMapping的服务 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+    <!-- jackson2      json    用于把对象转化成JSON字符中
+       response.setContentType("application/json;charset=utf-8");
+   -->
+    <bean id="mappingJacksonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- URL要返回JSON数据，这个JSON由谁来生成  -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 配置文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="maxUploadSize" value="209715200"/>
+        <property name="maxInMemorySize" value="40960"/>
+    </bean>
+
+</beans>

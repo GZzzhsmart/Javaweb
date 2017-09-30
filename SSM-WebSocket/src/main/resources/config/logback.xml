@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 配置日志文件存储的根目录
+     ${catalina.base}表示 tomcat的根目录
+     -->
+    <substitutionProperty name="logbase" value="${catalina.base}/logs/"/>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
+        </layout>
+    </appender>
+    <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 基于时间的滚动策略，每一天生成一个新的日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${logbase}/%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!-- 最多存储60天的日志 -->
+            <MaxHistory>60</MaxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>%date %level %thread %10logger %file %line %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root>
+        <level value="INFO" />
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="logfile"/>
+    </root>
+</configuration>

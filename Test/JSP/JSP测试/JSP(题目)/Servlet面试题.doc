@@ -1,0 +1,208 @@
+1.JSP和Servlet有哪些相同点和不同点，他们之间的联系是什么？JSP是Servlet技术的扩展，本质上是Servlet的简易方式，更强调应用的外表表达。JSP编译后是”类servlet”。Servlet和JSP最主要的不同点在于，Servlet的应用逻辑是在Java文件中，并且完全从表示层中的HTML里分离开来。而JSP的情况是Java和HTML可以组合成一个扩展名为.jsp的文件。JSP侧重于视图，Servlet主要用于控制逻辑。 
+2、说一说Servlet的生命周期?
+答:servlet有良好的生存期的定义，包括加载和实例化、初始化、处理请求以及服务结束。这个生存期由javax.servlet.Servlet接口的init,service和destroy方法表达。 
+3、Servlet版本间(忘了问的是哪两个版本了)的不同? 
+4、JAVA SERVLET API中forward() 与redirect()的区别？
+答:前者仅是容器中控制权的转向，在客户端浏览器地址栏中不会显示出转向后的地址；后者则是完全的跳转，浏览器将会得到跳转的地址，并重新发送请求链接。这样，从浏览器的地址栏中可以看到跳转后的链接地址。所以，前者更加高效，在前者可以满足需要时，尽量使用forward()方法，并且，这样也有助于隐藏实际的链接。在有些情况下，比如，需要跳转到一个其它服务器上的资源，则必须使用
+sendRedirect()方法。 
+5、Servlet的基本架构
+public class ServletName extends HttpServlet {
+public void doPost(HttpServletRequest request, HttpServletResponse response) throws
+ServletException, IOException {
+}
+public void doGet(HttpServletRequest request, HttpServletResponse response) throws
+ServletException, IOException {
+}
+} 
+6.Servlet可以使用如下四种方法来得到server的name, port和info
+public String ServletRequest.getServerName()
+public String?ServletRequest.getServerPort()
+public String?ServletContext.getServerInfo()
+public String?ServletRequest.getAttributes(String?name)如下代码实现用servlet取得server的信息并输出到客户端浏览器：
+import java.io.*;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public?class DemoServerSnoop extends GenericServlet{
+
+public void service(ServletRequest?req?,?ServletResponse?res)
+throws ServletException,IOException{
+
+res.setContentType("text/plain");
+PrintWriter?out=?res.getWriter();
+out.println("req.getServerName()" +?req.getServerName());
+out.println("req.getServerPort()" +?req.getServerPort());
+
+out.println("ServletContext().getServerInfo()" + 
+getServletContext().getServerInfo());
+
+out.println("getServerInfo()?name:" + 
+getServerInfoName(getServletContext().getServerInfo()));
+
+out.println("getServerInfo()?version:" + 
+getServerInfoVersion(getServletContext().getServerInfo()));
+
+out.println("getServerContext().getAttribute(\"attribute\")" + 
+getServletContext().getAttribute("attribute"));
+}
+private String?getServerInfoName(String?serverInfo){
+
+int slash?=?serverInfo.indexOf('/');
+if(slash==-1)
+return serverInfo;
+else
+return (String) serverInfo.subSequence(0,slash);
+}
+private String?getServerInfoVersion(String?serverInfo){
+
+int slash?=?serverInfo.indexOf('/');
+if(slash==-1)
+return?null;
+else
+return serverInfo.substring(slash?+ 1);
+}}
+7.filter 的作用是什么？主要实现什么方法？doFilter方法里面的2个参数request 和 response? 他问 这两个接口的全称是什么？
+1.Filter使用户可以改变一个request和修改一个response. Filter 不是一个servlet,它不能产生一个response,它能够在一个request到达servlet之前预处理request,也可以在离开servlet时处理response.换种说法,filter其实是一个”servlet chaining”(servlet 链).一个filter 包括:
+　　1. 在servlet被调用之前截获;
+　　2. 在servlet被调用之前检查servlet request;
+　　3. 根据需要修改request头和request数据;
+　　4. 根据需要修改response头和response数据;
+　　5. 在servlet被调用之后截获.
+2. request的全称是? HttpServletRequest? response的全称是 HttpServletResponse .
+8. 所有的JDBC应用程序都具有下面的基本流程：
+　　1、建立到数据库的连接。
+　　2、执行SQL语句。
+　　3、处理结果。
+　　4、从数据库断开连接。
+　　下面我们就来仔细看一看每一个步骤。
+　　建立到数据库的连接
+　　通过JDBC使用数据库的第一步就是建立一个连接。JDBC连接是由URL指定的，它的格式如下：
+　　jdbc:<subprotocol>:<subname>
+　　其中subprotocol是被请求的数据库连接的类型（如ODBC，ORACLE，Informix等等），而subname提供了所要建立的连接的一些附加信息。当JDBC驱动程序管理器收到一个连接的URL时，所有已知的JDBC驱动程序会被询问是否可以为这个URL服务。请求一个通过JDBC-ODBC桥到叫做MyData的ODBC数据源的连接的例子如下：
+　　Connection con = DriverManage.getconnection(“jdbc:odbc:MyData”);
+　　看上去一切都很顺利，但是JDBC驱动程序管理器是怎么知道哪些JDBC驱动程序在当前的系统中可用呢？有两种机制可以通知驱动程序管理器一个JDBC驱动程序可以使用：sql.drivers属性和JDBC驱动程序注册。
+　　驱动程序管理器引用sql.drivers系统属性来取得当前系统中可用的JDBC驱动程序列表。这个系统属性包含一些用冒号隔开的JDBC驱动程序的类名，通过这个类名，驱动程序管理器可以试图满足一个连接请求。
+　　使用驱动程序注册更为常见。这种方法使你对你要使用的JDBC驱动程序有更多的控制。所有的JDBC驱动程序在实例化的时候都必须在驱动程序管理器中注册自己，注册可以通过下列两个方法来实现：
+　　1.Class.forName(“foo.Driver”).newInstance();
+　　2.new foo.Driver();
+　　我个人比较喜欢使用Class.forName()这种方法，不过这两种方法的效果是相同的。JDBC驱动程序用驱动程序管理器注册自己，这样，它就可以为连接请求服务了。
+　　执行SQL语句
+　　在数据库连接成功建立之后，我们就可以执行那些完成实际工作的SQL语句了。在执行SQL语句之前，我们必须首先创建一个语句对象，这个对象提供了到特定数据库SQL引擎的接口。有下列三种不同类型的语句对象：
+　　1.Statement——基本的语句对象，它提供了直接在数据库中执行SQL语句的方法。对于那些只执行一次的查询以及DDL语句如CREATE TABLE，DROP TABLE等等来说，statement对象就足够了。
+　　2.Prepared statement——这种语句对象用于那些需要执行多次，每次仅仅是数据取值不同的SQL语句，它还提供了一些方法，以便指出语句所使用的输入参数。
+　　3.Callable statement——这种语句对象被用来访问数据库中的存储过程。它提供了一些方法来指定语句所使用的输入输出参数。
+　　下面是一个用语句类来执行SQL SELECT语句的一个例子：
+　　Statement stmt = con.createStatement();
+　　ResultSet rs = stmt.executeQuery(“SELECT * FROM MyTable”);
+　　处理结果
+　　在执行了一个SQL语句之后，我们必须处理得到的结果。有些语句仅仅返回一个整形数，指出受到影响的行数（比如UPDATE和DELETE语句）。SQL查询（SELECT语句）返回一个含有查询结果的结果集。结果集由行和列组成，各列数据可以通过相应数据库类型的一系列get方法（如getString，getInt，getDate等等）来取得。在取得了一行数据的所有数据之后，我们可以调用next()方法来移到结果集中的下一条记录。JDBC规范的1.1版只允许forward-onle(只向前)型的游标，而在JDBC2.0中有更健壮的游标控制功能，我们可以向后移动游标而且可以将游标移动到指定行。
+　　从数据库断开连接
+　　在结果集、语句和连接对象用完以后，我们必须正确地关闭它们。连接对象、结果集对象以及所有的语句对象都有close()方法，通过调用这个方法，我们可以确保正确释放与特定数据库系统相关的所有资源。
+　　有些开发者喜欢将引用乱放，然后用一个垃圾收集程序专门负责正确清除对象。我强烈建议大家在使用了JDBC驱动程序之后调用close()方法。这样可以尽可能的减少由于挂起的对象残留在数据库系统中而造成的内存泄漏。
+9.什么Servlet链？
+ 与UNIX和DOS命令中的管道类似，你也可以将多个servlet以特定顺序链接起来。在servlet链中，一个servlet的输出被当作下一个servlet的输入，而链中最后一个servlet的输出被返回到浏览器。
+servlet链接提供了将一个servlet的输出重定向为另一个servlet的输入的能力。这样，你就可以划分工作，从而使用一系列servlet来实现它。另外，你还可以将servlet组织在一起以提供新的功能。
+10.为什么使用Servlet？
+servlet可以很好地替代公共网关接口(Common Gateway Interface，CGI)脚本。通常CGI脚本是用Perl或者C语言编写的，它们总是和特定的服务器平台紧密相关。而servlet是用Java编写的，所以它们一开始就是平台无关的。这样，Java编写一次就可以在任何平台运行(write once,run anywhere)的承诺就同样可以在服务器上实现了。servlet还有一些CGI脚本所不具备的独特优点：
+　　■servlet是持久的。servlet只需Web服务器加载一次，而且可以在不同请求之间保持服务(例如一次数据库连接)。与之相反，CGI脚本是短暂的、瞬态的。每一次对CGI脚本的请求，都会使Web服务器加载并执行该脚本。一旦这个CGI脚本运行结束，它就会被从内存中清除，然后将结果返回到客户端。CGI脚本的每一次使用，都会造成程序初始化过程(例如连接数据库)的重复执行。
+　　■servlet是与平台无关的。如前所述，servlet是用Java编写的，它自然也继承了Java的平台无关性。
+　　■servlet是可扩展的。由于servlet是用Java编写的，它就具备了Java所能带来的所有优点。Java是健壮的、面向对象的编程语言，它很容易扩展以适应你的需求。servlet自然也具备了这些特征。
+　　■servlet是安全的。从外界调用一个servlet的惟一方法就是通过Web服务器。这提供了高水平的安全性保障，尤其是在你的Web服务器有防火墙保护的时候。
+　　■setvlet可以在多种多样的客户机上使用。由于servlet是用Java编写的，所以你可以很方便地在HTML中使用它们，就像你使用applet一样。在本书中您将看到这一点。
+11.  ．简述Servlet的生命周期
+Web容器加载servlet，生命收起开始，通过调用servlet
+的的init（）方法进行servlet的初始化，通过调用service（）方法实现，根据请求的不同调用不同的do***（）方法，结束服务，web容器调用servlet的destroy（）方法
+一个servlet的生命周期由部署servlet的容器控制，当一个请求映射到一个servlet是，
+容器执行下步骤：
+1.加载servlet类
+2.创建一个servlet类的实例
+3.调用init初始化servlet实例，
+2.调用service方法，传递一个请求和响应对象
+容器要移除一个servlet，调用servlet的destroy方法结束该servlet
+2．简述<jsp:forward>动作和response.sendRedirect()的异同（5分）
+重定向分为两类。一类是客户端重定向，一类是服务器端重定向。客户端重定向可以通过设置特定的HTTP头，或者写javaScirpt脚本实现。
+服务器端的重定向方式
+服务器的重定向有两种方式，一种是HttpServletResponse的sendRedirect（）方法，一个是使用RequestDispatcher的forward（）方法。
+HttpServletResponse.sendRedirect()方法
+HttpServletResponse接口定义了可用于转向的sendRedirect方法，这个方法将响应定向到指定的，新的URL，location可以是一个绝对的URL，如response.sendRedirect(“http://java.sun.com”)也可以使用相对的URL location可以是一个绝对的URL，如response.sendRedirect(“http://java.sun.com”)也可以使用相对的URL。如果location以“/”开头，则容器认为相对于当前Web应用的根，否则，容器将解析为相对于当前请求的URL。这种重定向的方法，将导致客户端浏览器的请求URL跳转。从浏览器中的地址栏中可以看到新的URL地址，作用类似于上面设置HTTP响应头信息的实现。
+RequestDispatcher.forward()方法
+RequestDispatcher是一个Web资源的包装器，可以用来把当前request传递到该资源，或者把新的资源包括到当前响应中。RequestDispatcher接口中定义了两个方法，参见如下代码：
+public interface RequestDispatcher {
+void forward(ServletRequest request, ServletResponse response);
+void include(ServletRequest request, ServletResponse response);
+}
+forward()方法将当前的request和response重定向到该RequestDispacher指定的资源。这在实际项目中大量使用，因为完成一个业务操作往往需要跨越多个步骤，每一步骤完成相应的处理后，转向到下一个步骤。比如，通常业务处理在Servlet中处理，处理的结果转向到一个JSP页面进行显示。这样看起来类似于Servlet链的功能，但是还有一些区别。一个RequestDispatcher对象可以把请求发送到任意一个服务器资源，而不仅仅是另外一个Servlet。 include()方法将把Request Dispatcher资源的输出包含到当前输出中。
+注意，只有在尚未向客户端输出响应时才可以调用forward()方法，如果页面缓存不为空，在重定向前将自动清除缓存。否则将抛出一个IllegalStateException异常。
+如何得到RequestDispatcher
+有三种方法可以得到Request Dispatcher对象。
+1.javax.servlet. ServletRequest的getRequestDispatcher(String path)方法，其中path可以是相对路径，但不能越出当前Servlet上下文。如果path以“/”开头，则解析为相对于当前上下文的根。
+2.javax.servlet. ServletContext的getRequestDispatcher(String path)方法，其中path必须以“/”开头，路径相对于当前的Servlet上下文。可以调用ServletContext的getContext(String uripath)得到另一个Servlet上下文，并可以转向到外部上下文的一个服务器资源链接。
+3.使用javax.servlet. ServletContext的getNamedDispatcher(String name)得到名为name的一个Web资源，包括Servlet和JSP页面。这个资源的名字在Web应用部署描述文件web.xml中指定。
+这三种方法的使用有细微的差别。比如，下面是一个应用的配置文件web.xml：
+<?xml version=”1.0″ ?>
+<!DOCTYPE web-app PUBLIC “-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN”
+“http://java.sun.com/j2ee/dtds/web-app_2_2.dtd”>
+<web-app>
+<servlet>
+<servlet-name>FirstServlet</servlet-name>
+<servlet-class>org. javaresearch.redirecttest.ServletOne</servlet-class>
+</servlet>
+<servlet>
+<servlet-name>SecondServlet</servlet-name>
+<servlet-class>org.javaresearch. redirecttest.ServletTwo</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>FirstServlet</servlet-name>
+<url-pattern>/servlet/firstservlet/</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+<servlet-name>SecondServlet</servlet-name>
+<url-pattern>/servlet/secondservlet/</url-pattern>
+</servlet-mapping>
+</web-app>
+其中定义了两个Servlet，名字分别为FirstServlet和SecondServlet，对应的类分别为org.javaresearch. redirecttest.ServletOne和org. javaresearch.redirecttest.ServletTwo。可以在浏览器中通过类似于下面的链接访问：
+http://localhost:8080/servlet/firstservlet/
+使用1中方法，例如在firstservlet可以写入下面的代码：
+RequestDispatcher rd = request.getRequestDispatcher(“secondservlet”);
+rd.forward(request, response);
+此时控制权将转向到第二个Servlet了。
+使用2中的方法，可以从Servlet Context中得到RequestDispatcher代码如下：
+RequestDispatcher rd = getServletContext().getRequest
+Dispatcher(“/servlet/secondservlet”);
+rd.forward(request, response);
+使用3中的方法，从上面的web. xml配置文件可以看到定义了两个Servlet，名字分别为FirstServlet和SecondServlet，所以可以得到命名的Dispatcher：
+RequestDispatcher rd = getServletContext().getNamedDispatcher(“SecondServlet”);
+rd.forward(request, response);
+这样也可以重定向到SecondServlet了。
+JSP页面中的重定向
+JSP在解析后编译为一个Servlet运行，所以在JSP中也可以使用上面的重定向代码，并且，JSP还提供了更便利的操作，如下：
+<jsp:forward page= “nextpage.jsp”/>
+JSP页面执行到这儿，将终止当前的处理，将控制权交由nextpage.jsp。
+如何选择
+RequestDispatcher.forward()方法和HttpServletResponse.sendRedirect()方法的区别是：前者仅是容器中控制权的转向，在客户端浏览器地址栏中不会显示出转向后的地址；后者则是完全的跳转，浏览器将会得到跳转的地址，并重新发送请求链接。这样，从浏览器的地址栏中可以看到跳转后的链接地址。所以，前者更加高效，在前者可以满足需要时，尽量使用Request Dispatcher.forward()方法，并且，这样也有助于隐藏实际的链接。在有些情况下，比如，需要跳转到一个其它服务器上的资源，则必须使用HttpServletResponse.sendRequest()方法。
+12 Servlet都有哪些方法？主要作用是什么？HttpServlet 类包含 init() 、 destroy() 、 service() 等方法。其中 init() 和 destroy() 方法是继承的。
+(1) init() 方法
+在 Servlet 的生命期中，仅执行一次 init() 方法。它是在服务器装入 Servlet 时执行的。 可以配置服务器，以在启动服务器或客户机首次访问 Servlet 时装入 Servlet 。 无论有多少客户机访问 Servlet ，都不会重复执行 init() 。
+缺省的 init() 方法通常是符合要求的，但也可以用定制 init() 方法来覆盖它，典型的是管理服务器端资源。 例如，可能编写一个定制 init() 来只用于一次装入 GIF 图像，改进 Servlet 返回 GIF 图像和含有多个客户机请求的性能。另一个示例是初始化数据库连接。缺省的 init() 方法设置了 Servlet 的初始化参数，并用它的 ServletConfig 对象参数来启动配置， 因此所有覆盖 init() 方法的 Servlet 应调用 super.init() 以确保仍然执行这些任务。在调用 service() 方法之前，应确保已完成了 init() 方法。
+(2) service() 方法
+service() 方法是 Servlet 的核心。每当一个客户请求一个 HttpServlet 对象，该对象的 service() 方法就要被调用，而且传递给这个方法一个“请求”（ ServletRequest ）对象和一个“响应”（ ServletResponse ）对象作为参数。 在 HttpServlet 中已存在 service() 方法。缺省的服务功能是调用与 HTTP 请求的方法相应的 do 功能。例如， 如果 HTTP 请求方法为 GET ，则缺省情况下就调用 doGet() 。 Servlet 应该为 Servlet 支持的 HTTP 方法覆盖 do 功能。因为 HttpServlet.service() 方法会检查请求方法是否调用了适当的处理方法，不必要覆盖 service() 方法。只需覆盖相应的 do 方法就可以了。
+= 当一个客户通过 HTML 表单发出一个 HTTP POST 请求时， doPost （）方法被调用。 与 POST 请求相关的参数作为一个单独的 HTTP 请求从浏览器发送到服务器。当需要修改服务器端的数据时，应该使用 doPost() 方法。
+= 当一个客户通过 HTML 表单发出一个 HTTP GET 请求或直接请求一个 URL 时， doGet() 方法被调用。 与 GET 请求相关的参数添加到 URL 的后面，并与这个请求一起发送。当不会修改服务器端的数据时，应该使用 doGet() 方法。
+Servlet 的响应可以是下列几种类型：
+一个输出流，浏览器根据它的内容类型（如 text/HTML ）进行解释。
+一个 HTTP 错误响应 , 重定向到另一个 URL 、 servlet 、 JSP 。
+(3) destroy() 方法
+destroy() 方法仅执行一次，即在服务器停止且卸装 Servlet 时执行该方法。典型的，将 Servlet 作为服务器进程的一部分来关闭。缺省的 destroy() 方法通常是符合要求的，但也可以覆盖它，典型的是管理服务器端资源。例如，如果 Servlet 在运行时会累计统计数据，则可以编写一个 destroy() 方法，该方法用于在未装入 Servlet 时将统计数字保存在文件中。另一个示例是关闭数据库连接。
+当服务器卸装 Servlet 时，将在所有 service() 方法调用完成后，或在指定的时间间隔过后调用 destroy() 方法。一个 Servlet 在运行 service() 方法时可能会产生其它的线程，因此请确认在调用 destroy() 方法时，这些线程已终止或完成。
+(4) GetServletConfig（）方法
+GetServletConfig （）方法返回一个 ServletConfig 对象，该对象用来返回初始化参数和 ServletContext 。 ServletContext 接口提供有关 servlet 的环境信息。
+(5) GetServletInfo（）方法
+GetServletInfo （）方法是一个可选的方法，它提供有关 servlet 的信息，如作者、版本、版权。
+当服务器调用 sevlet 的 Service （）、 doGet （）和 doPost （）这三个方法时，均需要 “请求”和“响应”对象作为参数。“请求”对象提供有关请求的信息，而“响应”对象提供了一个将响应信息返回给浏览器的一个通信途径。 javax.servlet 软件包中的相关类为 ServletResponse 和 ServletRequest ，而 javax.servlet.http 软件包中的相关类为 HttpServletRequest 和 HttpServletResponse 。 Servlet 通过这些对象与服务器通信并最终与客户机通信。 Servlet 能通过调用“请求”对象的方法获知客户机环境，服务器环境的信息和所有由客户机提供的信息。 Servlet 可以调用“响应”对象的方法发送响应，该响应是准备发回客户机的。
+13. JSP的缺点？ 
+ 1.对JAVA程序进行调试没有好东东
+2.因大多数的servlet引擎不支持connection pooling
+3.Servlet引擎没有标准
+4.JSP与其它脚本语言的交互
+
+

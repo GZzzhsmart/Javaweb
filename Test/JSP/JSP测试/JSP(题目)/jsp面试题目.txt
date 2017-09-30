@@ -1,0 +1,176 @@
+JSP面试题及答案
+1、如何混合使用Jsp和SSI #include?  
+在JSP中可以使用如下方式包含纯HTML：  
+<!--#include file="data.inc"-->  
+但是如果data.inc中包含JSP CODE ，我们可以使用：  
+<%@include file="data.inc"%>   
+ 
+ 
+2、如何执行一个线程安全的JSP?  
+只需增加如下指令  
+<%@ page isThreadSafe="false" %>  
+ 
+ 
+3、JSP如何处理HTML FORM中的数据?  
+通过内置的request对象即可，如下：  
+<%  
+String item = request.getParameter("item");  
+int howMany = new Integer(request.getParameter("units")).intValue();  
+%>  
+ 
+ 
+4、在JSP如何包含一个静态文件?  
+静态包含如下：<%@ include file="copyright.html" %>  
+动态包含如下：<jsp:include page="copyright.html" flush="true"/>  
+ 
+ 
+5、在JSP中如何使用注释?  
+主要有四中方法：  
+1。<%-- 与 --%>  
+2。//  
+3。/**与**/  
+4。<!--与-->  
+ 
+ 
+6、在JSP中如何执行浏览重定向?  
+使用如下方式即可：response.sendRedirect("http://ybwen.home.chinaren.com/index.html");  
+也能物理地改变HTTP HEADER属性，如下：  
+<%  
+response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);  
+String newLocn="/newpath/index.html";  
+response.setHeader("Location",newLocn);  
+%>  
+ 
+ 
+7、如何防止在JSP或SERVLET中的输出不被BROWSER保存在CACHE中?  
+把如下脚本加入到JSP文件的开始即可：  
+<%  
+response.setHeader("Cache-Control","no-store"); //HTTP 1.1  
+response.setHeader("Pragma","no-cache"); //HTTP 1.0  
+response.setDateHeader ("Expires", 0); //prevents caching at the proxy server  
+%>  
+ 
+ 
+8、在JSP中如何设置COOKIE?  
+COOKIE是作为HTTP HEADER的一部分被发送的，如下方法即可设置：  
+<%  
+Cookie mycookie = new Cookie("aName","aValue");  
+response.addCookie(mycookie);  
+%>  
+ 
+ 
+9、在JSP中如何删除一个COOKIE?  
+<%  
+Cookie killMyCookie = new Cookie("mycookie", null);  
+killMyCookie.setMaxAge(0);  
+killMyCookie.setPath("/");  
+response.addCookie(killMyCookie);  
+%>  
+ 
+ 
+10、在一个JSP的请求处理中如何停止JSP的执行  
+如下例：  
+<%  
+if (request.getParameter("wen") != null) {  
+// do something  
+} else {  
+return;  
+}  
+%>  
+ 
+ 
+11、在JSP中如何定义方法  
+你可以定义方法，但是你不能直接访问JSP的内置对象，而是通过参数的方法传递。如下：  
+<%!  
+public String howBadFrom(HttpServletRequest req) {  
+HttpSession ses = req.getSession();  
+...  
+return req.getRemoteHost();  
+}  
+%>  
+<%  
+out.print("in general,lao lee is not baddie ");  
+%>  
+<%= howBadFrom(request) %>  
+ 
+ 
+12、如果BROWSER已关闭了COOKIES，在JSP中我如何打开SESSION来跟踪  
+使用URL重写即可，如下：  
+hello1.jsp  
+<%@ page session="true" %>  
+<%  
+Integer num = new Integer(100);  
+session.putValue("num",num);  
+String url =response.encodeURL("hello2.jsp");  
+%>  
+<a href=<%=url%>>hello2.jsp</a>  
+ 
+hello2.jsp  
+<%@ page session="true" %>  
+<%  
+Integer i= (Integer )session.getValue("num");  
+out.println("Num value in session is "+i.intValue());  
+%>  
+ 
+ 
+13、在JSP中能发送EMAIL吗  
+可以使用SUN的专用包：sun.net.smtp包。如下脚本使用SmtpClient类发送EMAIL。  
+<%@ page import="sun.net.smtp.SmtpClient, java.io.*" %>  
+<%  
+String from="ybwen@sina.com";  
+String to="hewenjun@yeah.net, lei@who.com.cn";  
+try{  
+SmtpClient client = new SmtpClient("mail.xxxxx.xxx");  
+client.from(from);  
+client.to(to);  
+PrintStream message = client.startMessag
+ 
+ 
+26、如何在JSP中包括绝对路径文件？  
+使用URLConnection即可。  
+ 
+ 
+27、在servlets和JSP之间能共享session对象吗？  
+当然可以，  
+HttpSession session = request.getSession(true);  
+session.putValue("variable","value");  
+ 
+ 
+28、JavaScript的变量能复制到JSP的SESSION中吗？  
+ 
+ 
+29、如何设置cookie在某一时间后过期？  
+用Cookie.setMaxAge(int)  
+ 
+ 
+30、如何获得当前的sessions数？  
+可以使用HttpSessionBindingListeners来跟踪  
+ 
+ 
+31、能设置一些代码在我所有的JSP文件之上运行？如果可以，能共享吗？  
+当然可以,可以为你的JSP文件定义一个别名:/jsp/=ybwen.genius.myPreprocessingServlet,而以/jsp/为前缀的文件可以使用  
+ 
+ 
+32、对一个JSP页，如果多个客户端同时请求它，同步可能吗？  
+在jsp:useBean语法中使用beanName有何好处？  
+beanName使用Beans.instantiate()初始化Bean  
+ 
+ 
+33、当我使用<jsp:forward>时，在浏览器的地址栏没有改变？  
+使用response.sendRedirect("newURL")  
+ 
+ 
+34、如何转换JSP 0.9版本的文件到JSP1.1?  
+可使用sed/awk即可  
+ 
+ 
+35、使用JSP能设置HTML FORM中输入域的焦点，不用JavaScript?  
+没办法  
+ 
+ 
+36、使用JSP连接到数据库连接缓冲池的最好方法是什么？  
+1.使用JDBC2。0中带有此服务的Driver  
+2.使用提供有此服务的Application server  
+3.自己写 
+ 
+

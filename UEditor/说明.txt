@@ -1,0 +1,26 @@
+1、在线编辑器需要在web.xml中配置一个过滤器，该编译器自定义了一个jxp服务器端，需要自定义一个过滤器，屏蔽该jsp服务器，转到action中
+<filter>
+    
+	<filter-name>Struts2</filter-name>
+    
+	<filter-class>com.ht.filter.UEditorFilter</filter-class>
+    
+	<init-param>
+      
+		<param-name>config</param-name>
+     
+	 <param-value>struts-default.xml,struts-plugin.xml,../config/struts.xml</param-value>
+    </init-param>
+  
+</filter>
+<filter-mapping>
+   
+	 <filter-name>Struts2</filter-name>
+    
+	<url-pattern>/*</url-pattern>
+  
+</filter-mapping>
+2、如果不上传图片，则不配过滤器也不会有影响，编辑器上传图片时，在lib\ueditor\jsp\config.json中需要更改如下配置，如要实现截图等功能都要修改访问路径和保存地址
+"imageUrlPrefix": "/SaleHome", /* 图片访问路径前缀，项目名称就可以 ，用于上传成功后，显示在在线编辑器中*/
+    
+"imagePathFormat": "/upfile/{yyyy}{mm}{dd}/{time}{rand:6}", /* 上传保存路径,可以自定义保存路径和文件名格式 ，文件保存的路径*/

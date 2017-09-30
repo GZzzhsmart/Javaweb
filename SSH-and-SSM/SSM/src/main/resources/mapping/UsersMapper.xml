@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gs.dao.UsersDAO">
+
+    <resultMap id="userMap" type="com.gs.mapping.Users">
+        <id property="userid" column="userid"></id>
+        <result property="username" column="username"></result>
+        <result property="password" column="password"></result>
+        <result property="email" column="email"></result>
+        <result property="phone" column="phone"></result>
+        <!--多对一 -->
+        <association property="hero" javaType="com.gs.mapping.Hero">
+            <id property="heroid" column="heroid"></id>
+            <result property="heroname" column="heroname"></result>
+        </association>
+        <!--多对一 -->
+        <association property="prop" javaType="com.gs.mapping.Prop">
+            <id property="propid" column="propid"></id>
+            <result property="propname" column="propname"></result>
+        </association>
+        <!--一对多 -->
+        <collection property="dealList" javaType="java.util.List" ofType="com.gs.mapping.Deal">
+            <id property="dealid" column="dealid"></id>
+            <result property="created_time" column="created_time"></result>
+            <!-- 多对一-->
+            <association property="users" javaType="com.gs.mapping.Users">
+                <id property="userid" column="userid"></id>
+                <result property="username" column="username"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <insert id="addUser" useGeneratedKeys="true" parameterType="com.gs.mapping.Users">
+        <![CDATA[
+        insert into user (username,password,email,phone,heroid,propid) values (#{username},#{password},#{email},#{phone},#{heroid},#{propid})
+      ]]>
+    </insert>
+
+    <delete id="delUser" parameterType="com.gs.mapping.Users">
+        <![CDATA[
+          delete from user where userid=#{userid}
+        ]]>
+    </delete>
+
+    <update id="updateUsers" parameterType="com.gs.mapping.Users">
+        <![CDATA[
+          update user set username=#{username},password=#{password},email=#{email},phone=#{phone},heroid=#{heroid},propid=#{propid} where userid=#{userid}
+        ]]>
+    </update>
+
+    <select id="getUsersById" resultMap="userMap" parameterType="java.lang.Integer">
+        <![CDATA[
+        select * from user where userid=#{userid}
+      ]]>
+    </select>
+
+    <select id="getUsersList" parameterType="int" resultMap="userMap">
+        <![CDATA[
+          select u.userid,u.username,u.email,u.phone,h.heroid as heroid,h.heroname,p.propid
+          as propid,p.prorname,d.created_time as created_time
+          from user u,hero h,prop p,deal d where u.propid=p.propid
+          and u.heroid=h.heroid and d.userid = u.userid
+        ]]>
+    </select>
+
+    <select id="listByUserId" parameterType="java.lang.Integer" resultMap="userMap">
+        <![CDATA[
+             select d.*, u.userid as u_userid, u.username, h.heroid as h_id, h.heroname, p.propid as p_propid, p.prorname from deal d
+          join user u on d.userid = u.userid
+          join hero h on h.heroid = u.heroid
+          join prop p on p.propid = u.propid;
+        ]]>
+    </select>
+
+</mapper>

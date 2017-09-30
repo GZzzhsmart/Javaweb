@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gs.dao.StuDAO">
+
+    <resultMap id="stuMap" type="com.gs.mapping.Stu">
+        <id property="stuId" column="stuId"/>
+        <result property="stuName" column="stuName"/>
+        <result property="stuAge" column="stuAge"/>
+        <result property="stuMajor" column="stuMajor"/>
+        <result property="birthday" column="birthday"/>
+    </resultMap>
+
+    <insert id="addStu" useGeneratedKeys="true" parameterType="com.gs.mapping.Stu">
+        <selectKey keyProperty="stuId" resultType="java.lang.String" order="BEFORE">
+            select  replace (uuid(),'-','')   from dual
+        </selectKey>
+        insert into stu (stuId,stuName,stuAge,stuMajor,birthday) values (#{stuId},#{stuName},#{stuAge},#{stuMajor},#{birthday})
+    </insert>
+
+    <delete id="delStu" parameterType="com.gs.mapping.Stu">
+        <![CDATA[
+          delete from stu where stuId=#{stuId}
+        ]]>
+    </delete>
+
+    <update id="updateStu" parameterType="com.gs.mapping.Stu">
+        <![CDATA[
+          update stu set stuName=#{stuName},stuAge=#{stuAge},stuMajor=#{stuMajor},birthday=#{birthday} where stuId=#{stuId}
+        ]]>
+    </update>
+
+    <select id="getStuById" resultMap="stuMap" parameterType="java.lang.String">
+      <![CDATA[
+        select * from stu where stuId=#{stuId}
+      ]]>
+    </select>
+
+    <select id="getStuList" parameterType="int" resultMap="stuMap">
+        <![CDATA[
+          select * from stu
+        ]]>
+    </select>
+</mapper>

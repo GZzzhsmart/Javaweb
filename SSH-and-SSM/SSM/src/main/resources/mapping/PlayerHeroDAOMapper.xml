@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gs.dao.PlayerHeroDAO">
+
+    <!--批量新增-->
+    <insert id="saveHeros">
+        <![CDATA[
+          insert into t_player_hero(player_id, hero_id) values
+        ]]>
+        <foreach collection="array" item="heroId" separator=",">
+            (#{playerId}, #{heroId})
+        </foreach>
+    </insert>
+
+</mapper>

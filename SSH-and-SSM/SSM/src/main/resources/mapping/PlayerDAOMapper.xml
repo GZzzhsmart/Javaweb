@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gs.dao.PlayerDAO">
+
+    <resultMap id="playerMap" type="player">
+
+    </resultMap>
+
+    <select id="getByName" parameterType="string" resultMap="playerMap">
+      <![CDATA[
+        select * from t_player where realname = #{realname}
+        ]]>
+    </select>
+
+    <select id="getByPager" resultMap="playerMap">
+        <![CDATA[
+        select * from t_player limit #{beginIndex}, #{pageSize}
+        ]]>
+    </select>
+
+</mapper>

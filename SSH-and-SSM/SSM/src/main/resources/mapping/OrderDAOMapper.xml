@@ -1,0 +1,82 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    MyBatis如何完成结果集到对象的封装？
+    查询结果集的字段的别名与对象的属性一致，则把字段对应的结果放入属性中
+
+    result配置中的column对应的是查询结果的别名
+
+    需求分步走：
+    用户：
+    1）不需要关联到t_user表
+    2）关联到t_order_item表
+    3）关联到t_product表
+
+    管理员：
+    1）需要关联到t_user表
+    2）关联到t_order_item表
+    3）关联到t_product表
+
+-->
+<mapper namespace="com.gs.dao.OrderDAO">
+    <resultMap id="orderMap" type="order">
+        <id property="id" column="id" />
+        <result property="orderTime" column="order_time" />
+        <!--
+        <association property="user" resultMap="userMap">
+        </association>
+        -->
+        <!--多对一关系 property: 指的是属性的值, javaType：指的是属性的类型-->
+        <association property="user" javaType="com.gs.mapping.User">
+            <id property="id" column="u_id" />
+            <result property="name" column="name" />
+        </association>
+        <!--一对多关系  property: 指的是集合属性的值, ofType：指的是集合中元素的类型-->
+        <collection property="orderItemList" javaType="java.util.List" ofType="com.gs.mapping.OrderItem">
+            <id property="id" column="item_id" />
+            <result property="totalCost" column="total_cost" />
+            <association property="product" javaType="com.gs.mapping.Product">
+                <id property="id" column="p_id" />
+                <result property="title" column="title" />
+            </association>
+        </collection>
+
+    </resultMap>
+
+    <!--
+    <resultMap id="userMap" type="user">
+        <id property="id" column="u_id" />
+        <result property="name" column="name" />
+    </resultMap>
+    -->
+
+    <select id="listByUserId" parameterType="int" resultMap="orderMap">
+        <!--
+        select o.*, u.id as u_id, u.name, i.id as item_id, i.total_cost, p.id as p_id, p.title from t_order o
+          join t_user u on o.user_id = u.id
+          join t_order_item i on i.order_id = o.id
+          join t_product p on p.id = i.product_id;
+        -->
+      <![CDATA[
+          select o.*, u.id as u_id, u.name,i.id as item_id, i.total_cost, p.id as p_id, p.title
+          from t_order o, t_user u, t_order_item i, t_product p
+          where o.id = i.order_id and o.user_id = u.id and p.id = i.product_id;
+        ]]>
+    </select>
+
+    <select id="listByOrderIds" resultMap="orderMap">
+        <![CDATA[
+          select * from t_order where id in
+        ]]>
+        <!-- 对集合进行foreach循环，并且转换成,分割的形式，多用于in语句
+        传递进来的参数是List,则collection为list
+        传递进来的参数是数组，则Collection为array
+        item表示集合中每一次迭代拿出来的单个数据
+        -->
+        <foreach collection="list" open="(" close=")" separator="," item="orderId">
+            #{orderId}
+        </foreach>
+    </select>
+</mapper>

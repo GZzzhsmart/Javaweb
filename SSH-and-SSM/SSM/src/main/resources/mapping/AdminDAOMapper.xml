@@ -1,0 +1,74 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gs.dao.AdminDAO">
+
+    <!-- 类似于hibernate里对象映射，字段与属性的映射
+
+    用于返回结果时直接把数据库结果封装为JavaBean，不需要显式地说明每一个字段
+    类的属性：
+    1）如果没有驼峰式，则属性即字段
+    2）如果有驼峰式，则把属性变成带有_的字段
+    -->
+    <resultMap id="adminMap" type="admin">
+    </resultMap>
+
+    <!-- id 值与dao接口里的方法名保持一致
+        parameterType可以使用对象方式，些对象是javabean 的别名
+        如果要引用类里的属性或者其他的参数值，#{}来引用
+    -->
+    <insert id="save" parameterType="admin">
+        <![CDATA[
+          insert into t_admin(phone, password) values(#{phone}, #{password});
+        ]]>
+    </insert>
+
+    <!-- 一个参数值的情况 -->
+    <select id="getByPhone" parameterType="string" resultMap="adminMap">
+        <![CDATA[
+          select * from t_admin where phone = #{phone}
+        ]]>
+    </select>
+
+    <delete id="removeById" parameterType="Integer">
+        delete from t_admin where id=#{id}
+    </delete>
+
+    <!-- 动态SQL语句-->
+    <update id="update" parameterType="admin">
+        <![CDATA[
+            update t_admin
+        ]]>
+        <set>
+            <if test="phone !=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="password !=null and password!=''">
+                password=#{password}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateByPhone">
+        <![CDATA[
+            update t_admin set phone=#{admin.phone},password=#{admin.password} where phone=#{phone}
+        ]]>
+    </update>
+
+    <select id="queryByCriteria" resultMap="adminMap">
+        select * from t_admin
+        <where>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="address != null and address != ''">
+                and address like concat('%', #{address}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

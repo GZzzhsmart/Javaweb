@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gs.dao.PropDAO">
+
+    <resultMap id="propMap" type="prop">
+
+    </resultMap>
+
+    <select id="listByPager" resultMap="propMap">
+        <![CDATA[
+          select * from t_prop limit #{beginIndex}, #{pageSize}
+        ]]>
+    </select>
+
+</mapper>

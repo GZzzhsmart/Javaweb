@@ -1,0 +1,14 @@
+log4j
+    SSH
+    如果项目中只使用了log4j，则只使用的是log4j的类与方法
+
+logback
+    SSM
+    如果项目中只使用了logback，则只使用的是logback的类与方法
+
+slf4j
+    日志接口
+    slf4j+log4j,使用的过程中，使用slf4j提供的接口
+
+    slf4j+logback,使用的过程中，使用slj提供的接口
+

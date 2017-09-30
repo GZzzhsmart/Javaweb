@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_131"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="E:/oracle/product/10.2.0/db_1/jdbc/lib/classes12.jar"/>
+	<classpathentry kind="lib" path="E:/oracle/product/10.2.0/db_1/jdbc/lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="D:/FeigeDownload/XML/jdom.jar"/>
+	<classpathentry kind="lib" path="D:/FeigeDownload/XML/jaxen-core.jar"/>
+	<classpathentry kind="lib" path="D:/FeigeDownload/XML/jaxen-jdom.jar"/>
+	<classpathentry kind="lib" path="D:/FeigeDownload/XML/xml-apis.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

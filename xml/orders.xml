@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orders>
+   <order>
+      <customerid limit="1000">12341</customerid>
+      <status>pending</status>
+      <item instock="Y" itemid="SA15">
+         <name>Silver Show Saddle, 16 inch</name>
+         <price>825.00</price>
+         <qty>1</qty>
+      </item>
+      <item instock="N" itemid="C49">
+         <name>Premium Cinch</name>
+         <price>49.00</price>
+         <qty>1</qty>
+      </item>
+   </order>
+   <order>
+      <customerid limit="150">251222</customerid>
+      <status>pending</status>
+      <item instock="Y" itemid="WB78">
+         <name>Winter Blanket (78 inch)</name>
+         <price>20</price>
+         <qty>10</qty>
+      </item>
+   </order>
+</orders>
+

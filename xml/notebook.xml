@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NoteBookComputerPrice>
+	<Ti>最新的笔记本电脑报价单</Ti>
+	<NoteBookComputer id="p1001">
+	aaaaaaaaaaaaaaaaaaaaaaaaa
+		<Style>联想G475</Style>
+		<Cpu>i3 2.3G</Cpu>
+		<RAM>4GB</RAM>
+		<Monitor>15</Monitor>
+		<Price MoneyKind="RMB">3900</Price>
+	</NoteBookComputer>
+	<NoteBookComputer id="p1002">
+		<Style>lenovo 550</Style>
+		<Cpu>I5</Cpu>
+		<RAM>8GB</RAM>
+		<Monitor>15</Monitor>
+		<Price MoneyKind="RMB">6500</Price>
+	</NoteBookComputer>
+</NoteBookComputerPrice>

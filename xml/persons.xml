@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="gbk"?>
+<persons>
+  <person 编号="P001">
+    <username>小赖子</username>
+    <age>22</age>
+    <sex>男</sex>
+    <cardno>362426199801160013</cardno>
+    <hobbit>篮球</hobbit>
+  </person>
+</persons>
+

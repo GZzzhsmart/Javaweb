@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="gbk"?>
+<MyInfo comment="introduce myself">
+  <name>Smith</name>
+  <sex value="male"/>
+  <contact>
+    <telephone>18720865791</telephone>
+  </contact>
+</MyInfo>

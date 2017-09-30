@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 对话框的使用 </title>
+  <script type="text/javascript">
+		function test1(){
+			alert("弹出对话框");
+		}
+		function test2(){
+			//确认对话框confirm
+			if(confirm('确认删除')){
+				alert("删除成功");
+			}else{
+				alert("取消删除");
+			}
+		}
+		function test3(){
+			//输入对话框prompt
+			var age = prompt("请输入你的年龄","0");
+			alert(age);
+		}
+  </script>
+ </head>
+
+ <body>
+  <h1>三种不同的对话框</h1>
+	<input type="button" value="弹出对话框" onclick="test1();"></br>
+	<input type="button" value="确认对话框" onclick="test2();"></br>
+	<input type="button" value="输入对话框" onclick="test3();"></br>
+
+ </body>
+</html>

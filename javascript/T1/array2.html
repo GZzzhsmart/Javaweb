@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 数组的使用 </title>
+ </head>
+
+ <body>
+  <h1>数组的使用</h1>
+  <hr/>
+  <script type="text/javascript">
+	//创建二维数组
+	var province = new Array(
+		new Array("1","江西省"),
+		new Array("2","广东省","广州市"),
+		new Array("3","湖南省","长沙市","郴州市"),
+		new Array("4","湖北省","武汉市","黄石市","黄冈市")
+	);
+	//给单个元素赋值
+	province[0][1]="北京市";
+	var i,j;
+	for(i=0;i<province.length;i++)
+	{
+		for(j=0;j<province[i].length;j++){
+			document.write(province[i][j]+"==============");
+		}
+		document.write("<br/>");
+	}
+	function closeWin(){
+		window.close();
+	}
+  </script>
+
+	<input type="button" value="关闭窗口" onclick="closeWin();">
+ </body>
+</html>

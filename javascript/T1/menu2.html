@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 菜单演示</title>
+  <style>
+	#navigation, #navigation li ul { list-style-type:none; } 
+	#navigation li { float:left; text-align:center; position:relative; } 
+	#navigation li a:link, #navigation li a:visited { display:block; text-decoration:none; color:#000; width:120px; height:40px; line-height:40px; border:1px solid #fff; border-width:1px 1px 0 0; background:#2687eb;  padding-left:10px; } 
+	#navigation li a:hover { color:#fff; background:#2687eb; } 
+	#navigation li ul li a:hover { color:#fff; background:#6b839c; } 
+	#navigation li ul {display:none; position:absolute;top:40px; left:0; margin-top:1px; width:120px; } 
+  </style>
+  <script type="text/javascript">
+	//onmouseover:当鼠标移到某个标签的上面时会触发该事件
+	//onmouseout:当鼠标离开某个标签的上面时会触发该事件
+	//显示子菜单
+	/*
+		display:显示或者隐藏
+				block:显示
+				none:隐藏
+	*/
+	  function displaySubMenu(li) { 
+		  //getElementsByTagName：通过标签的名称获取标签
+			var subMenu = li.getElementsByTagName("ul")[0]; 
+			subMenu.style.display = "block"; 
+		} 
+		function hideSubMenu(li) { 
+			var subMenu = li.getElementsByTagName("ul")[0]; 
+			subMenu.style.display = "none"; 
+		}
+  </script>
+ </head>
+
+ <body>
+ <!--
+	<script type="text/javascript" src="menu.js"></script>
+-->
+    	<ul id="navigation">
+			<li onmouseover="displaySubMenu(this)" onmouseout="hideSubMenu(this)"> 
+        	<a href="#">信息录入</a>
+				<ul>
+					<li><a href="#">导入房屋信息</a></li>
+					<li><a href="#">新增房屋信息</a></li>
+					<li><a href="#">房屋信息列表</a></li>
+					<li><a href="#">查看上传文件</a> </li>
+					<li><a href="#">下载报表文件</a></li>  
+				</ul>        	
+        	</li>
+			<li onmouseover="displaySubMenu(this)" onmouseout="hideSubMenu(this)"> 
+            	<a href="#">统计报表</a>
+            	<ul>	
+            		<li><a href="#">房屋销售统计表</a></li>
+					<li><a href="#">房屋信息统计报表</a></li>
+					<li><a href="#">佣金统计表</a></li>
+					<li><a href="#">应收账款贷款节点统计表</a></li>
+					<li><a href="#">按揭回款统计表</a></li>
+					<li><a href="#">待放款统计表</a></li>
+					<li><a href="#">待审批统计表</a></li>
+					<li><a href="#">付款方式统计表</a></li>
+					<li><a href="#">房产证统计表</a></li>
+					<li><a href="#">他项权证统计表</a></li>
+            		<li><a href="#">应收房款统计表</a></li>
+            	</ul>
+            </li>
+			<li onmouseover="displaySubMenu(this)" onmouseout="hideSubMenu(this)"> 
+            	<a href="#">明细报表</a>
+				<ul>
+					<li><a href="#">房屋信息列表</a></li>
+					<li><a href="#">签约情况表</a></li>
+					<li><a href="#">认购明细表</a></li>
+					<li><a href="#">按揭情况表</a></li>
+					<li><a href="#">应收购房款明细表</a></li>
+					<li><a href="#">资料齐全明细表</a></li>
+					<li><a href="#">提交银行明细表</a></li>
+					<li><a href="#">待审批明细表</a></li>
+					<li><a href="#">待放款明细表</a></li>
+					<li><a href="#">他项权证明细表</a></li>
+					<li><a href="#">按揭保证金释放表</a></li>
+					<li><a href="#">房产证办理明细表</a></li>
+				</ul>
+            </li>
+			<li onmouseover="displaySubMenu(this)" onmouseout="hideSubMenu(this)"> 
+            	<a href="#">系统设置</a>
+				<ul>
+			   	   <li><a href="#">项目名称设置</a> </li>
+			   	   <li><a href="#">地块资料设置</a> </li>
+			   	   <li><a href="#">楼栋资料设置</a> </li>
+			       <li><a href="#">销售类型设置</a> </li>
+			       <li><a href="#">付款方式设置</a> </li>
+			       <li><a href="#">按揭银行设置</a> </li>
+			       <li><a href="#">客户定义设置</a> </li>
+			       <li><a href="#">计划时间设置</a></li>
+		       </ul>
+            </li>
+			<li onmouseover="displaySubMenu(this)" onmouseout="hideSubMenu(this)"> 
+            	<a href="#">用户管理</a>
+				<ul>
+			   	   <li><a href="#">新增用户</a> </li>
+			   	   <li><a href="#">用户资料</a></li>
+			   	   <li><a href="#">权限管理</a> </li>
+			       <li><a href="#">修改资料</a></li>
+				</ul>
+            </li>
+            <li id="m_6" ><a href="#">更改项目</a></li>
+            <li><a href="#">管理中心</a></li>
+            <li><a href="#">修改密码</a></li>            
+            <li><a href="#">安全退出</a></li>
+        </ul>
+ </body>
+</html>

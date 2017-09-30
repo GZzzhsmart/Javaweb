@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 实现计算器 </title>
+	<script type="text/javascript">
+		function calc(){
+			//获取控件的值
+			var num1 = form1.num1.value;
+			var num2 = form1.num2.value;
+			var opr = form1.opr.value;
+			if(num1==""){
+				alert("请输入第一个参数的值");
+				//给控件设置焦点
+				form1.num1.focus();
+				return;
+			}
+			//判断值是否为合法的number值:isNaN
+			if(isNaN(num1)){
+				alert("参数一含有非法字符，请输入0~9之间的数字");
+				form1.num1.value="";//清空文本框的内容
+				form1.num1.focus();
+				return;
+			}
+			if(num2==""){
+				alert("请输入第二个参数的值");
+				//给控件设置焦点
+				form1.num2.focus();
+				return;
+			}
+			if(isNaN(num2)){
+				alert("参数二含有非法字符，请输入0~9之间的数字");
+				form1.num2.value="";//清空文本框的内容
+				form1.num2.focus();
+				return;
+			}
+			/*
+				把字符串转换为整形：parseInt
+				把字符串转换为浮点型：parseFloat
+			*/
+			if(opr=="+"){
+				form1.result.value=parseFloat(num1)+parseFloat(num2);
+			}else if(opr=="-"){
+				form1.result.value=parseFloat(num1)-parseFloat(num2);
+			}else if(opr=="*"){
+				form1.result.value=parseFloat(num1)*parseFloat(num2);
+			}else if(opr=="/"){
+				form1.result.value=parseFloat(num1)/parseFloat(num2);
+			}
+		}
+	</script>
+ </head>
+ <body>
+  <h1>实现计算器</h1>
+  <form action="" method="post" name="form1">
+	<input type="text" name="num1">
+	<select name="opr">
+		<option value="+">加</option>
+		<option value="-">减</option>
+		<option value="*">乘</option>
+		<option value="/">除</option>
+	</select>
+	<input type="text" name="num2">
+	<input type="button" value="=" onclick="calc();">
+	<input type="text" name="result">
+  </form>
+ </body>
+</html>

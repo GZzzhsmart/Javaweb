@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 数组的使用 </title>
+ </head>
+
+ <body>
+  <h1>数组的使用</h1>
+  <hr/>
+  <script type="text/javascript">
+	var province = new Array(3);
+	province[0]="江西省";
+	province[1]="广东省";
+	province[2]="湖南省";
+	var i;
+	for(i=0;i<province.length;i++)
+	{
+		document.write(province[i] +"<br/>");
+	}
+
+	var score=new Array(
+		80,90,60,50,30,88,99,100,78,92
+	);
+	for(i=0;i<score.length;i++)
+	{
+		document.write(score[i] +"<br/>");
+	}
+	document.write("数组排序以后的结果<br/>");
+	score.sort();
+	for(i=0;i<score.length;i++)
+	{
+		document.write(score[i] +"<br/>");
+	}
+	document.write("数组反转后的结果<br/>");
+	score.reverse();
+	for(i=0;i<score.length;i++)
+	{
+		document.write(score[i] +"<br/>");
+	}
+  </script>
+
+ </body>
+</html>

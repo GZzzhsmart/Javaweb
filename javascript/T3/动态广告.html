@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 猜数字游戏 </title>
+  <script type="text/javascript">
+
+	//定义数组
+	var adpic = [
+	["images/banner.jpg","http://www.sina.com.cn"],
+	["images/banner1.jpg","http://www.qq.com"],
+	["images/banner2.jpg","http://www.baidu.com"],
+	["images/banner3.jpg","http://www.cctv.com.cn"],
+	["images/banner4.jpg","http://www.csdn.net"]];
+	var index=0,index2=0;
+	var msg = "这是一个充满生机与活力的年代，请大家好好珍惜....";
+	function initad(){
+		index = index % 5;
+		var imgaddr = adpic[index][0];
+		var url = adpic[index][1];
+		var imgid = document.getElementById("adpic");
+		var linkurl = document.getElementById("url");
+		imgid.src=imgaddr;
+		linkurl.href=url;
+		index++;
+	}
+	function displays(){
+		
+		//确保index2的值不会大于字符串的长度
+		index2 = index2 % msg.length;
+		if(index2==0) index2=1;
+		/*
+			substring:求子串
+			参数1：开始位置；
+			参数2：字符个数（结束位置);
+		*/
+		var str = msg.substring(0,index2);
+		//alert(str);
+		document.getElementById('displaymsg').innerHTML=str;
+		index2++;
+	}
+	//猜数字游戏
+	//生成一个随机数
+	var guess = parseInt(Math.random()*100);
+
+	function guessFunc(){
+		var num = document.getElementById('num').value;
+		if(num==""){
+			alert('请输入你要猜的数字');
+			return;
+		}
+		if(isNaN(num)){
+			alert('请输入0~100之间的数字');
+			return;
+		}
+		if(guess>parseInt(num)){
+			alert("您输入的数字太小了");
+			return;
+		}else if(guess<parseInt(num)){
+			alert("您输入的数字太大了");
+			return;
+		}
+		alert("恭喜你猜对了");
+	}
+	setInterval('displays()',300);
+  </script>
+ </head>
+
+ <body onload="setInterval('initad()',1000);">
+  <table align="center" width="1000" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+	<td>
+		<a href="" id="url" target="_blank"><img id="adpic" src="" border="0" width="1000" height="150"></a>
+	</td>
+  </tr>
+  <tr  bgcolor="pink">
+	<td id="displaymsg">
+	
+	</td>
+  </tr>
+  <tr height="200">
+	<td align="center">
+			<h1>猜数字游戏</h1>
+			请输入一个0~100之间的数字:<input type="text" name="num" id="num">
+			<input type="button" value="猜一猜" onclick="guessFunc();">
+	</td>
+  </tr>
+
+  </table>
+ </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> parseInt函数的使用 </title>
+	<script type="text/javascript">
+		//取控件的值：表单名称.控件名称.value
+		//var num1=form1.num1.value;
+		
+		function strToNum(base){
+			var num1=document.getElementById("num1").value;
+			//把指定数制字符串转换为10机制数字
+			var result = parseInt(num1,base);
+			var msg="";
+			switch(base){
+				case 2:
+					msg=num1+"为2进制字符串转换为10机制的结果是："+result;
+					break;
+				case 8:
+					msg=num1+"为8进制字符串转换为10机制的结果是："+result;
+					break;
+				case 10:
+					msg=num1+"为10进制字符串转换为10机制的结果是："+result;
+					break;
+				case 16:
+					msg=num1+"为16进制字符串转换为10机制的结果是："+result;
+					break;
+			}
+			document.getElementById('div1').innerHTML=msg;
+		}
+
+	</script>
+ </head>
+
+ <body>
+  <h1>parseInt函数的使用</h1>
+  <hr>
+  <input type="text" name="num1" id="num1" size="20" maxlength="20"><br/>
+  <input type="button" name="btn1" value="把2进制的字符串转换为10机制数字" onclick="strToNum(2);"><br/>
+  <input type="button" name="btn2" value="把8进制的字符串转换为10机制数字" onclick="strToNum(8);"><br/>
+  <input type="button" name="btn3" value="把10进制的字符串转换为10机制数字" onclick="strToNum(10);"><br/>
+  <input type="button" name="btn4" value="把16进制的字符串转换为10机制数字" onclick="strToNum(16);"><br/>
+  <div id="div1">
+  </div>
+ </body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>创建和使用对象 </title>
+  
+ </head>
+
+ <body>
+  <h1>创建和使用对象</h1>
+  <hr/>
+  <script type="text/javascript">
+		//定义对象
+		function Employee(id,name,age,sex){
+			this.id=id;
+			this.name=name;
+			this.age=age;
+			this.sex=sex;
+		}
+		//使用对象
+		var emp = new Employee("ht01","张三","30","男");
+		document.write("员工id="+emp.id +"<br/>");
+		document.write("员工姓名="+emp.name +"<br/>");
+		document.write("员工年龄="+emp.age +"<br/>");
+		document.write("员工性别="+emp.sex +"<br/>");
+		document.write("<hr/>");
+		//省略相同的js代码，就可以使用with语句
+		with(document){
+			write("员工id="+emp.id +"<br/>");
+			write("员工姓名="+emp.name +"<br/>");
+			write("员工年龄="+emp.age +"<br/>");
+			write("员工性别="+emp.sex +"<br/>");
+		}
+		var r=10;
+		with(Math){
+			document.write("半径="+r+"的圆的面积是:"+PI*r*r +"<br/>");
+			document.write("60度的角的正弦值="+sin(PI/3) +"<br/>");
+			document.write("60度的角的余弦值="+cos(PI/3) +"<br/>");
+		}
+  </script>
+ </body>
+</html>

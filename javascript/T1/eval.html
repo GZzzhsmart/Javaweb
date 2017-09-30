@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>eval函数的使用 </title>
+  <script type="text/javascript">
+	function check(source){
+
+		//eval函数：评估一个字符串是否为合法的javascript语句，如果是合法的javascript语句，就执行并返回结果,
+		//反之报错，返回undefined
+		alert(eval(source));
+	
+	}
+
+  </script>
+ </head>
+
+ <body>
+  <h1>eval函数的使用</h1>
+  <hr/>
+  <form name="form1">
+  <input type="text" name="username" value="admin">
+  <input type="button" value="提交" onclick="check('form1.username.value');">
+  </form>
+ </body>
+</html>

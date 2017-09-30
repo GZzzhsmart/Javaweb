@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 用户登录 </title>
+  <script type="text/javascript">
+	function check(obj){
+		//文本框为空
+		if(obj.username.value==""){
+			alert("请输入用户名称");
+			//设置焦点
+			obj.username.focus();
+			return false;
+		}
+		if(obj.password.value==""){
+			alert("请输入登录密码");
+			obj.password.focus();
+			return false;
+		}
+		return true;
+	}
+
+	function checkuser(object){
+		if(object.value==""){
+			alert("请输入用户名称");
+		}
+	
+	}
+  </script>
+ </head>
+
+ <body>
+  <h1>用户登录</h1>
+  <hr>
+  <p>提交方式：
+	<ul>
+		<li>post方式提交：提交大数据</li>
+		<li>get方式提交：提交数据量比较小的数据，超级链接的默认提交方式就是get方式，不能超过255个字节</li>
+		<li>this语句：代表当前对象，在那个标签内部调用就代表那个标签对象</li>
+	</ul>
+  </p>
+  <form name="form1" method="post" onsubmit="return check(this);" action="#">
+	用户名称：<input type="text" name="username" onblur="checkuser(this);"><br/><br/>
+	登录密码：<input type="password" name="password"><br/><br/>
+	<input type="submit" value=" 提 交 ">
+  </form>
+ </body>
+</html>

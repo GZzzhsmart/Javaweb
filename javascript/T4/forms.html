@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <script type="text/javascript">
+	function check(){
+		//表单的数量
+		alert(document.forms.length);
+		for(var i=0;i<document.forms.length;i++)
+		{
+			for(var j=0;j<document.forms[i].elements.length;j++)
+			{
+				var name = document.forms[i].name; //表单名称
+				var ctrlname = document.forms[i].elements[j].name;
+				alert(name+"."+ctrlname);
+				alert(eval(name+"."+ctrlname+".value"));
+			}
+		}
+	}
+  </script>
+ </head>
+ <body>
+		<h1>forms应用</h1>
+		<hr>
+		<form name="form1">
+				<input type="text" name="t1" value="文本框">
+				<input type="button" name="t2" value="button1" onclick="check();">
+				<input type="radio" name="t3" value="男" checked>男<input type="radio" name="t3">女
+		</form>
+		<form name="form2">
+				<input type="text" name="t4">
+		</form>
+		<form name="form3"></form>
+		<form name="form4"></form>
+ </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 条件与循环语句的使用 </title>
+ </head>
+
+ <body>
+  <h1>打印九九乘法表</h1>
+  <hr color="red">
+  <script type="text/javascript">
+		var i,j;
+		for(i=1;i<=9;i++){
+			for(j=1;j<=i;j++)
+			{
+				//打印内容到网页：document.write
+
+				document.write(j+"*"+i+"="+(i*j) +"&nbsp;&nbsp;&nbsp;&nbsp;");
+			
+			}
+			document.write("<br/>");
+		
+		}
+		
+		document.write("<hr/>");
+		document.write("<table border='1' width='1000px' height='200px'>");
+		document.write("<tr>");
+		document.write("<td>编号</td><td>姓名</td><td>年龄</td>");
+		document.write("</tr>");
+		document.write("<tr>");
+		document.write("<td>1</td><td>张三</td><td>33</td>");
+		document.write("</tr>");
+		document.write("<tr>");
+		document.write("<td>2</td><td>李四</td><td>44</td>");
+		document.write("</tr>");
+		document.write("<tr>");
+		document.write("<td>3</td><td>王麻子</td><td>55</td>");
+		document.write("</tr>");
+		document.write("</table>");
+
+  </script>
+  <hr/>
+ </body>
+</html>

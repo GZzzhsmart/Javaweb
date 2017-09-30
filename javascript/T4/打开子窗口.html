@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 打开子窗口 </title>
+  <script type="text/javascript">
+  var subwin;
+	function openwindow(){
+		/*
+			open函数：打开子窗口
+			open(url,"子窗口名称","属性");
+
+		*/
+		subwin = open('选择员工.html','',"width:400px;height:400px;");
+	
+	}
+	function closewindow(){
+		subwin.close();
+	}
+	function opensubwin(){
+	
+		subwin = open('son.html','',"width:400px;height:400px;");
+	}
+  </script>
+ </head>
+ <body>
+  <h1>打开子窗口</h1>
+  <hr>
+  <form name="form1">
+  用户名称:<input type="text" name="username" id="username">
+  <input type="button" value="获取用户名称" onclick="openwindow();">
+  <input type="button" value="关闭子窗口" onclick="closewindow();"><br/>
+  <input type="button" value="打开窗口，改变父窗口的背景颜色" onclick="opensubwin();">
+  <input type="button" value="刷新页面" onclick="location.reload();";>
+  </form>
+ </body>
+</html>

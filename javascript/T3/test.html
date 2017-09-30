@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 省市县三级联动 </title>
+  <meta name="generator" content="editplus" />
+  <meta name="author" content="" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+ </head>
+
+ <body onload="prov();">
+  <script type="text/javascript">
+	var arr = ["江西省",[
+				"赣州市",["南开区",'章贡区'],
+				"南昌市",["东湖区","西湖区"]
+			  ],
+				"广东省",[
+				"广州市",["天河区",'荔湾区'],
+				"东莞市",["厚街镇","大岭山"]
+			]
+	];
+	/*
+	  for(var i=0;i <arr.length;i++) 
+	  {
+		 var arr1 = arr[i];
+		 if(arr1 instanceof Array){
+			for(var j=0;j <arr1.length;j++) 
+			{  
+				var arr2=arr1[j];
+				if(arr2 instanceof Array){
+					for(var k=0;k<arr2.length;k++){
+						alert(arr2[k]);
+					}
+				}else{
+					alert(arr1[j]);
+				}
+			} 
+		 }else{
+			alert(arr[i]);
+		 }
+	  } 
+	*/		
+	function prov(){
+		var province = document.getElementById("province");
+		for(var i = 0;i<arr.length;i++){
+			var arr1=arr[i];
+			if(!(arr1 instanceof Array)){
+				province.options[province.options.length] = new Option(arr1,arr1);
+			}
+		}
+		citydata();
+	}
+	function citydata(){
+		var city = document.getElementById("city");
+		var provdata = document.getElementById("province").value;
+		for(var i = 0;i<arr.length;i++){
+			var arr1=arr[i];
+			if(!(arr1 instanceof Array)){
+				if(arr1==provdata){
+					var citydata = arr[i+1];
+					city.options.length=0;
+					for(var j=0;j<citydata.length;j++){
+						if(!(citydata[j] instanceof Array)){
+							city.options[city.options.length] = new Option(citydata[j],citydata[j]);
+						}
+					}
+				}	
+			}
+		}
+		countydata();
+	}
+	function countydata(){
+		var county = document.getElementById("county");
+		var city = document.getElementById("city").value;
+		county.options.length=0;
+		for(var i = 0;i<arr.length;i++){
+			var arr1=arr[i];
+			if(arr1 instanceof Array){
+				var citydata = arr[i];
+				for(var j=0;j<citydata.length;j++){
+					if(!(citydata[j] instanceof Array)){
+						var countydata = citydata[j];
+						if(countydata==city){
+							var items = citydata[j+1];
+							for(var k=0;k<items.length;k++){
+								county.options[county.options.length] = new Option(items[k],items[k]);
+							}
+						
+						}
+
+
+						
+					}
+				}
+			}
+		}
+	
+	}
+  </script>
+  <h1>省市县三级联动</h1>
+  <hr>
+	<select name="province" id="province" onchange="citydata();"></select>
+	<select name="city" id="city" onchange="countydata();"></select>
+	<select name="county" id="county"></select>
+
+ </body>
+</html>

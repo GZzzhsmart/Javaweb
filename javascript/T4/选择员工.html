@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 选择员工 </title>
+  <script type="text/javascript">
+	function selectEmp(myform,objname){
+		var selectedIndex = objname.value;
+		if(selectedIndex=="1"){
+			myform.left_select.options[0] = new Option("张三","1");
+			myform.left_select.options[1] = new Option("李四","2");
+		}else if(selectedIndex=="2"){
+			myform.left_select.options[0] = new Option("王麻子","1");
+			myform.left_select.options[1] = new Option("李小龙","2");
+			myform.left_select.options[2] = new Option("张三丰","3");
+		}else if(selectedIndex=="3"){
+			myform.left_select.options[0] = new Option("小丽","1");
+			myform.left_select.options[1] = new Option("小三","2");
+			myform.left_select.options[2] = new Option("小妹","3");
+		}
+	}
+	//添加单个员工
+	function add(){
+		var leftselect = myform.left_select.options;
+		for(var i=0;i<leftselect.length;i++){
+			//判断是否选中
+			if(leftselect[i].selected){
+				myform.right_select.options[myform.right_select.options.length] = new Option(leftselect[i].text,leftselect[i].value);
+				myform.left_select.remove(i);
+			}
+		}
+	}
+	//添加所有员工
+	function addall(){
+		for(var i=myform.left_select.options.length-1;i>=0;i--){
+			myform.right_select.options[myform.right_select.options.length] = new Option(myform.left_select.options[i].text,myform.left_select.options[i].value);
+			myform.left_select.remove(i);
+		}
+	}
+	//删除单个员工
+	function del(){
+		var leftselect = myform.right_select.options;
+		for(var i=0;i<leftselect.length;i++){
+			//判断是否选中
+			if(leftselect[i].selected){
+				myform.left_select.options[myform.left_select.options.length] = new Option(leftselect[i].text,leftselect[i].value);
+				myform.right_select.remove(i);
+			}
+		}
+	}
+	//删除所有员工
+	function delall(){
+		for(var i=myform.right_select.options.length-1;i>=0;i--){
+			myform.left_select.options[myform.left_select.options.length] = new Option(myform.right_select.options[i].text,myform.right_select.options[i].value);
+			myform.right_select.remove(i);
+		}
+	}
+	//获取选中员工
+	function clo(){
+		var msg="";
+		for(var i=0;i<myform.right_select.options.length;i++){
+			if(i== myform.right_select.options.length-1){
+				msg += myform.right_select.options[i].text+"-"+myform.right_select.options[i].value;
+			}else{
+				msg += myform.right_select.options[i].text+"-"+myform.right_select.options[i].value+",";
+			}
+		}
+		alert(msg);
+
+		//把子窗口的值传回给父窗口
+		//opener代表父窗口
+		opener.form1.username.value=msg;
+		//关闭当前窗口
+		//window.close();
+		//close();
+		//self代表当前窗口本身
+		//self.close();
+
+	}
+  </script>
+ </head>
+
+ <body>
+	<h1> 选择员工</h1>
+	<hr/>
+  <form name="myform" id="formx" action="" >
+<table width="490" border="0" align="center" cellspacing="1" bgcolor="#0099FF">
+  <tr bgcolor="#B7C4DB">
+    <td height="21" colspan="3"> &nbsp;选择员工</td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td colspan="3">
+	  <select name="select" onchange="selectEmp(this.form,this)">
+      <option selected value="0">选择部门</option>
+	  <option value="1">学术部</option>
+	  <option value="2">教质部</option>
+	  <option value="3">就业部</option>
+    </select> &nbsp;&nbsp;
+    </td>
+  </tr>
+  <tr bgcolor="#FFFFFF">
+    <td height="168" align="center">	
+	<select name="left_select" style="WIDTH: 192px; HEIGHT: 208px" multiple>
+	 
+    </select></td>
+    <td align="center">
+		<input type="button" name="Submit" value="    添加>>    " style="width:35 " title="单选" onclick="add();">
+    <br><br><input type="button" name="Submit2" value="全部添加>>>" style="width:35 " title="全选" onclick="addall()">
+    <br><br><input type="button" name="Submit3" value="   <<删除     " style="width:35 "  onclick="del()">
+    <br><br><input type="button" name="Submit4" value="<<<全部删除" style="width:35 " onclick="delall()">
+    </td>
+    <td align="center">
+	<select name="right_select" style="WIDTH: 192px; HEIGHT: 208px" multiple>
+    </select>	</td>
+  </tr>
+  <tr align="center" bgcolor="#FFFFFF">
+    <td  colspan="3"><input type="button" onclick="clo()" name="Submit5" value="确定"></td>
+  </tr>
+</table>
+</form>
+ </body>
+</html>

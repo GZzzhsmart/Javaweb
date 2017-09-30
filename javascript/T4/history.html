@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+ <script type="text/javascript">
+	/*
+		forward():前进
+		back():返回
+		go(整形参数);
+		值>0代表前进;<0代表返回
+	
+	*/
+	function go(){
+		var step = parseInt(document.getElementById("txturl").value);
+		history.go(step);
+	}
+ </script>
+ </head>
+ <body>
+  <h1>history对象的使用</h1>
+  <hr>
+  <input type="button" value="前进" onclick="history.forward();">
+  <input type="button" value="返回" onclick="history.back();">
+  <input type="text" id="txturl" value="1">
+  <input type="button" value="go" onclick="go();">
+ </body>
+</html>

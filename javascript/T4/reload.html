@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 打开子窗口 </title>
+  <script type="text/javascript">
+	//刷新页面函数reload,与页面中的刷新按钮作用相同
+
+	function go(){
+		location.replace("http://www.baidu.com/");
+		//location.href="";
+	}
+  </script>
+ </head>
+
+ <body>
+  <h1>打开子窗口</h1>
+  <hr>
+  <form name="form1">
+  用户名称:<input type="text" name="username" id="username">
+  <input type="button" value="刷新页面" onclick="location.reload();";>
+  <input type="button" value="百度" onclick="go();";>
+  </form>
+ </body>
+</html>

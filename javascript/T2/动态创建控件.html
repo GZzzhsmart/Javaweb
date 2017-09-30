@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 动态创建控件 </title>
+	<script type="text/javascript">
+		function add(){
+
+			alert(document.getElementById("p1").innerHTML);
+			alert(document.getElementById("div1").innerHTML);
+			alert(document.getElementById("item").innerHTML);
+			//获取td标签
+			var item = document.getElementById("item");
+
+			//innerHTML属性可以获取非表单标签的文本内容
+			//创建3个标签控件,br,file,button
+			var br = document.createElement("br");
+			var input = document.createElement("input");
+			var btnDel = document.createElement("input");
+			var input2 = document.createElement("input");
+			//设置控件的名称和类型
+			input2.type="text";
+			input2.name="username";
+			input.type="file";
+			input.name="file2";
+			btnDel.type="button";
+			btnDel.value="删除";
+			//为按钮增加单击事件(click)
+			btnDel.onclick=function(){
+				alert(input2.value);
+				item.removeChild(br);
+				item.removeChild(input2);
+				item.removeChild(input);
+				item.removeChild(btnDel);
+			}
+			//追加到td标签内部
+			item.appendChild(br);
+			item.appendChild(input2);
+			item.appendChild(input);
+			item.appendChild(btnDel);
+		}
+	</script>
+ </head>
+
+ <body>
+  <h1>动态创建控件</h1>
+  <hr>
+  <table border="1" width="800">
+	<tr>
+		<td>文件上传</td>
+		<td id="item"><input type="file" name="file1"><input type="button" name="btnAdd" value="添加" onclick="add();"></td>
+	</tr>
+  </table>
+
+  <p id="p1">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+  <div id="div1">我是div1标签内的文本内容</div>
+ </body>
+</html>

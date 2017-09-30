@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> Date类的使用 </title>
+ </head>
+
+ <body onload="setInterval('displayTime()',1000);">
+  <h1>Date类的使用</h1>
+  <hr>
+  <font id="fonts" color="blue" size="10"></font>
+  
+  <script type="text/javascript">
+	function displayTime(){
+		//年是以1900年为基准，月份是从0开始
+		//创建Date对象
+		var date = new Date();
+		//获取年
+		var year = date.getYear()+1900;
+		//获取月
+		var month = date.getMonth()+1;
+		//获取日期
+		var day = date.getDate();
+		//获取时
+		var hour = date.getHours();
+		//获取分
+		var minute = date.getMinutes();
+		//获取秒
+		var second = date.getSeconds();
+		var str = year +"-"+month+"-"+day +" " +hour +":"+minute+":"+second;
+		//获取标签
+		var fonts = document.getElementById("fonts");
+		fonts.innerHTML=str;
+	}
+
+	//setInterval()，每隔指定的时间内运行一次，单位是毫秒
+  </script>
+ </body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 事件处理 </title>
+  <script type="text/javascript">
+		function clicks(msg){
+			alert(msg);		
+		}
+		function check(){
+			if(form1.username.value==""){
+				alert("请输入用户名称");
+				form1.username.focus();
+				return false;
+			}
+			return true;
+		}
+		//页面的onLoad事件在body标签中，页面打开时会自动执行
+		function test(){
+			alert("正在初始化页面");
+			open("parseInt.html","window","width:800px;height:500px");
+		}
+
+		function changenation(){
+		
+			alert(form1.nation.value);
+		}
+		function selectusername(){
+			alert("选中了用户名称");
+		
+		}
+		function focusage(){
+			alert("年龄控件获得焦点");
+			form1.age.value="abc";
+		}
+		function blurage(){
+			if(form1.age.value==""){
+				alert("请输入年龄");
+				form1.age.focus();
+				return;
+			}
+			if(isNaN(form1.age.value)){
+				alert("年龄只能输入0~9之间的数字（3位数）");
+				form1.age.focus();
+				return;
+			}
+		
+		}
+	</script>
+ </head>
+
+ <body onload="test();">
+  <h1>事件处理</h1>
+  <hr/>
+
+  <input type="button" value="点击我" onclick="clicks(this.value)">
+
+	<div id="div1" onclick="clicks(this.innerHTML)">
+  <ul>
+	<li onclick="clicks(this.innerHTML)">1111111111111111111111111</li>
+	<li onclick="clicks(this.innerHTML)">2222222222222222222222222222</li>
+	<li onclick="clicks(this.innerHTML)">33333333333333333333333</li>
+	<li onclick="clicks(this.innerHTML)">444444444444444444444444444444444</li>
+  </ul>
+  </div>
+
+  <h2>表单的onsubmit事件:点击submit按钮就会触发表单是onsubmit事件</h2>
+  <hr/>
+  <form name="form1" action="parseInt.html" method="post" onsubmit="return check();">
+	<input type="text" name="username" onselect="selectusername();"><br/>
+	<select name="nation" id="nation" onchange="changenation();">
+		<option value="江西赣州">江西赣州</option>
+		<option value="江西南康">江西南康</option>
+		<option value="江西赣县">江西赣县</option>
+		<option value="江西大余">江西大余</option>
+	</select><br/>
+	<input type="text" name="age" id="age" size="3" maxlength="3" onfocus="focusage();" onblur="blurage();"><br/>
+	<input type="text" name="age1" id="age1" size="3" maxlength="3" onfocus="document.bgColor='red'" onblur="document.bgColor='blue'"><br/>
+	<input type="submit" value="提交">
+  </form>
+ </body>
+</html>

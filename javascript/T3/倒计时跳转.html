@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 倒计时跳转页面 </title>
+  <script type="text/javascript">
+	var index=5;
+	function go(){
+		var btngo = document.getElementById("btngo");
+		btngo.value = index;
+
+		//等待指定的时间后自动运行(运行一次)
+		setTimeout('go()',1000);
+		if(index==0){
+			location.href="http://www.sms98.cn/";
+		
+		}
+		index--;
+		//setInterval();间隔指定的时间运行一次
+	}
+  </script>
+ </head>
+
+ <body>
+	<h1>倒计时跳转页面</h1>
+	<hr>
+	<h2>5秒钟以后跳转到www.sms98.cn网站</h2>
+	<input type="button" id="btngo" value="go" onclick="go();">
+ </body>
+</html>

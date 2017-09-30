@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+ 
+	<script type="text/javascript">
+		/*自定义函数:一定要调用才会执行
+		函数一般要和html控件的事件进行结合
+		onclick:单击事件
+
+		全局变量：定义在script标签内部，在函数外部的变量
+				作用域：在整个页面的所有地方都可以访问
+		局部变量：定义在函数内部的变量
+				作用域：只能在函数内部访问
+		在函数外部的语句网页打开时会立即执行
+
+		javascript的数据类型：
+			1.javascript语言是一种弱数据类型的语言
+			2.定义变量时不需要指定数据类型，以var关键字开头；
+			3.变量的类型是第一次赋值的时候决定的
+			var i;
+		*/
+		var i=10;
+		function check(){
+			var j=100;
+			alert("i="+i +";j="+j);
+		}
+		alert("i="+i);
+		//不能访问局部变量
+		//alert("i="+i +";j="+j);
+	</script>
+ </head>
+
+ <body>
+	用户名称：<input type="text" name="username" value="张三">
+	<input type="button" value="提交" onclick="check();">
+ </body>
+</html>
+<script type="text/javascript">
+	alert("可以访问i的值吗？"+i);
+</script>
+ 

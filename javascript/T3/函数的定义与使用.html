@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> 函数的定义与使用 </title>
+  <script type="text/javascript">
+		/*
+			定义函数的语法：
+			function 函数名称(参数1,参数2,参数3...参数n){
+				
+				如果函数要返回结果则用return语句返回
+
+				return result;
+
+				//结束函数
+				return;
+				获取实参的个数
+				arguments.length
+
+				形式参数的个数可以与实际参数的个数不相同
+			
+			}
+		
+		*/
+
+		function func1(param1,param2,param3,param4,param5,param6){
+		
+			alert("参数的个数："+arguments.length);
+			var i=0;
+			for(i=0;i<arguments.length;i++){
+			
+				if(arguments.length==3){
+					var sum=add(param1,param2,param3);
+					alert("3个数的和="+sum);
+				}else{
+					alert(arguments[i]);
+				}
+			}
+		
+		}
+
+		function add(num1,num2,num3)
+		{
+		
+			return num1+num2+num3;
+		}
+  </script>
+ </head>
+
+ <body>
+	<h1>函数的定义与使用</h1>
+	<hr/>
+	<input type="button" value="函数调用" onclick="func1(1,2,3)">
+	<input type="button" value="函数调用" onclick="func1(1,2,3,'第四个参数','第五个参数','第六个参数')">
+	<input type="button" value="函数调用" onclick="func1()">
+	<input type="button" value="函数调用" onclick="func1(this.value)">
+ </body>
+</html>

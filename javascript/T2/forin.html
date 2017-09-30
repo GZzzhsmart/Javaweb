@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> for...in语句的使用 </title>
+ </head>
+
+ <body>
+  <h1>for...in语句的使用</h1>
+  <hr/>
+  <p id="p1">
+	改变字体的颜色
+  </p>
+  <script type="text/javascript">
+	var arr = new Array("red","green","blue");
+
+	//getElementById函数可以获取页面中任何id值
+	var p1 = document.getElementById("p1");
+	alert("p1="+p1.innerHTML);
+	p1.innerHTML="删除原来的内容";
+	for(item in arr){
+		alert(arr[item]);
+		p1.style.background=arr[item];
+	}
+
+  </script>
+ </body>
+</html>

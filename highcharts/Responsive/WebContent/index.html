@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- 声明当前网页使用自适应功能 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 使用viewport技术检测当前屏幕的大小，把网页的大小设置成屏幕的大小 width=device-width，把网页的绽放比例设置成未绽放-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap起步</title>
+
+    <link href="plugins/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+	<!-- 如果当前浏览器的版本小于ie9, 即ie6, ie7, ie8，则引入指定的两个文件-->
+    <!--[if lt IE 9]>
+      <script src="plugins/html5shiv.min.js"></script>
+      <script src="plugins/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+    	
+    	<ul class="nav nav-tabs">
+		  <li role="presentation" class="active"><a href="#">Home</a></li>
+		  <li role="presentation"><a href="#">Profile</a></li>
+		  <li role="presentation"><a href="#">Messages</a></li>
+		</ul>
+    
+    	<div class="row">
+    		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    			<img src="images/codeguide.png" class="img-responsive img-rounded" />
+    			<a href="#">Bootstrap 编码规范</a>
+    			<p class="bg-info">
+    			Bootstrap 编码规范：编写灵活、稳定、高质量的 HTML 和 CSS 代码的规范。
+    			</p>
+    		</div>
+    		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+	    		<div class="table-responsive">
+	    			<table class="table table-striped table-hover">
+					  <tr class="danger"><td>内容</td><td>内容</td></tr>
+					  <tr><td>内容</td><td>内容</td></tr>
+					</table>
+				</div>
+    		</div>
+    		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    			<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input type="file" id="exampleInputFile">
+    <p class="help-block">Example block-level help text here.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Check me out
+    </label>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+    		</div>
+    		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+				<button type="button" class="btn btn-primary">（默认样式）Default</button>
+				
+				<div class="dropdown">
+				  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				    下拉菜单
+				    <span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				    <li><a href="#">菜单1</a></li>
+				    <li><a href="#">菜单2</a></li>
+				    <li><a href="#">菜单3</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a href="#">菜单4</a></li>
+				  </ul>
+				  
+				  <div class="alert alert-success" role="alert">提示！</div>
+				  
+				  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="images/codeguide.png" alt="...">
+    </div>
+    <div class="item">
+      <img src="images/react.png" alt="...">
+    </div>
+  </div>
+	
+  <!-- Controls -->
+  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+				</div>
+				
+    		</div>
+    	</div>
+    </div>
+    <script src="plugins/jquery.min.js"></script>
+    <script src="plugins/bootstrap/bootstrap.min.js"></script>
+  </body>
+</html>

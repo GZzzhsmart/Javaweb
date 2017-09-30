@@ -1,0 +1,40 @@
+1、JFreechart
+	报表的图片是在服务端生成的，把图片返回到客户端。
+	1）服务端消耗
+	2）网络消耗
+	
+2、Highcharts(国外)，ECharts(百度)
+	1）基于HTML5（Canvas画布）,CSS3,JavaScript的前端报表工具
+	2）所有的报表图片都是在前端生成
+	3）前端生成的图片是由后台返回的JSON数据生成
+	
+3、使用Highcharts
+	1）下载后引入相关的js及css文件
+	
+	2）CDN服务（Content Distribute Network，内容分发网络） 
+	
+		把自己项目的静态文件（css,js,image,video）放入到网络中一个服务器(CDN服务器)，
+		而不是放入到自己的服务器
+		
+		云服务（七牛云存储，又拍云存储，UCloud，阿里云，腾讯云）
+		
+4、Restful API与带有查询参数的url
+	restful api就是把url换一个形式
+	
+	http://localhost:8080/Report/temp?action=add
+	问题：
+	不利于SEO优化（搜索引擎优化）
+	
+	搜索引擎提供的网络爬虫只爬取静态页面
+	静态页面：.html, .htm, 没有后缀的
+	动态：asp, aspx, php, jsp结尾，带有查询参数的
+	
+	SEO：keywords, description, title, 动态页面静态化（真正把动态页面生成为html静态页面，伪静态，把后缀名变成html,htm,无后缀，去除查询参数）
+	
+	http://localhost:8080/Report/temp?action=add&name=test
+	http://localhost:8080/Report/temp?action=update
+	http://localhost:8080/Report/temp/add/name/test
+	http://localhost:8080/Report/temp/update
+	
+	
+	

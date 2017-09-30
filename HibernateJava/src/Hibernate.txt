@@ -1,0 +1,81 @@
+1、持久化
+	持久化就是将数据同步保存到数据库或某些存储设备中
+	
+2、哪些技术可以实现对象关系映射
+	Hibernate(Struts + Spring + Hibernate-->SSH)， MyBatis(SpringMVC + Spring + MyBatis)
+	
+	JPA规范 Java Persistence API(Java持久化API)
+	
+3、使用对象关系映射持久化层的优势？
+	1）减少原始JDBC的代码量
+	2）对数据库是透明的，更换不同的数据库，所要修改的内容很 少（大部分情况下只需要修改配置文件）
+	
+4、ORM（O/R Mappiing    Object-Relation Mapping）对象关系映射
+	1）对象映射
+		com.gs.bean.User
+			private int id;
+			private String name;
+			private String pwd;
+			
+			private UserDetail detail;
+			
+		User.hbm.xml
+		<property name="id" column="uid">
+		<property name="name" column="uname">
+		<property name="pwd" column="upwd">
+		
+		<one-to-one></one-to-one>
+		
+		
+	2）关系映射
+		一对一关系：一个人有一个详情，一个详情只属于一个人
+			com.gs.bean.UserDetail
+				private int id;
+				private String detail;
+				
+				private User user;
+				
+			UserDetail.hbm.xml
+			<property name="id" column="id">
+			<property name="detail" column="detail">
+			
+			<one-to-one></one-to-one>
+			
+		一对多关系：一个用户属于一个部门，一个部门可以拥有多个用户
+			com.gs.bean.User
+				private int id;
+				private String name;
+				private String pwd;
+				
+				private Department department;
+				
+				<many-to-one></many-to-one>
+				
+			com.gs.bean.Department
+				private List<User> users;
+				
+				<one-to-many>
+		
+		多对多关系：一个用户有多门课程，同一个课程可以属于多个用户（三张表）
+			com.gs.bean.User
+				private List<Course> courses;
+				
+				<many-to-many>
+				
+			com.gs.bean.Course
+					private List<User> users;
+					
+					<many-to-many>
+				
+5、Session会话，Connection数据库连接，Hibernate Session连接
+	session会话是指WEB应用的session
+	connection是原始JDBC的数据库连接
+	Hibernate中的session也是指数据库连接，可以通过SessionFactory获取session连接
+	
+6、SQL, HQL
+	Structured Query Language
+	Hibernate Query Language(面向对象的查询语言)
+	from Product
+		
+		
+		

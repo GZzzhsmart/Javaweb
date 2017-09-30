@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.gs.bean">
+	<class name="Product" table="t_product1"> 
+		<!-- 配置主键字段 -->
+		<id name="id" column="id"> 
+			<!-- 主键的生成策略， native表示使用数据库自己的生成策略，如mysql里使用auto_increment-->
+            <generator class="native"/> 
+        </id>
+        <property name="title" column="title" type="string"></property>
+        <property name="price" column="price" type="double"></property>
+        <property name="des" column="des"></property>
+	</class>
+</hibernate-mapping>

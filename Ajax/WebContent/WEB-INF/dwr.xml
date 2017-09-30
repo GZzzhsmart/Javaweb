@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+	"http://getahead.ltd.uk/dwr/dwr20.dtd">
+
+<dwr>
+
+	<allow>
+		<!-- 配置service，new：新建对象 -->
+		<create creator="new" javascript="helloService">
+			<param name="class" value="com.ht.bean.HelloService" />
+			<!--  
+			<exclude method="sayHello1"/>
+			<include method="sayHello"/>
+			-->
+		</create>
+		<create creator="new" javascript="studentService">
+			<param name="class" value="com.ht.service.StudentService"/>
+		</create>
+		<convert converter="bean" match="com.ht.bean.StudentVo">
+			<param name="include" value="studno,studname,classname"/>
+		</convert>
+	</allow>
+	
+	
+	<create creator="new" javascript="JDate">
+			<!-- 创建Jdate对象使用的Java类为java.util.Date -->
+			<param name="class" value="java.util.Date" />
+		</create>
+		<!--将StudentDAO转化成javaScript对象  
+			include 客户端可以访问的方法
+		-->
+		<create creator="new" javascript="StudentDAO">
+			<param name="class" value="com.ht.dwr.StudentDAO" />
+			<include method="findAllStudent"/>
+			<include method="delStudent"/>
+			<include method="findStudentById"/>
+			<include method="updateStudent"/>
+			<include method="addStudent"/>
+		</create>
+		<create creator="new" javascript="TeamDAO">
+			<param name="class" value="com.ht.dwr.TeamDAO" />
+			<include method="findAllTeam"/>
+		</create>
+
+
+		<!-- 配置bean的数据类型转换器 默认全部转化 -->
+		 <convert converter="bean" match="com.ht.dwr.StudentVo">
+       		 <param name="include" value="id,stuName,stuNo,teamId" />
+    	</convert>
+    	 <convert converter="bean" match="com.ht.dwr.TeamVo">
+       		 <param name="include" value="id,teamName" />
+    	</convert>
+
+	<signatures>
+		<![CDATA[	
+			
+	]]>
+	</signatures>
+</dwr>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ajax应用举例</title>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+	function search(){
+		var inputWord = document.getElementById('inputWord').value;
+		var url="searchsuggest.jsp";
+		var params = 'inputWord='+inputWord;
+		send('get',url,params,true);			
+	}
+	
+	//根据提交部门返回的职员列表动态加载数据
+	function recedata(){
+		if (xmlhttp.readyState == 4) { 
+			if (xmlhttp.status == 200) {
+				var xmlDoc = xmlhttp.responseXML;
+				//清除下拉提示框中已有的数据
+				clearDivData();
+				changeDivData(xmlDoc);				
+			} else { //页面不正常 
+				alert("您请求的页面有异常"); 
+			}
+		}
+	}
+	
+	//清除下拉提示框中已有的数据
+	function clearDivData(){
+		//获取表格中tbody
+		var tbody = document.getElementById('wordsListTbody');
+		//数组
+		var trs = tbody.getElementsByTagName('tr');
+		//删除表格中所有的行
+		for(var i=trs.length-1;i>=0;i--){
+			tbody.removeChild(trs[i]);
+		}
+	}
+	
+	//实际将数据加入下拉提示框
+	function changeDivData(xmlDoc){
+		var words = xmlDoc.getElementsByTagName('word');
+		var tbody = document.getElementById('wordsListTbody');
+		for(i=0;i<words.length;i++){
+			var newTr = document.createElement('tr');
+			var newCell = document.createElement('td');
+			var textNode = document.createTextNode(words[i].firstChild.data);
+			newCell.appendChild(textNode);
+			newTr.appendChild(newCell);
+			tbody.appendChild(newTr);
+		}
+		if(words.length>0){
+			document.getElementById('wordsListDiv').style.visibility='visible';
+		}else{
+			document.getElementById('wordsListDiv').style.visibility='hidden';
+		}
+	}
+	//设置下拉提示框的位置
+	function setDivPosition(){
+		var input = document.getElementById('inputWord');
+		var listdiv = document.getElementById('wordsListDiv');
+		listdiv.style.left=(input.offsetLeft)+'px';
+		listdiv.style.border='blue 1px solid';
+		listdiv.style.top=(input.offsetTop+input.offsetHeight+2) + 'px' ;
+		listdiv.style.width=input.offsetWidth-2+'px';
+	}
+</script>
+
+</head>
+<body onload="setDivPosition()" leftmargin="10" topmargin="10" bgcolor="pink">
+<p>搜索字符串:<input type="text" id="inputWord" onKeyUp="search()"/></p>
+<div id="wordsListDiv" style="position:absolute;visibility:hidden">
+	<table id="wordsListTable">
+		<tbody id="wordsListTbody"><tr><td>test</td></tr></tbody>
+	</table>
+</div>
+</body>
+</html>

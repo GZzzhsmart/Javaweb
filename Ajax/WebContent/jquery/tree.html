@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">   
+<HTML>
+<HEAD>
+<TITLE> New Document </TITLE>
+<meta http-equiv="content-type" content="html/text;charset=utf-8">
+<script src="../js/jquery-1.4.1.js"></script>
+<style type="text/css">
+	#menu{width:210px}
+	.has_children{
+		background:cadetblue;
+		color:#fff;
+		cursor:hand
+	}
+	.show{
+		background-color:#BDB76B;
+		color:#fff;
+	}
+	div{
+		padding:0;
+		margin:0px 0px;
+	}
+	div a{   
+		background: #888;   
+		display: none;   
+		float: left;  
+		width: 110px;   
+	}  
+	div span{
+		background:cadetblue;
+		color:#fff;
+		float: left; 
+		width: 110px;
+		border:1px groove ;
+	}
+</style>
+<script>
+	$(function(){
+		$(".has_children").click(function(){			
+		$(this).children("a").show().end().children("span").addClass("show")
+		.parent().siblings("div").children("a").hide().end()
+		.children("span").removeClass("show");
+		});
+	});
+</script>
+</HEAD>
+
+<BODY>
+<div id="menu">
+		<div class="has_children">
+			<span>人事管理</span>
+			<a>&nbsp;&nbsp;添加部门</a>
+			<a>&nbsp;&nbsp;部门列表</a>
+			<a>&nbsp;&nbsp;职位管理</a>
+			<a>&nbsp;&nbsp;离职人员管理</a>
+		</div>
+		<div class="has_children">
+			<span>财务管理</span>
+			<a>&nbsp;&nbsp;报销管理</a>
+			<a>&nbsp;&nbsp;报销统计</a>
+			<a>&nbsp;&nbsp;报销申请</a>
+		</div>
+		<div class="has_children">
+			<span>权限管理</span>
+			<a>&nbsp;&nbsp;角色管理</a>
+			<a>&nbsp;&nbsp;账号管理</a>
+		</div>
+	</div>
+</BODY>
+</HTML>
+

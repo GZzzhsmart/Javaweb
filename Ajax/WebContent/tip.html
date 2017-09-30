@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb18030" />
+<title>Ajax应用举例</title>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript">
+	var eposx ;
+	var eposy ;
+	function showRequest(pid){
+		//获取鼠标的X,Y坐标
+		eposx = event.offsetX;
+		eposy = event.offsetY;
+		var url="tip.jsp";
+		var params = 'pid='+ pid + '&time=' + (new Date()).toString() ;
+		send('GET',url,params,true);			
+	}
+	
+	//动态加载数据部门列表
+	function recedata(){
+		if (xmlhttp.readyState == 4) { 
+			if (xmlhttp.status == 200) {
+				var membersData = xmlhttp.responseXML.getElementsByTagName("member");
+				var membersList = document.getElementById("detail");
+				//循环将数据插入列表框中
+				var li = '<table>';
+				for(var i=0;i<membersData.length;i++){
+					var price=membersData[i].childNodes[0].firstChild.nodeValue;
+					var num=membersData[i].childNodes[1].firstChild.nodeValue;
+					var chandi=membersData[i].childNodes[2].firstChild.nodeValue;
+					li += '<tr><td>价格:' + price + '</td></tr>';
+					li += '<tr><td>数量:' + num + '</td></tr>';
+					li += '<tr><td>产地:' + chandi + '</td></tr>';
+				}
+				li += '</table>';
+				//把要显示的内容放在DIV的内容
+				membersList.innerHTML = li;
+				//设置DIV的位置
+				setDivPosition();
+				//显示DIV
+				membersList.style.visibility='visible';
+			} else { //页面不正常 
+				alert("您请求的页面有异常"); 
+			}
+		}
+	}
+	
+	function hidendiv(){
+		var membersList = document.getElementById("detail");
+		//把DIV中的内容清空
+		membersList.innerHTML = '';
+		//隐藏DIV
+		membersList.style.visibility='hidden';
+	}
+	
+	function setDivPosition(){
+		var goodslist = document.getElementById('goodslist');
+		//goodslist左上角的X坐标位置：goodslist.offsetLeft
+		//goodslist的宽度：goodslist.offsetWidth
+		eposx = goodslist.offsetLeft + goodslist.offsetWidth -2;
+		//goodslist的左上角的Y坐标
+		eposy += goodslist.offsetTop + 2;
+		var listdiv = document.getElementById('detail');
+		listdiv.style.left=eposx+'px';
+		//设置DIV的边框：蓝色的边框，边框线条的大小只有一个像素
+		listdiv.style.border='blue 1px solid';
+		listdiv.style.top=eposy + 'px';
+		listdiv.style.width='100px';
+		//置顶层
+		listdiv.style.zIndex='999';
+	}
+</script>
+</head>
+<body>
+<h1>数据提示</h1>
+<hr />
+商品列表:<br/>
+<p id="goodslist" style="float:left;background:red" onmouseout="hidendiv();">
+<a href="javascript:void(0);" onmouseover="showRequest('p1');" >商品A</a><br/>
+<a href="javascript:void(0);" onmouseover="showRequest('p2');" >商品B</a><br/>
+<a href="javascript:void(0);" onmouseover="showRequest('p3');">商品C</a><br/>
+</p>
+<div id="detail" style="background-color:green;position:absolute;visibility:hidden">
+</div>
+</body>
+</html>

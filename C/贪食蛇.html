@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>贪食蛇</title>
+		<meta charset="utf-8">
+		<style type="text/css">
+			body {
+				margin: 0px;
+				padding: 0px;
+				background-color: #ccc;
+			}
+			table {
+				margin: 0px auto;
+				background-color: #eee;
+			}
+			caption {
+				line-height: 100px;
+				font-size: 50px;
+				font-family: 微软雅黑;
+			}
+			th {
+				padding: 10px;
+				border:0px solid black;
+				background-color: #ccc;
+			}
+			td {
+				font-size: 30px;
+				font-family: 微软雅黑; 
+				padding: 10px;
+				border:0px solid black;
+				background-color: #ccc;
+			}
+			.startButton {
+				width: 100px;
+				border:0px solid black;
+				margin: 0 auto;
+				position: relative;
+				margin-top: 280px;
+			}
+			#startButton {
+				width: 100px;
+				height: 80px;
+				font-size: 35px;
+				font-family: 微软雅黑;
+				margin: 0px auto;
+				background-color: #bbb;
+			}
+			#startButton:hover {
+				background-color: #ddd;
+			}
+			#startButton:active {
+				font-size: 31px;
+				background-color: #ddd;
+				font-family: none;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function $id(id){return document.getElementById(id);};
+			function $sel(selector) {return document.querySelector(selector);}
+			function $selAll(selector) {return document.querySelectorAll(selector);}
+
+			function bgcolor(row,col,color) {
+				return map[row][col].style.backgroundColor=color;
+			}
+
+			
+/****************画一张m*n的表格****************/
+			document.write("<table id=\"table\"><caption>贪食蛇豪华版</caption>");
+			var m=21,n=21;//m*n的表格
+			document.write("<tr>");
+			for (var j=0 ; j<n; j++) {
+				document.write("<th></th>");
+			}
+			document.write("<td rowspan="+m+" width=\"100\">");
+			document.write("<div>分数：</div>");
+			document.write("<div id=\"score\">0</div>");
+			document.write("<div class=\"startButton\"><button id=\"startButton\">Start</button></div>");
+			document.write("</td>");
+			document.write("</tr>");
+			for (var i=1 ; i<m; i++) {
+				document.write("<tr>");
+				for (var j=0 ; j<n; j++) {
+					document.write("<th></th>");
+				}
+				document.write("</tr>");
+			}
+			document.write("</table>");
+			
+
+			// 将表格保存在二维数组中
+			var map = new Array();
+			var table = $id("table");
+			var ths = $selAll("th")
+			// 将所有小格子的dom对象加载到map数组中
+			for (var i=0; i<m; i++) {
+				map[i] = new Array();
+				for (var j=0 ; j<n; j++) {
+					map[i][j] = ths[i*n+j];
+				}
+			}
+			//欢迎界面
+			function welcom(color){
+				num = parseInt((n-21)/2);
+				bgcolor(6,num+1,color);bgcolor(6,num+2,color);		bgcolor(6,num+6,color);bgcolor(6,num+7,color);
+				/**********************************************/	bgcolor(6,num+8,color);
+				bgcolor(7,num,color);bgcolor(7,num+3,color);		bgcolor(7,num+5,color);bgcolor(7,num+9,color);
+				bgcolor(8,num,color);/***********************/		bgcolor(8,num+5,color);bgcolor(8,num+9,color);
+				bgcolor(9,num,color);/***********************/		bgcolor(9,num+5,color);bgcolor(9,num+9,color);
+				bgcolor(10,num,color);/**********************/		bgcolor(10,num+5,color);bgcolor(10,num+9,color);
+				bgcolor(11,num,color);bgcolor(11,num+3,color); 		bgcolor(11,num+5,color);bgcolor(11,num+9,color);
+				bgcolor(12,num+1,color);bgcolor(12,num+2,color); 	bgcolor(12,num+6,color);bgcolor(12,num+7,color);
+				/**********************************************/	bgcolor(12,num+8,color);
+
+				bgcolor(6,num+11,color);bgcolor(6,num+15,color);	bgcolor(6,num+17,color);bgcolor(6,num+18,color);
+				/**************************************/	bgcolor(6,num+19,color);bgcolor(6,num+20,color);
+				bgcolor(7,num+11,color);bgcolor(7,num+15,color);	bgcolor(7,num+17,color);
+				bgcolor(8,num+11,color);bgcolor(8,num+15,color);	bgcolor(8,num+17,color);
+				bgcolor(8,num+12,color);bgcolor(8,num+14,color);
+				bgcolor(9,num+11,color);bgcolor(9,num+15,color);	bgcolor(9,num+17,color);bgcolor(9,num+18,color);
+				bgcolor(9,num+12,color);bgcolor(9,num+14,color);	bgcolor(9,num+19,color);bgcolor(9,num+20,color);
+				bgcolor(10,num+11,color);bgcolor(10,num+15,color);	bgcolor(10,num+17,color);
+				bgcolor(10,num+12,color);bgcolor(10,num+13,color);
+				bgcolor(10,num+14,color);
+				bgcolor(11,num+11,color);bgcolor(11,num+15,color);	bgcolor(11,num+17,color);
+				bgcolor(11,num+13,color);
+				bgcolor(12,num+11,color);bgcolor(12,num+15,color);	bgcolor(12,num+17,color);bgcolor(12,num+18,color);
+				bgcolor(12,num+13,color);/***********************/	bgcolor(12,num+19,color);bgcolor(12,num+20,color);
+			}
+			welcom("green");
+			//over字体
+			function over(color){
+				num = parseInt((n-19)/2)-1;
+				bgcolor(6,num+2,color);bgcolor(6,num+3,color);		bgcolor(6,num+6,color);bgcolor(6,num+9,color);
+				bgcolor(7,num+1,color);bgcolor(7,num+4,color);		bgcolor(7,num+6,color);bgcolor(7,num+9,color);
+				bgcolor(8,num+1,color);bgcolor(8,num+4,color);		bgcolor(8,num+6,color);bgcolor(8,num+9,color);
+				bgcolor(9,num+1,color);bgcolor(9,num+4,color);		bgcolor(9,num+6,color);bgcolor(9,num+9,color);
+				bgcolor(10,num+1,color);bgcolor(10,num+4,color);	bgcolor(10,num+6,color);bgcolor(10,num+9,color);
+				bgcolor(11,num+1,color);bgcolor(11,num+4,color); 	bgcolor(11,num+6,color);bgcolor(11,num+9,color);
+				bgcolor(12,num+2,color);bgcolor(12,num+3,color); 	bgcolor(12,num+7,color);bgcolor(12,num+8,color);
+
+				bgcolor(6,num+12,color);bgcolor(6,num+13,color);	bgcolor(6,num+16,color);bgcolor(6,num+18,color);
+				bgcolor(6,num+11,color);bgcolor(6,num+14,color);	bgcolor(6,num+17,color);
+				bgcolor(7,num+11,color);/*****************/		bgcolor(7,num+16,color);bgcolor(7,num+19,color);
+				bgcolor(8,num+11,color);/*****************/		bgcolor(8,num+16,color);bgcolor(8,num+19,color);
+				bgcolor(9,num+11,color);bgcolor(9,num+14,color);	bgcolor(9,num+16,color);bgcolor(9,num+18,color);
+				bgcolor(9,num+12,color);bgcolor(9,num+13,color);	bgcolor(9,num+17,color);
+				bgcolor(10,num+11,color);/*****************/	bgcolor(10,num+16,color);bgcolor(10,num+18,color);
+				bgcolor(11,num+11,color);/*****************/	bgcolor(11,num+16,color);bgcolor(11,num+19,color);
+				bgcolor(12,num+11,color);bgcolor(12,num+14,color);	bgcolor(12,num+16,color);bgcolor(12,num+19,color);
+				bgcolor(12,num+12,color);bgcolor(12,num+13,color);
+			}
+/****************画一张m*n的表格****************/
+/********************游戏规则*******************/
+		//随机函数
+			function r(max) {
+				return parseInt(Math.random() * max);
+			}
+
+		//开始按钮
+			var startButton = $id("startButton");
+			var score = $id("score");
+			var startPD = false;//false:没有按下startButton；true:按下startButton
+			var footPD = false;//false:食物不存在；true:食物还存在
+			var snake = new Array();//存放蛇身格子的数组
+			snake.length = 2;
+			var row=0,col=0; //snake[row][col],y、x
+			var snakeLife = 1;//false:蛇死亡；true:蛇未死
+			var Direction=0; //监听按键状态
+			var Score=0;//得分
+			var direction = 3;//存放方向
+			startButton.onclick = function () {
+				//按下startButton
+				startPD = true;
+				snakeLife = true;
+				//初始化得分
+				Score=0;
+				score.innerHTML = Score;
+				//清空所有格子颜色及边框
+				for (var i=0; i<ths.length; i++) {
+					ths[i].style.backgroundColor = "";
+					ths[i].style.borderRadius = "0px";
+				}
+				//初始化蛇身长度及位置
+				snake.length = 0;
+				var num = m-1;
+				map[num][10].style.backgroundColor="black";
+				map[num][11].style.backgroundColor="black";
+				map[num][12].style.backgroundColor="black";
+				snakeDirection(num,10);
+				snakeDirection(num,11);
+				snakeDirection(num,12);
+				row=num;
+				col=12;
+				direction=3;
+
+				//随机产生食物
+				footPD = false;
+				foot();
+				
+			}
+
+		//蛇身的控制及移动
+			//存放蛇身位置
+			function snakeDirection(row,col) {
+				snake[snake.length] = map[row][col];
+			}
+			//定义蛇身的移动
+			var k=0;
+			var direction;//从Directions取第一个元素
+			function move() {
+				var inteval = setInterval(function() {
+					if (startPD==false) {
+						return;
+					}
+					if ( snakeLife == false ) {
+						k++;
+						if ( k == 8 ) {
+							k=1;
+						}
+						if ( k==1 ) {
+							over("#ccc");
+						}else if ( k==2 || k==7 ) {
+							over("#7b7");
+						}else{
+							over("#090");
+						}
+					}else{
+						Direction = direction;
+						switch(direction){
+							case 1://左
+								col--;
+								break;
+							case 2://上
+								row--;
+								break;
+							case 3://右
+								col++;
+								break;
+							case 4://下
+								row++;
+								break;
+						}
+						
+						if(col == n){
+							col=0;
+						}
+						if(row == m){
+							row=0;
+						}
+						if(col == -1){
+							col=n-1;
+						}
+						if(row == -1){
+							row=m-1;
+						}
+						//判断是否吃到自身
+						if(map[row][col].style.backgroundColor == "black"){
+							snakeLife=false;
+						}
+						snakeDirection(row,col);
+						//判断吃食物
+						if ( map[row][col].style.backgroundColor != "red" ) {
+							snake[0].style.backgroundColor="#ccc";
+							snake.shift();
+							snake[snake.length-1].style.borderRadius = "6px";
+							snake[snake.length-2].style.borderRadius = "0px";
+							snake[snake.length-1].style.backgroundColor="black";
+						}else{
+							map[row][col].style.borderRadius = "0px";
+							Score += 100;
+							score.innerHTML = Score;
+							footPD = false;
+							snake[snake.length-1].style.borderRadius = "6px";
+							snake[snake.length-2].style.borderRadius = "0px";
+							snake[snake.length-1].style.backgroundColor="black";
+							foot();
+						}
+					}
+				}, 300);
+			}
+			move();
+			//按键监听
+			document.onkeydown = function(event){
+				var e = event || window.event;
+				switch(e.keyCode){
+					case 37://左
+						if(Direction==3){break;}
+							direction=1;
+						break;
+					case 38://上
+						if(Direction==4){break;}
+							direction=2;
+						break;
+					case 39://右
+						if(Direction==1){break;}
+							direction=3;
+						break;
+					case 40://下
+						if(Direction==2){break;}
+							direction=4;
+						break;
+				}
+			}
+		//随机产生食物
+		function foot() {
+			if(footPD==false) {
+				var x = r(n);
+				var y = r(m);
+				if ( map[x][y].style.backgroundColor == "black" ) {
+					foot();
+					return;
+				}
+				map[x][y].style.backgroundColor = "red";
+				map[x][y].style.borderRadius = "6px";
+				footPD = true;
+			}
+		}
+/********************游戏规则*******************/
+		</script>
+		
+
+	</body>
+</html>

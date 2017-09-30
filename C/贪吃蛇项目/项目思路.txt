@@ -1,0 +1,32 @@
+﻿1、再进行一遍理解
+2、再理解及定义好要用的常量和数组 HORIZONTAL_WALL, VERTICAL_WALL, barriers(结构体数组)
+3、把所有的画围墙，画障碍物，画蛇，画食物，蛇移动，碰撞检测的代码全部写好
+画围墙：initHorizontalWall initVertialWall drawWall
+画障碍物：drawBarrier
+play玩游戏方法内部，统一调用drawWallAndBarrier画出围墙和障碍物
+
+画蛇：randomSnake drawSnake
+画食物：randomFood drawFood
+
+蛇移动：snakeMove
+
+碰撞障碍物：barrierCollision
+咬自己：bitSelf
+
+所有碰撞检测collision
+
+吃到食物：bitFood
+
+
+
+
+把所有常量定义和数组等放到单独的头文件中，心.h为扩展名，并且把生成的头文件copy到tc3/include目录下面
+头文件全名规则：snake_ip.h, 
+
+
+1、看不懂常量的，请去相应的头文件里搜索
+2、生成食物时，需要写一个方法判断食物是否出现在障碍物上，如果出现在障碍物上，需要重新生成一个食物
+3、生成蛇时，需要判断蛇身是否跟某个障碍物重合，如果重合，需要重新生成一条蛇
+4、优化missionOne, missionTwo, missionThree, 改造成一个统一的方法
+
+最后做的事：去生成你想要的关卡的障碍物GameMapDesigner

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JavaCommon_Source:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaCommon_Source_jar</output-path>
+    <root id="archive" name="JavaCommon_Source_jar.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/java" />
+    </root>
+  </artifact>
+</component>

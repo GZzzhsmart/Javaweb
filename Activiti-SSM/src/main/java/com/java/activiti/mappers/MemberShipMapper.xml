@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.activiti.dao.MemberShipDao">
+
+	<resultMap type="MemberShip" id="MemberShipResult">
+			<result property="userId" column="USER_ID_"/>
+			<result property="groupId" column="GROUP_ID_"/>
+			<collection property="user" column="USER_ID_"
+				ofType="com.java.activiti.model.User">
+				<result property="id" column="id_"/>
+				<result property="firstName" column="first_"/>
+				<result property="lastName" column="last_"/>
+				<result property="email" column="email_"/>
+				<result property="password" column="pwd_"/>
+			</collection>
+			<collection property="group" column="GROUP_ID_"
+				ofType="com.java.activiti.model.Group">
+				<result property="id" column="id_"/>
+				<result property="name" column="name_"/>
+			</collection>
+	</resultMap>
+	
+	<select id="userLogin" parameterType="Map" resultMap="MemberShipResult">
+		select m.user_id_,m.group_id_,g.ID_,g.NAME_,u.ID_,u.FIRST_,u.LAST_,u.PWD_,u.EMAIL_
+		from act_id_membership as m,
+				 act_id_group as g,
+				 act_id_user as u
+		    where m.GROUP_ID_=g.ID_ and 
+				  m.USER_ID_=u.ID_  and 
+				  u.PWD_=#{password} and 
+		      	  u.ID_=#{userName}  and
+				  g.ID_=#{groupId} 
+	</select>
+	
+   <delete id="deleteAllGroupsByUserId" parameterType="String">
+		delete from act_id_membership where user_id_=#{userId};
+	</delete>
+	
+	<insert id="addMemberShip" parameterType="MemberShip">
+		insert into act_id_membership values(#{user.id},#{group.id});
+	</insert>
+	
+</mapper> 

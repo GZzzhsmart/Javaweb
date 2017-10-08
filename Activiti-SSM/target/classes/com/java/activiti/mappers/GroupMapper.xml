@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.activiti.dao.GroupDao">
+
+	<resultMap type="Group" id="GroupResult">
+		<result property="id" column="id_"/>
+		<result property="name" column="name_"/>
+	</resultMap>
+	<select id="findGroup"  resultMap="GroupResult">
+			select * from act_id_group
+	</select>
+	<select id="groupPage" parameterType="Map" resultMap="GroupResult">
+		select * from act_id_group
+		<if test="pageIndex!=null and pageSize!=null">
+		 		  limit #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="findByUserId" parameterType="String" resultMap="GroupResult">
+		SELECT g.ID_ AS id,g.NAME_ AS NAME FROM act_id_group g LEFT JOIN act_id_membership m ON m.GROUP_ID_=g.ID_ LEFT JOIN act_id_user u ON u.ID_=m.USER_ID_ WHERE u.ID_=#{userId}
+	</select>
+
+	<select id="groupCount" parameterType="Map" resultType="int">
+		select count(1) from act_id_group
+	</select>
+	
+	<delete id="deleteGroup" parameterType="java.util.List">
+		delete from act_id_group where id_ in
+		<foreach collection="list" item="id" index="index" open="(" separator="," close=")">
+		           		 #{id}
+       	</foreach>
+	</delete>
+	
+	<insert id="addGroup" parameterType="com.java.activiti.model.Group">
+		insert into act_id_group values(#{id},null,#{name},null);
+	</insert>
+	
+	<update id="updateGroup" parameterType="com.java.activiti.model.Group">
+		update act_id_group
+		<set>
+			<if test="name!=null and name!='' ">
+				name_=#{name},
+			</if>
+		</set>
+		where id_=#{id}
+	</update>
+	
+</mapper> 

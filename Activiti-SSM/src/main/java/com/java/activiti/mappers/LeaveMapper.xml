@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.activiti.dao.LeaveDao">
+
+	<resultMap type="Leave" id="LeaveResult">
+		<result property="id" column="id_"/>
+		<result property="leaveDate" column="leaveDate"/>
+		<result property="leaveDays" column="leaveDays"/>
+		<result property="leaveReason" column="leaveReason"/>
+		<result property="state" column="state"/>
+		<result property="processInstanceId" column="processInstanceId"/>
+		<association property="user" column="userId" select="com.java.activiti.dao.UserDao.findById"/>
+	</resultMap>
+	
+	<select id="leavePage" parameterType="Map" resultMap="LeaveResult">
+		select * from t_leave
+		<where>
+			<if test="userId!=null and userId!='' ">
+				 and userId = #{userId}
+			</if>
+		</where>
+		order by leaveDate desc
+		<if test="pageIndex!=null and pageSize!=null">
+		  limit #{pageIndex},#{pageSize}
+		</if>
+	</select>
+	
+	<select id="leaveCount" parameterType="Map" resultType="int">
+		select count(1) from t_leave
+		<where>
+			<if test="userId!=null and userId!='' ">
+				 and userId = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	
+	<insert id="addLeave" parameterType="Leave">
+		insert into t_leave values(null,#{user.id},#{leaveDate},#{leaveDays},#{leaveReason},#{state},#{processInstanceId})
+	</insert>
+	
+	<select id="findById" parameterType="String" resultMap="LeaveResult">
+		select * from t_leave where id=#{id}
+	</select>
+	<select id="getLeaveByTaskId" parameterType="String" resultMap="LeaveResult">
+		select * from  t_leave  
+		where processInstanceId=#{processInstanceId}
+	</select>
+	<update id="updateLeave" parameterType="Leave">
+		update t_leave
+		<set>
+			<if test="state!=null and state!='' ">
+				state=#{state},
+			</if>
+			<if test="processInstanceId!=null and processInstanceId!='' ">
+				processInstanceId=#{processInstanceId},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	
+</mapper> 

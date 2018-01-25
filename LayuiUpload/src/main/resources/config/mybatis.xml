@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!--是否开启缓存-->
+        <setting name="cacheEnabled" value="true"/>
+        <!--开启日志记录-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+        <!--使用列控件-->
+        <setting name="useColumnLabel" value="true" />
+        <!--配置变量的别名，下划线被驼峰式规则代替-->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+    <typeAliases>
+        <!--配置需要定义别名的类-->
+        <package name="top.zzh.vo"/>
+    </typeAliases>
+
+</configuration>

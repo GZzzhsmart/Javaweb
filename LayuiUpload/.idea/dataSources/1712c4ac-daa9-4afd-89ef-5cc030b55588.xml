@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="mysqlstudy@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.2">
+    <root id="1"/>
+    <schema id="2" parent="1" name="mysqlstudy">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="auto_platform"/>
+    <schema id="4" parent="1" name="hotelmanager"/>
+    <schema id="5" parent="1" name="information_schema"/>
+    <schema id="6" parent="1" name="mysql"/>
+    <schema id="7" parent="1" name="p2p"/>
+    <schema id="8" parent="1" name="performance_schema"/>
+    <schema id="9" parent="1" name="sakila"/>
+    <schema id="10" parent="1" name="sshproject"/>
+    <schema id="11" parent="1" name="sys"/>
+    <schema id="12" parent="1" name="world"/>
+    <table id="13" parent="2" name="t_user"/>
+    <routine id="14" parent="2" name="init_shiro_demo">
+      <RoutineKind>procedure</RoutineKind>
+    </routine>
+    <column id="15" parent="13" name="id">
+      <Position>1</Position>
+      <Comment>id</Comment>
+      <DataType>bigint(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="16" parent="13" name="loginAcc">
+      <Position>2</Position>
+      <Comment>登录账户</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="17" parent="13" name="loginPassword">
+      <Position>3</Position>
+      <Comment>登录密码</Comment>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="18" parent="13" name="email">
+      <Position>4</Position>
+      <Comment>邮箱</Comment>
+      <DataType>varchar(50)|0</DataType>
+    </column>
+    <column id="19" parent="13" name="password">
+      <Position>5</Position>
+      <Comment>密码</Comment>
+      <DataType>varchar(100)|0</DataType>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="20" parent="13" name="serverHost">
+      <Position>6</Position>
+      <Comment>主机IP地址</Comment>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="21" parent="13" name="serverPort">
+      <Position>7</Position>
+      <Comment>端口号</Comment>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <column id="22" parent="13" name="status">
+      <Position>8</Position>
+      <Comment>状态</Comment>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <key id="23" parent="13" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+  </database-model>
+</dataSource>

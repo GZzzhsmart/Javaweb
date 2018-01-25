@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.zzh.dao.UserDAO">
+  <resultMap id="userVoMap" type="userVo"></resultMap>
+  <select id="queryById" resultMap="userVoMap" parameterType="long">
+      select * from t_user where id = #{id}
+  </select>
+    <select id="checkLogin" resultType="int" parameterType="string">
+        select count(*) from t_user where loginAcc=#{loginAcc}
+    </select>
+    <select id="checkReg" resultType="int" parameterType="string">
+        select  count(*) from t_user where loginAcc = #{loginAcc}
+    </select>
+    <select id="getPassword" resultType="string" parameterType="long">
+        select loginPassword from t_user where id=#{id}
+    </select>
+    <update id="updatePwd">
+        update t_user set loginPassword=#{loginPassword} where id=#{id}
+    </update>
+    <select id="count" resultType="int">
+        select count(*) from t_user
+    </select>
+  <delete id="delete" parameterType="long">
+        delete from t_user where id = #{id}
+  </delete>
+  <select id="pagelist" resultMap="userVoMap" >
+        select * from t_user limit #{pageNo},#{pageSize}
+  </select>
+    <select id="listAll" resultMap="userVoMap" >
+        select * from t_user
+    </select>
+  <insert id="add" parameterType="userVo">
+        insert into t_user (loginAcc, loginPassword, email, password, serverHost, serverPort, status) values (#{loginAcc}, #{loginPassword}, #{email}, #{password}, #{serverHost}, #{serverPort}, #{status})
+  </insert>
+  <update id="update">
+        update t_user set loginAcc=#{loginAcc},loginPassword=#{loginPassword},email=#{email},password=#{password},serverHost=#{serverHoset},serverPort=#{serverHoset} where id = #{id}
+  </update>
+</mapper>

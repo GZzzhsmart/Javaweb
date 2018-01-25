@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--读取连接数据库的参数-->
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+    <!--数据源的配置，druid-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.driverUrl}" />
+        <property name="username" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.password}" />
+        <!-- 参考http://blog.csdn.net/yunnysunny/article/details/8657095 -->
+        <!-- 初始化连接数 -->
+        <property name="initialSize" value="${druid.initialSize}" />
+        <!-- 最大连接数 -->
+        <property name="maxActive" value="${druid.maxActive}" />
+        <!-- 最小空闲数 -->
+        <property name="minIdle" value="${druid.minIdle}" />
+        <!-- 最大等待时间，单位为ms -->
+        <property name="maxWait" value="${druid.maxWait}" />
+
+        <!-- 检测数据库连接是否正常的Sql语句 -->
+        <property name="validationQuery" value="${druid.validationQuery}" />
+        <!-- 获取连接时检测连接是否可用 -->
+        <property name="testOnBorrow" value="${druid.testOnBorrow}" />
+        <!-- 连接返回时检测可用 -->
+        <property name="testOnReturn" value="${druid.testOnReturn}" />
+        <!-- 空闲时检测是否可用 -->
+        <property name="testWhileIdle" value="${druid.testWhileIdle}" />
+        <!-- 检测的间隔时间，单位为ms -->
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+        <!-- Destory线程中如果检测到当前连接的最后活跃时间和当前时间的差值大于
+            minEvictableIdleTimeMillis，则关闭当前连接 -->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+
+        <!-- 是否移除废弃连接 -->
+        <property name="removeAbandoned" value="${druid.removeAbandoned}" />
+        <!-- 移除废弃连接超时 -->
+        <property name="removeAbandonedTimeout" value="${druid.removeAbandonedTimeout}" />
+        <!-- 是否做日志记录 -->
+        <property name="logAbandoned" value="${druid.logAbandoned}" />
+        <!-- 过滤器 -->
+        <property name="filters" value="${druid.filters}" />
+
+    </bean>
+
+    <!-- 配置MyBatis的连接工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- mybatis的配置文件的路径 -->
+        <property name="configLocation" value="classpath:config/mybatis.xml" />
+        <!-- 映射文件的路径
+            mybatis的映射文件本质上是dao类里方法与sql语句的映射
+         -->
+        <property name="mapperLocations" value="classpath:mapping/*.xml" />
+    </bean>
+
+    <!-- 使用mybatis与spring的整合包去扫描所有的dao类，并且把sqlSessionFactory注入到DAO类里面 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 哪个包中的带有@Repository注解的类需要注入sqlSessionFactory -->
+        <property name="basePackage" value="top.zzh.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+    <!-- 声明式事务管理 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="query*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="pagelist*" read-only="true"/>
+            <tx:method name="page*" read-only="true"/>
+            <tx:method name="listAll*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="serviceMethods" expression="execution(* top.zzh.service.Impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
+    </aop:config>
+
+    <!--
+    开启注解式的事务管理
+     @Transactional
+     -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>
